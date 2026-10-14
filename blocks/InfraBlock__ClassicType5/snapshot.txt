@@ -1,0 +1,41 @@
+# InfraBlock__ClassicType5 — https://ohqmp.dev-lite.ru/ — desktop 1280px — снято 2026-10-14
+# Стабильные классы: InfraBlock__ClassicType5__{Control,Map,Preview,Advantage}, IdaTabs/ClassicTabs, IdaButton, IdaAppear
+# "~X" = "src-components-production-X" (хэш в конце может смениться при обновлении платформы)
+# На мобилке нет класса --is-desktop, карта показывается через __Preview (картинка + «Раскрыть карту»)
+section.InfraBlock__ClassicType5
+  div.~InfraBlock-wrapper-1qXR.--is-desktop            (style: CSS-переменные темы --ui-*, --map-border-radius)
+    div.~InfraBlock-container-Jq9r
+      header.~InfraBlock-header-2Jmz
+        h2.IdaAppear.~InfraBlock-title-2FDq "Заголовок блока «Инфраструктура»"
+        div.IdaAppear.~InfraBlock-textWrap-GgRH
+          div.~InfraBlock-text-CYM7 "Так выглядит образец текста…"
+      div.IdaAppear.~InfraBlock-content-3RIv
+        div.~InfraBlock-top-z2w9
+          div.InfraBlock__ClassicType5__Control.IdaAppear
+            div.IdaTabs.ClassicTabs.~InfraBlock-blocks-ClassicType5-wrapper-3F1l
+              ul.IdaTabs__wrapper.ClassicTabs__wrapper
+                li.IdaTabs__item.ClassicTabs__item
+                  button.IdaButton.ClassicButton.--is-active "Все"
+                li.IdaTabs__item.ClassicTabs__item         (×11: Метро, Культура и отдых, Медицина, Образование, Финансы, Торговля, Транспорт, Еда, Спорт, Услуги)
+                  button.IdaButton.ClassicButton
+                    div.~InfraBlock-blocks-ClassicType5-iconWrap-1zAm > svg
+                    "Метро"
+          div.IdaAppear.~InfraBlock-appearButton-1Hnd
+            a.IdaButton.ClassicButton.--main-color.~InfraBlock-buttonMap-3ttu "Открыть на Я.Картах"
+        div.InfraBlock__ClassicType5__Map.~InfraBlock-map-1-rY          (на всю ширину, 624px, под табами)
+          div.~InfraBlock-blocks-ClassicType5-wrapper-3dun.--is-desktop
+            div.UiYandexMap.~InfraBlock-blocks-ClassicType5-map-2K6s   (Яндекс.Карты 2.1, ymaps-*)
+              div.UiYandexMap__wrapper > div.UiYandexMap__map + div.UiYandexMapImage (превью-картинка)
+            div.ClassicZoom > button.ClassicZoom__button.--is-in / .--is-out
+        section.InfraBlock__ClassicType5__Preview.~InfraBlock-preview-3K3y   (мобильное превью карты)
+          div.~InfraBlock-blocks-ClassicType5-wrapper-1zfv
+            div.~…-content-1SUe > div.~…-imageWrapper-29WR > div.IdaImage (фото ЖК)
+            button.IdaButton.ClassicButton "Раскрыть карту"
+          div.UiYandexMapImage.~…-placeholder-2hKG
+      footer.~InfraBlock-footer-39M4
+        div.~InfraBlock-advantages-dVm_
+          div.IdaAppear.~InfraBlock-advantageItem-1YWg            (×5)
+            div.InfraBlock__ClassicType5__Advantage.~InfraBlock-advantage-3NfX
+              div.~InfraBlock-blocks-ClassicType5-wrapper-38vs.--is-desktop
+                h3.~…-title-3ORv > span "Элемент 1" + span (пустой)
+                div.~…-text-3_gV "Образец текста для маленького текстового поля"
