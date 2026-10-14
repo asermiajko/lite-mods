@@ -8,7 +8,7 @@
       "enabled": true
     },
     "MortgageCalculator__ClassicType2": {
-      "enabled": true
+      "enabled": false
     }
   }
 }

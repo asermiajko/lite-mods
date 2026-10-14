@@ -44,8 +44,17 @@ window.LiteMods && LiteMods.register('ObjectGalleryA__ClassicType23', function (
       el.setAttribute(attr, '');
     }
 
-    function activate(slide, isJump) {
+    function activate(slide, isJump, keepText) {
       if (!slide) return;
+      if (keepText) {
+        // Блок уже виден с загрузки страницы: текст не прячем и не переигрываем (иначе мигнёт),
+        // наезд на фото начинается с исходного масштаба — без скачка
+        kbStart = performance.now();
+        slide.style.setProperty('--lm-kb-delay', '0ms');
+        slide.setAttribute('data-lm-kb', '');
+        slide.setAttribute('data-lm-text-done', '');
+        return;
+      }
       if (isJump) {
         // Прыжок с копии: продолжаем наезд с того же места, текст не переигрываем
         slide.style.setProperty('--lm-kb-delay', -(performance.now() - kbStart) + 'ms');
@@ -76,7 +85,7 @@ window.LiteMods && LiteMods.register('ObjectGalleryA__ClassicType23', function (
     });
     sw.on('slideChangeTransitionEnd', cleanupInactive);
 
-    activate(sw.slides[sw.activeIndex], false);
+    activate(sw.slides[sw.activeIndex], false, ctx.initialLoad);
 
     // ---------- 5: автопрокрутка, синхронная с полоской-таймером ----------
     var next = ctx.$(P + 'Controls .--right-direction');
@@ -125,7 +134,9 @@ window.LiteMods && LiteMods.register('ObjectGalleryA__ClassicType23', function (
     ctx.$$(P + 'Card').forEach(function (card, i) {
       card.style.setProperty('--lm-i', i);
     });
-    root.setAttribute('data-lm-cards', '');
+    // Въезд карточек — только если блок появился позже (переход между страницами);
+    // при загрузке они уже видны, и «въезд» выглядел бы как мигание
+    if (!ctx.initialLoad) root.setAttribute('data-lm-cards', '');
 
     if (!desktop) return; // дальше — только десктоп
 

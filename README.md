@@ -40,13 +40,14 @@
 ## Структура
 ```
 loader.js                  — загрузчик (подключается в админке)
-sites/<hostname>.json      — какие патчи включены на сайте
+sites/<hostname>.json      — какие патчи включены на сайте (источник)
+sites/<hostname>.js        — собранный файл сайта: все патчи в одном (его грузит loader.js)
 blocks/<Блок>/style.css    — стили патча
 blocks/<Блок>/script.js    — JS патча
 blocks/<Блок>/snapshot.txt — структура блока (для агента)
 blocks/<Блок>/notes.md     — что и когда изменено
 dev.py                     — локальный сервер черновиков (:3400)
-tools/build.py             — бандл «всё в одном» (dist/), запасной вариант для вставки в админку
+tools/build.py             — сборка sites/*.js, dist/*.bundle.js (вставка в админку), --preview для превью
 tools/snapshot.js          — снять структуру блока со страницы
 publish.sh                 — опубликовать
 ```

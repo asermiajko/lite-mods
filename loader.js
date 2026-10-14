@@ -1,6 +1,9 @@
 /*
- * lite-mods loader — подключается ОДИН раз в админке Ида.Лайт:
+ * lite-mods loader — подключается ОДИН раз (в админке Ида.Лайт или в HTML-блоке):
  *   <script src="https://asermiajko.github.io/lite-mods/loader.js" defer></script>
+ *
+ * Загружает ОДИН файл сайта sites/<hostname>.js — все включённые патчи (собирает tools/build.py).
+ * Стили блока подключаются, только когда блок есть на странице.
  *
  * Флаги в адресе страницы:
  *   ?dev=1    — черновик: патчи грузятся с http://localhost:3400 (запоминается до закрытия вкладки)
@@ -14,9 +17,11 @@
   var DEV_BASE = 'http://localhost:3400/';
   var DEV_KEY = 'litemods-dev';
 
+  // Встроенная сборка (dist/*.bundle.js — вставка в админку, dist/*.preview.js — превью агента):
+  // патчи идут сразу после загрузчика в том же файле, ничего не скачиваем
+  var inline = window.__LITE_MODS_INLINE__;
   var qs = new URLSearchParams(location.search);
-  var preview = window.__LITE_MODS_BUNDLE__ && window.__LITE_MODS_BUNDLE__.preview;
-  if (qs.get('nomods') === '1' && !preview) {
+  if (qs.get('nomods') === '1' && inline !== 'preview') {
     console.info('[lite-mods] выключены (?nomods=1)');
     return;
   }
@@ -31,16 +36,18 @@
   }
   if (qs.get('dev') === '1') session('set', '1');
   if (qs.get('dev') === '0') session('del');
-  var dev = session('get') === '1' || qs.get('dev') === '1';
+  var dev = !inline && (session('get') === '1' || qs.get('dev') === '1');
 
   var self = document.currentScript;
   var PROD_BASE = self && self.src ? self.src.replace(/[^/]*$/, '') : 'https://asermiajko.github.io/lite-mods/';
   var BASE = dev ? DEV_BASE : PROD_BASE;
 
   var registry = {};        // имя блока -> функция патча
-  var enabled = {};         // имя блока -> конфиг из манифеста
+  var enabled = {};         // имя блока -> { css }
+  var injected = {};        // имя блока -> стили уже на странице
   var done = new WeakSet(); // корневые элементы, к которым патч уже применён
   var ready = false;        // Nuxt закончил гидратацию
+  var initialRoots = new WeakSet(); // блоки, которые были на странице при её загрузке
   var reducedMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function log() {
@@ -54,6 +61,9 @@
       name: name,
       dev: dev,
       reducedMotion: reducedMotion,
+      // true — блок был на странице с самой загрузки (уже виден посетителю),
+      // false — появился позже (переход между страницами, перерисовка Vue)
+      initialLoad: initialRoots.has(root),
       $: function (sel) { return root.querySelector(sel); },
       $$: function (sel) { return [].slice.call(root.querySelectorAll(sel)); },
       // CSS-модули платформы: "src-components-production-InfraBlock-header-2Jmz" -> part('header')
@@ -75,7 +85,20 @@
     };
   }
 
+  // Стили — только для блоков, которые есть на странице (и сразу, ещё до гидратации)
+  function injectCss() {
+    Object.keys(enabled).forEach(function (name) {
+      if (injected[name] || !enabled[name].css || !document.querySelector('.' + name)) return;
+      injected[name] = true;
+      var style = document.createElement('style');
+      style.setAttribute('data-lite-mods', name);
+      style.textContent = enabled[name].css;
+      document.head.appendChild(style);
+    });
+  }
+
   function apply() {
+    injectCss();
     if (!ready) return;
     Object.keys(enabled).forEach(function (name) {
       var fn = registry[name];
@@ -100,23 +123,6 @@
     setTimeout(function () { scheduled = false; apply(); }, 16);
   }
 
-  function addCss(href) {
-    var link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = href;
-    link.setAttribute('data-lite-mods', '');
-    document.head.appendChild(link);
-  }
-
-  function addJs(src) {
-    var s = document.createElement('script');
-    s.src = src;
-    s.async = true;
-    s.setAttribute('data-lite-mods', '');
-    s.onerror = function () { console.error('[lite-mods] не загрузился ' + src); };
-    document.head.appendChild(s);
-  }
-
   // Ждём, пока Nuxt 2 оживит серверную разметку: правки до гидратации Vue может затереть
   function whenHydrated(cb) {
     var started = Date.now();
@@ -127,61 +133,39 @@
   }
 
   window.LiteMods = {
-    version: '1',
+    version: '2',
     dev: dev,
     base: BASE,
+    blocks: enabled,
+    // Вызывается из файла сайта: блок включён, вот его стили
+    define: function (name, opts) {
+      enabled[name] = opts || {};
+      injectCss();
+    },
     register: function (name, fn) {
       registry[name] = fn;
       scheduleApply();
     },
-    blocks: enabled
+    loaded: function (info) {
+      log((inline ? 'встроенная сборка' : dev ? 'ЧЕРНОВИК (localhost)' : 'бой') +
+        (info && info.version ? ' ' + info.version : '') + ', блоки:', Object.keys(enabled).join(', ') || 'нет');
+    }
   };
 
-  // Бандл (dist/*.bundle.js) — всё в одном файле: для вставки прямо в админку и для превью
-  var bundle = window.__LITE_MODS_BUNDLE__;
-  if (bundle) {
-    Object.keys(bundle.manifest.blocks || {}).forEach(function (name) {
-      var cfg = bundle.manifest.blocks[name];
-      if (!cfg || cfg.enabled === false) return;
-      enabled[name] = cfg;
-      var files = bundle.files[cfg.path || name] || {};
-      if (files.css) {
-        var style = document.createElement('style');
-        style.setAttribute('data-lite-mods', name);
-        style.textContent = files.css;
-        document.head.appendChild(style);
-      }
-      if (files.js) {
-        try { new Function(files.js)(); } catch (e) { console.error('[lite-mods] ошибка в патче ' + name, e); }
-      }
-    });
-    log('бандл ' + bundle.manifest.version + ', блоки:', Object.keys(enabled).join(', ') || 'нет');
-  } else {
-    var bust = dev ? Date.now() : Math.floor(Date.now() / 60000); // манифест обновляется не реже раза в минуту
-    fetch(BASE + 'sites/' + location.hostname + '.json?t=' + bust, { cache: 'no-store' })
-      .then(function (r) {
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        return r.json();
-      })
-      .then(function (manifest) {
-        var v = dev ? Date.now() : manifest.version;
-        Object.keys(manifest.blocks || {}).forEach(function (name) {
-          var cfg = manifest.blocks[name];
-          if (!cfg || cfg.enabled === false) return;
-          enabled[name] = cfg;
-          var dir = BASE + 'blocks/' + (cfg.path || name) + '/';
-          if (cfg.css !== false) addCss(dir + 'style.css?v=' + v);
-          if (cfg.js !== false) addJs(dir + 'script.js?v=' + v);
-        });
-        log((dev ? 'ЧЕРНОВИК (localhost)' : 'бой') + ', блоки:', Object.keys(enabled).join(', ') || 'нет');
-      })
-      .catch(function (e) {
-        console.warn('[lite-mods] манифест для ' + location.hostname + ' не загружен:', e.message);
-      });
+  if (!inline) {
+    // Кэш GitHub Pages — 10 минут; метка раз в минуту, чтобы публикация доходила быстро
+    var bust = dev ? Date.now() : Math.floor(Date.now() / 60000);
+    var s = document.createElement('script');
+    s.src = BASE + 'sites/' + location.hostname + '.js?t=' + bust;
+    s.async = true;
+    s.setAttribute('data-lite-mods', '');
+    s.onerror = function () { console.warn('[lite-mods] нет патчей для ' + location.hostname); };
+    document.head.appendChild(s);
   }
 
   whenHydrated(function () {
     ready = true;
+    [].forEach.call(document.querySelectorAll('section[class]'), function (el) { initialRoots.add(el); });
     apply();
     // Vue перерисовывает блоки (переходы между страницами, табы) — подхватываем новые
     new MutationObserver(scheduleApply).observe(document.body, { childList: true, subtree: true });

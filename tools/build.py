@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""Собирает dist/<сайт>.bundle.js — загрузчик + манифест + все патчи в одном файле.
+"""Сборка патчей сайта.
 
-Зачем:
-  * запасной вариант публикации — вставить содержимое во вкладку JS в админке;
-  * превью там, где нельзя достучаться до localhost.
+Источник правды — sites/<hostname>.json (какие блоки включены) и blocks/<Блок>/{style.css,script.js}.
 
-Запуск:
-  python3 tools/build.py [hostname]            — бандлы для всех сайтов (или одного)
-  python3 tools/build.py --preview <hostname>  — dist/<сайт>.preview.js: без комментариев,
-      работает поверх ?nomods=1 (агент вставляет его на страницу через javascript_tool)
+Результат:
+  sites/<hostname>.js         — ОДИН файл со всеми патчами сайта; его грузит loader.js (публикуется)
+  dist/<hostname>.bundle.js   — загрузчик + патчи в одном файле: запасной вариант для вставки в админку
+  dist/<hostname>.preview.js  — то же без комментариев и работает поверх ?nomods=1 (превью агента)
+
+Запуск: python3 tools/build.py [hostname]        (без аргумента — все сайты)
+        python3 tools/build.py --preview [hostname]  — дополнительно собрать превью
 """
 import json
 import re
@@ -19,38 +20,51 @@ ROOT = Path(__file__).resolve().parent.parent
 
 
 def strip(code: str) -> str:
-    code = re.sub(r"/\*.*?\*/", "", code, flags=re.S)
+    # Сначала строчные комментарии: в них бывает «dist/*.js», что похоже на начало /* … */
     code = re.sub(r"(?m)^\s*//.*$", "", code)
+    code = re.sub(r"/\*.*?\*/", "", code, flags=re.S)
     return "\n".join(line.strip() for line in code.splitlines() if line.strip())
 
 
-def build(site_file: Path, preview: bool = False) -> Path:
+def site_patches(site_file: Path, compact: bool = False) -> str:
     manifest = json.loads(site_file.read_text())
-    files = {}
+    version = manifest.get("version", "")
+    parts = [f"/* lite-mods: {site_file.stem}, версия {version} */"]
     for name, cfg in manifest.get("blocks", {}).items():
         if cfg.get("enabled") is False:
             continue
         block_dir = ROOT / "blocks" / cfg.get("path", name)
-        entry = {}
-        if cfg.get("css", True) and (block_dir / "style.css").exists():
-            entry["css"] = (block_dir / "style.css").read_text()
-        if cfg.get("js", True) and (block_dir / "script.js").exists():
-            entry["js"] = (block_dir / "script.js").read_text()
-        if preview:
-            entry = {k: strip(v) for k, v in entry.items()}
-        files[cfg.get("path", name)] = entry
+        css_file, js_file = block_dir / "style.css", block_dir / "script.js"
+        css = css_file.read_text() if cfg.get("css", True) and css_file.exists() else ""
+        js = js_file.read_text() if cfg.get("js", True) and js_file.exists() else ""
+        if compact:
+            css, js = strip(css), strip(js)
+        parts.append(f"window.LiteMods && LiteMods.define({json.dumps(name)}, {{ css: {json.dumps(css, ensure_ascii=False)} }});")
+        if js:
+            # Ошибка в одном патче не ломает остальные
+            parts.append(f"try {{\n{js}\n}} catch (e) {{ console.error('[lite-mods] ошибка в патче {name}', e); }}")
+    parts.append(f"window.LiteMods && LiteMods.loaded({json.dumps({'version': version})});")
+    return "\n".join(parts) + "\n"
 
-    bundle = {"manifest": manifest, "files": files}
-    if preview:
-        bundle["preview"] = True
-    payload = json.dumps(bundle, ensure_ascii=False)
+
+def build(site_file: Path, preview: bool = False) -> list:
+    host = site_file.stem
+    out = []
+
+    site_js = ROOT / "sites" / f"{host}.js"
+    site_js.write_text(site_patches(site_file))
+    out.append(site_js)
+
     loader = (ROOT / "loader.js").read_text()
+    (ROOT / "dist").mkdir(exist_ok=True)
+    bundle = ROOT / "dist" / f"{host}.bundle.js"
+    bundle.write_text("window.__LITE_MODS_INLINE__ = 'bundle';\n" + loader + "\n" + site_patches(site_file))
+    out.append(bundle)
+
     if preview:
-        loader = strip(loader)
-    suffix = "preview" if preview else "bundle"
-    out = ROOT / "dist" / f"{site_file.stem}.{suffix}.js"
-    out.parent.mkdir(exist_ok=True)
-    out.write_text(f"window.__LITE_MODS_BUNDLE__ = {payload};\n{loader}")
+        prev = ROOT / "dist" / f"{host}.preview.js"
+        prev.write_text("window.__LITE_MODS_INLINE__ = 'preview';\n" + strip(loader) + "\n" + site_patches(site_file, compact=True))
+        out.append(prev)
     return out
 
 
@@ -62,4 +76,5 @@ if __name__ == "__main__":
     if args:
         sites = [s for s in sites if s.stem == args[0]]
     for site in sites:
-        print(build(site, preview).relative_to(ROOT))
+        for path in build(site, preview):
+            print(path.relative_to(ROOT))

@@ -1,7 +1,10 @@
-window.__LITE_MODS_BUNDLE__ = {"manifest": {"version": "20261014141839", "blocks": {"InfraBlock__ClassicType5": {"enabled": true}, "ObjectGalleryA__ClassicType23": {"enabled": true}, "MortgageCalculator__ClassicType2": {"enabled": true}}}, "files": {"InfraBlock__ClassicType5": {"css": "/*\n * InfraBlock__ClassicType5 — блок «Инфраструктура»\n * Всё строго внутри .InfraBlock__ClassicType5. Цвета — из переменных темы --ui-*.\n * Скрытие «до появления» работает только при [data-lm-ready] (его ставит script.js).\n */\n\n.InfraBlock__ClassicType5 {\n  --lm-ease: cubic-bezier(.2, .7, .1, 1);\n  --lm-accent: var(--ui-main-color, #6A31EB);\n}\n\n/* ---------- 1. Табы категорий: каскад + живой hover ---------- */\n\n.InfraBlock__ClassicType5[data-lm-ready] .InfraBlock__ClassicType5__Control .ClassicTabs__item {\n  opacity: 0;\n  transform: translateY(14px) scale(.96);\n  transition:\n    opacity .5s var(--lm-ease),\n    transform .6s var(--lm-ease);\n  transition-delay: calc(var(--lm-i, 0) * 40ms + 150ms);\n}\n\n.InfraBlock__ClassicType5[data-lm-ready] .InfraBlock__ClassicType5__Control[data-lm-in] .ClassicTabs__item {\n  opacity: 1;\n  transform: none;\n}\n\n.InfraBlock__ClassicType5 .ClassicTabs__item .IdaButton {\n  transition:\n    background-color .3s, color .3s,\n    transform .35s var(--lm-ease),\n    box-shadow .35s var(--lm-ease);\n}\n\n.InfraBlock__ClassicType5 .ClassicTabs__item .IdaButton:not(.--is-active):hover {\n  transform: translateY(-2px);\n  box-shadow: 0 8px 20px -8px var(--ui-main-color-32, rgba(106, 49, 235, .32));\n}\n\n.InfraBlock__ClassicType5 .ClassicTabs__item .IdaButton svg {\n  transition: transform .4s var(--lm-ease);\n}\n\n.InfraBlock__ClassicType5 .ClassicTabs__item .IdaButton:hover svg {\n  transform: scale(1.18) rotate(-6deg);\n}\n\n/* ---------- 2. Карта: раскрывается из «карточки» на всю ширину ---------- */\n\n.InfraBlock__ClassicType5[data-lm-ready] .InfraBlock__ClassicType5__Map {\n  clip-path: inset(6% 7% round var(--map-border-radius, 24px));\n  transition: clip-path 1.2s var(--lm-ease);\n}\n\n.InfraBlock__ClassicType5[data-lm-ready] .InfraBlock__ClassicType5__Map[data-lm-in] {\n  clip-path: inset(0 0 round 0);\n}\n\n/* ---------- 3. Карточки «Элемент N»: линия-акцент + каскад ---------- */\n\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage {\n  position: relative;\n  padding-top: 20px;\n}\n\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage::before,\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage::after {\n  content: '';\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  height: 2px;\n  border-radius: 2px;\n}\n\n/* серая «дорожка» */\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage::before {\n  background: var(--ui-font-black-color-8, rgba(7, 7, 31, .08));\n}\n\n/* акцентная линия, прорисовывается слева направо */\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage::after {\n  background: var(--lm-accent);\n  transform-origin: left center;\n  transform: scaleX(.18);\n  transition: transform .7s var(--lm-ease);\n}\n\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage:hover::after {\n  transform: scaleX(1);\n}\n\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage h3 {\n  transition: color .3s, transform .45s var(--lm-ease);\n}\n\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage:hover h3 {\n  color: var(--lm-accent);\n  transform: translateX(4px);\n}\n\n[data-lm-ready] .InfraBlock__ClassicType5__Advantage {\n  opacity: 0;\n  transform: translateY(24px);\n  transition:\n    opacity .6s var(--lm-ease),\n    transform .8s var(--lm-ease);\n  transition-delay: calc(var(--lm-i, 0) * 90ms);\n}\n\n[data-lm-ready] [data-lm-in] .InfraBlock__ClassicType5__Advantage {\n  opacity: 1;\n  transform: none;\n}\n\n/* при появлении линия-акцент «пробегает» до своей базовой длины */\n[data-lm-ready] .InfraBlock__ClassicType5__Advantage::after {\n  transform: scaleX(0);\n  transition-delay: calc(var(--lm-i, 0) * 90ms + 250ms);\n}\n\n[data-lm-ready] [data-lm-in] .InfraBlock__ClassicType5__Advantage::after {\n  transform: scaleX(.18);\n}\n\n[data-lm-ready] [data-lm-in] .InfraBlock__ClassicType5__Advantage:hover::after {\n  transform: scaleX(1);\n  transition-delay: 0s;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .InfraBlock__ClassicType5 *,\n  .InfraBlock__ClassicType5 *::before,\n  .InfraBlock__ClassicType5 *::after {\n    transition: none !important;\n  }\n}\n", "js": "/*\n * InfraBlock__ClassicType5 — блок «Инфраструктура»\n * Каскадное появление табов категорий и карточек «Элемент N», раскрытие карты при скролле.\n *\n * Правило: классы на элементах Vue не трогаем (Vue их перезапишет) — только data-атрибуты и CSS-переменные.\n */\nwindow.LiteMods && LiteMods.register('InfraBlock__ClassicType5', function (root, ctx) {\n  if (ctx.reducedMotion) return;\n\n  var control = ctx.$('.InfraBlock__ClassicType5__Control');\n  var advantages = ctx.part('advantages');\n  var map = ctx.$('.InfraBlock__ClassicType5__Map');\n\n  ctx.$$('.ClassicTabs__item').forEach(function (li, i) {\n    li.style.setProperty('--lm-i', i);\n  });\n  ctx.$$('.InfraBlock__ClassicType5__Advantage').forEach(function (el, i) {\n    el.style.setProperty('--lm-i', i);\n  });\n\n  // Прячем элементы только когда скрипт точно отработал — без JS блок выглядит как в оригинале\n  root.setAttribute('data-lm-ready', '');\n\n  ctx.inView([control, advantages], function (el) {\n    el.setAttribute('data-lm-in', '');\n  });\n  ctx.inView(map, function (el) {\n    el.setAttribute('data-lm-in', '');\n  }, { threshold: 0.05 });\n});\n"}, "ObjectGalleryA__ClassicType23": {"css": "/*\n * ObjectGalleryA__ClassicType23 — главный экран\n * Анимации — через @keyframes (перебивают transition платформы у IdaAppear на время проигрывания).\n * Всё «скрытое» — только под атрибутами, которые ставит script.js.\n */\n\n.ObjectGalleryA__ClassicType23 {\n  --lm-ease: cubic-bezier(.2, .7, .1, 1);\n  --lm-scroll: 0;\n  position: relative;\n}\n\n/* ---------- 1. Ken Burns: медленный наезд на фото ---------- */\n\n@keyframes lm-hero-kb {\n  from { transform: scale(1); }\n  to   { transform: scale(1.08); }\n}\n\n.ObjectGalleryA__ClassicType23 [data-lm-kb] .ObjectGalleryA__ClassicType23__Slide__image .IdaImage__wrapper {\n  animation: lm-hero-kb 9s cubic-bezier(.25, .1, .25, 1) var(--lm-kb-delay, 0ms) both;\n  transform-origin: 60% 45%;\n}\n\n/* ---------- 2. Параллакс (переменную --lm-scroll ставит script.js только на десктопе) ---------- */\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Slide__image {\n  transform: translate3d(0, calc(var(--lm-scroll) * 28%), 0);\n  will-change: transform;\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Slide__contentWrapper {\n  opacity: calc(1 - var(--lm-scroll) * 1.8);\n  transform: translate3d(0, calc(var(--lm-scroll) * -90px), 0);\n}\n\n/* ---------- 3. Смена текста слайда ---------- */\n\n@keyframes lm-hero-title {\n  from { clip-path: inset(-20% -5% 100% -5%); transform: translateY(36px); opacity: 0; }\n  20%  { opacity: 1; }\n  to   { clip-path: inset(-20% -5% -20% -5%); transform: none; opacity: 1; }\n}\n\n@keyframes lm-hero-rise {\n  from { transform: translateY(24px); opacity: 0; }\n  to   { transform: none; opacity: 1; }\n}\n\n.ObjectGalleryA__ClassicType23 [data-lm-text]:not([data-lm-text-done]) .ObjectGalleryA__ClassicType23__Slide__title {\n  animation: lm-hero-title 1.1s var(--lm-ease) .25s both;\n}\n\n.ObjectGalleryA__ClassicType23 [data-lm-text]:not([data-lm-text-done]) .ObjectGalleryA__ClassicType23__Slide__text {\n  animation: lm-hero-rise .9s var(--lm-ease) .55s both;\n}\n\n.ObjectGalleryA__ClassicType23 [data-lm-text]:not([data-lm-text-done]) .ObjectGalleryA__ClassicType23__Slide__buttonWrapper {\n  animation: lm-hero-rise .9s var(--lm-ease) .75s both;\n}\n\n/* ---------- 5. Автопрокрутка: полоска-таймер ---------- */\n\n@keyframes lm-hero-progress {\n  from { transform: scaleX(0); }\n  to   { transform: scaleX(1); }\n}\n\n.ObjectGalleryA__ClassicType23[data-lm-auto] .ObjectGalleryA__ClassicType23__Controls__bullets .swiper-pagination-bullet {\n  position: relative;\n  overflow: hidden;\n}\n\n.ObjectGalleryA__ClassicType23[data-lm-auto] .ObjectGalleryA__ClassicType23__Controls__bullets .swiper-pagination-bullet.--is-active::after {\n  content: '';\n  position: absolute;\n  inset: 0;\n  background: var(--ui-base-white-color, #FCFCFC);\n  transform-origin: left center;\n  animation: lm-hero-progress var(--lm-autoplay, 6000ms) linear both;\n}\n\n.ObjectGalleryA__ClassicType23[data-lm-paused] .ObjectGalleryA__ClassicType23__Controls__bullets .swiper-pagination-bullet.--is-active::after {\n  animation-play-state: paused;\n}\n\n/* «Перелистывание» цифры счётчика */\n@keyframes lm-hero-flip {\n  from { transform: translateY(60%); opacity: 0; }\n  to   { transform: none; opacity: 1; }\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Controls__currentValue {\n  display: inline-block;\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Controls__currentValue[data-lm-flip] {\n  animation: lm-hero-flip .5s var(--lm-ease) both;\n}\n\n/* ---------- 6. Карточки внизу ---------- */\n\n@keyframes lm-hero-card {\n  from { transform: translateY(40px); opacity: 0; }\n  to   { transform: none; opacity: 1; }\n}\n\n.ObjectGalleryA__ClassicType23[data-lm-cards] .ObjectGalleryA__ClassicType23__Card {\n  animation: lm-hero-card .9s var(--lm-ease) both;\n  animation-delay: calc(1s + var(--lm-i, 0) * 120ms);\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Card__wrapper {\n  transition:\n    transform .45s var(--lm-ease),\n    box-shadow .45s var(--lm-ease);\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Card:hover .ObjectGalleryA__ClassicType23__Card__wrapper {\n  transform: translateY(-6px);\n  box-shadow: 0 18px 40px -18px rgba(7, 7, 31, .45);\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Card__image,\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Card__icon {\n  transition: transform .6s var(--lm-ease);\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Card:hover .ObjectGalleryA__ClassicType23__Card__image {\n  transform: scale(1.1);\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Card:hover .ObjectGalleryA__ClassicType23__Card__icon {\n  transform: scale(1.15) rotate(-8deg);\n}\n\n/* ---------- 7. Магнитные кнопки + блик ---------- */\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Slide__button,\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Slide__secondButton {\n  translate: var(--lm-mx, 0px) var(--lm-my, 0px);\n  transition:\n    translate .35s var(--lm-ease),\n    background-color .3s, color .3s, border-color .3s;\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Slide__button {\n  position: relative;\n  overflow: hidden;\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Slide__button::after {\n  content: '';\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: -60%;\n  width: 45%;\n  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .45), transparent);\n  transform: skewX(-20deg);\n  pointer-events: none;\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Slide__button:hover::after {\n  left: 130%;\n  transition: left .7s var(--lm-ease);\n}\n\n/* ---------- 8. Подсказка «листайте вниз» ---------- */\n\n@keyframes lm-hero-wheel {\n  0%   { transform: translateY(0); opacity: 1; }\n  70%  { transform: translateY(10px); opacity: 0; }\n  100% { transform: translateY(0); opacity: 0; }\n}\n\n@keyframes lm-hero-hint-in {\n  from { opacity: 0; transform: translateY(12px); }\n  to   { opacity: 1; transform: none; }\n}\n\n.ObjectGalleryA__ClassicType23 .lm-hero-hint {\n  position: absolute;\n  right: 40px;\n  top: 300px;\n  z-index: 5;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 10px;\n  color: var(--ui-base-white-color, #FCFCFC);\n  pointer-events: none;\n  animation: lm-hero-hint-in .8s var(--lm-ease) 1.6s both;\n  transition: opacity .4s, transform .4s var(--lm-ease);\n}\n\n.ObjectGalleryA__ClassicType23 .lm-hero-hint[data-lm-hidden] {\n  opacity: 0 !important;\n  transform: translateY(12px);\n}\n\n.ObjectGalleryA__ClassicType23 .lm-hero-hint__mouse {\n  width: 22px;\n  height: 34px;\n  border: 1.5px solid currentColor;\n  border-radius: 12px;\n  display: flex;\n  justify-content: center;\n  padding-top: 6px;\n  box-sizing: border-box;\n  opacity: .85;\n}\n\n.ObjectGalleryA__ClassicType23 .lm-hero-hint__wheel {\n  width: 3px;\n  height: 7px;\n  border-radius: 2px;\n  background: currentColor;\n  animation: lm-hero-wheel 1.6s ease-in-out infinite;\n}\n\n.ObjectGalleryA__ClassicType23 .lm-hero-hint__label {\n  font-size: 11px;\n  letter-spacing: .14em;\n  text-transform: uppercase;\n  opacity: .7;\n  writing-mode: vertical-rl;\n}\n", "js": "/*\n * ObjectGalleryA__ClassicType23 — главный экран (полноэкранный слайдер)\n * 1. Медленный наезд на фото активного слайда (Ken Burns)\n * 2. Параллакс при скролле (только десктоп)\n * 3. Кинематографичная смена текста слайда\n * 5. Автопрокрутка: полоска активного слайда заполняется как таймер, пауза при наведении\n *    + «перелистывание» цифры счётчика\n * 6. Карточки внизу: каскадное появление и живой hover\n * 7. «Магнитные» кнопки и блик на основной кнопке (только десктоп с мышью)\n * 8. Подсказка «листайте вниз» (только десктоп)\n *\n * Swiper платформы зациклен вручную: слайды [копия 3, 1, 2, 3, копия 1]. С копии на настоящий\n * слайд платформа прыгает мгновенно (setTransition 0) — такие прыжки не считаются сменой слайда.\n */\nwindow.LiteMods && LiteMods.register('ObjectGalleryA__ClassicType23', function (root, ctx) {\n  if (ctx.reducedMotion) return;\n\n  var P = '.ObjectGalleryA__ClassicType23__';\n  var AUTOPLAY_MS = 6000;\n  var desktop = !!ctx.$('.--is-desktop');\n  var mouse = window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches;\n\n  var container = ctx.$(P + 'Gallery__slider .swiper-container');\n  if (!container) return;\n\n  // Swiper платформа запускает лениво (на мобилке — когда блок отрисован), ждём до 30 секунд\n  (function waitSwiper(tries) {\n    if (container.swiper) return init(container.swiper);\n    if (tries > 300) return ctx.log('swiper не найден');\n    setTimeout(function () { waitSwiper(tries + 1); }, 100);\n  })(0);\n\n  function init(sw) {\n    root.setAttribute('data-lm-ready', '');\n    root.style.setProperty('--lm-autoplay', AUTOPLAY_MS + 'ms');\n\n    // ---------- 1 + 3: фото и текст активного слайда ----------\n    var kbStart = 0;\n    var lastDuration = sw.params.speed;\n\n    function restart(el, attr) {\n      el.removeAttribute(attr);\n      void el.offsetWidth; // перезапуск CSS-анимации\n      el.setAttribute(attr, '');\n    }\n\n    function activate(slide, isJump) {\n      if (!slide) return;\n      if (isJump) {\n        // Прыжок с копии: продолжаем наезд с того же места, текст не переигрываем\n        slide.style.setProperty('--lm-kb-delay', -(performance.now() - kbStart) + 'ms');\n        slide.setAttribute('data-lm-kb', '');\n        slide.setAttribute('data-lm-text-done', '');\n        return;\n      }\n      kbStart = performance.now();\n      slide.style.setProperty('--lm-kb-delay', '0ms');\n      restart(slide, 'data-lm-kb');\n      slide.removeAttribute('data-lm-text-done');\n      restart(slide, 'data-lm-text');\n    }\n\n    function cleanupInactive() {\n      [].forEach.call(sw.slides, function (s, i) {\n        if (i === sw.activeIndex) return;\n        s.removeAttribute('data-lm-kb');\n        s.removeAttribute('data-lm-text');\n      });\n    }\n\n    sw.on('setTransition', function (a, b) {\n      lastDuration = typeof a === 'number' ? a : b;\n    });\n    sw.on('slideChangeTransitionStart', function () {\n      activate(sw.slides[sw.activeIndex], lastDuration === 0);\n    });\n    sw.on('slideChangeTransitionEnd', cleanupInactive);\n\n    activate(sw.slides[sw.activeIndex], false);\n\n    // ---------- 5: автопрокрутка, синхронная с полоской-таймером ----------\n    var next = ctx.$(P + 'Controls .--right-direction');\n    var bullets = ctx.$(P + 'Controls__bullets');\n    var counter = ctx.$(P + 'Controls__currentValue');\n\n    if (next && bullets) {\n      root.setAttribute('data-lm-auto', '');\n\n      // Конец анимации заполнения полоски (::after) = пора листать\n      bullets.addEventListener('animationend', function (e) {\n        if (e.animationName !== 'lm-hero-progress') return;\n        var before = counter ? counter.textContent : '';\n        next.click();\n        // Если платформа только перепрыгнула с копии на оригинал — листаем ещё раз\n        setTimeout(function () {\n          if (counter && counter.textContent === before && !sw.animating) next.click();\n        }, 80);\n      });\n\n      var hovered = false;\n      var visible = true;\n      function syncPause() {\n        if (hovered || !visible) root.setAttribute('data-lm-paused', '');\n        else root.removeAttribute('data-lm-paused');\n      }\n      if (mouse) {\n        root.addEventListener('mouseenter', function () { hovered = true; syncPause(); });\n        root.addEventListener('mouseleave', function () { hovered = false; syncPause(); });\n      }\n      if ('IntersectionObserver' in window) {\n        new IntersectionObserver(function (entries) {\n          visible = entries[0].isIntersecting;\n          syncPause();\n        }, { threshold: 0.4 }).observe(root);\n      }\n    }\n\n    // Цифра счётчика «перелистывается» при смене слайда\n    if (counter && 'MutationObserver' in window) {\n      new MutationObserver(function () { restart(counter, 'data-lm-flip'); })\n        .observe(counter, { childList: true, characterData: true, subtree: true });\n    }\n\n    // ---------- 6: карточки ----------\n    ctx.$$(P + 'Card').forEach(function (card, i) {\n      card.style.setProperty('--lm-i', i);\n    });\n    root.setAttribute('data-lm-cards', '');\n\n    if (!desktop) return; // дальше — только десктоп\n\n    // ---------- 2: параллакс ----------\n    var ticking = false;\n    function onScroll() {\n      if (ticking) return;\n      ticking = true;\n      requestAnimationFrame(function () {\n        ticking = false;\n        var r = root.getBoundingClientRect();\n        var p = Math.min(Math.max(-r.top / r.height, 0), 1);\n        root.style.setProperty('--lm-scroll', p.toFixed(4));\n        if (hint) hint.toggleAttribute('data-lm-hidden', window.scrollY > 40);\n      });\n    }\n\n    // ---------- 8: подсказка «листайте вниз» ----------\n    var hint = document.createElement('div');\n    hint.className = 'lm-hero-hint';\n    hint.setAttribute('aria-hidden', 'true');\n    hint.innerHTML = '<span class=\"lm-hero-hint__mouse\"><span class=\"lm-hero-hint__wheel\"></span></span>' +\n      '<span class=\"lm-hero-hint__label\">Листайте</span>';\n    root.appendChild(hint);\n\n    window.addEventListener('scroll', onScroll, { passive: true });\n    onScroll();\n\n    // ---------- 7: магнитные кнопки ----------\n    if (!mouse) return;\n    var RADIUS = 110;\n    var MAX = 8;\n    root.addEventListener('mousemove', function (e) {\n      var active = sw.slides[sw.activeIndex];\n      if (!active) return;\n      [].forEach.call(active.querySelectorAll(P + 'Slide__button, ' + P + 'Slide__secondButton'), function (btn) {\n        var r = btn.getBoundingClientRect();\n        var dx = e.clientX - (r.left + r.width / 2);\n        var dy = e.clientY - (r.top + r.height / 2);\n        var near = Math.hypot(dx, dy) < RADIUS + r.width / 2;\n        btn.style.setProperty('--lm-mx', near ? Math.max(-MAX, Math.min(MAX, dx * 0.18)).toFixed(1) + 'px' : '0px');\n        btn.style.setProperty('--lm-my', near ? Math.max(-MAX, Math.min(MAX, dy * 0.3)).toFixed(1) + 'px' : '0px');\n      });\n    });\n    root.addEventListener('mouseleave', function () {\n      ctx.$$(P + 'Slide__button, ' + P + 'Slide__secondButton').forEach(function (btn) {\n        btn.style.setProperty('--lm-mx', '0px');\n        btn.style.setProperty('--lm-my', '0px');\n      });\n    });\n  }\n});\n"}, "MortgageCalculator__ClassicType2": {"css": "/*\n * MortgageCalculator__ClassicType2 → «Ипотечный навигатор»\n * Штатный контент прячется только при [data-lm-nav] (его ставит script.js после успешной загрузки данных).\n */\n\n.MortgageCalculator__ClassicType2[data-lm-nav] [class*=\"MortgageCalculator-content-\"],\n.MortgageCalculator__ClassicType2[data-lm-nav] [class*=\"MortgageCalculator-filterButtonWrapper-\"] {\n  display: none !important;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav {\n  --lm-ease: cubic-bezier(.2, .7, .1, 1);\n  --lm-main: var(--ui-main-color, #6A31EB);\n  --lm-ink: var(--ui-font-black-color, #07071F);\n  --lm-ink-64: var(--ui-font-black-color-64, rgba(7, 7, 31, .64));\n  --lm-ink-48: var(--ui-font-black-color-48, rgba(7, 7, 31, .48));\n  --lm-ink-8: var(--ui-font-black-color-8, rgba(7, 7, 31, .08));\n  --lm-ink-4: var(--ui-font-black-color-4, rgba(7, 7, 31, .04));\n  --lm-white: var(--ui-base-white-color, #FCFCFC);\n  display: grid;\n  grid-template-columns: minmax(320px, 400px) 1fr;\n  gap: 40px;\n  align-items: start;\n  margin-top: 40px;\n  color: var(--lm-ink);\n  font-size: 14px;\n  line-height: 1.4;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav * {\n  box-sizing: border-box;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav button {\n  font: inherit;\n  cursor: pointer;\n}\n\n/* ---------- Левая колонка ---------- */\n\n.MortgageCalculator__ClassicType2 .lm-mnav__aside {\n  position: sticky;\n  top: 96px;\n  display: flex;\n  flex-direction: column;\n  gap: 20px;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__summary {\n  padding: 24px 28px;\n  border-radius: 24px;\n  background:\n    radial-gradient(120% 140% at 100% 0%, rgba(255, 255, 255, .18), transparent 55%),\n    var(--lm-main);\n  color: var(--lm-white);\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__summary-label {\n  font-size: 13px;\n  opacity: .8;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__summary-value {\n  display: flex;\n  align-items: baseline;\n  gap: 8px;\n  margin: 4px 0 6px;\n  font-size: 44px;\n  font-weight: 600;\n  line-height: 1.1;\n  letter-spacing: -.02em;\n  font-variant-numeric: tabular-nums;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__summary-unit {\n  font-size: 18px;\n  font-weight: 500;\n  opacity: .8;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__summary-bank {\n  font-size: 13px;\n  opacity: .85;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__summary-facts {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 12px;\n  margin: 18px 0 0;\n  padding-top: 16px;\n  border-top: 1px solid rgba(255, 255, 255, .2);\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__summary-facts dt {\n  font-size: 12px;\n  opacity: .75;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__summary-facts dd {\n  margin: 2px 0 0;\n  font-size: 16px;\n  font-weight: 600;\n  font-variant-numeric: tabular-nums;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__controls {\n  display: flex;\n  flex-direction: column;\n  gap: 18px;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__field {\n  display: flex;\n  flex-direction: column;\n  gap: 6px;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__field-head {\n  display: flex;\n  justify-content: space-between;\n  align-items: baseline;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__label {\n  font-size: 13px;\n  color: var(--lm-ink-64);\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__field-extra {\n  font-size: 13px;\n  font-weight: 600;\n  color: var(--lm-main);\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__input,\n.MortgageCalculator__ClassicType2 .lm-mnav__select {\n  width: 100%;\n  height: 52px;\n  padding: 0 16px;\n  border: 1px solid transparent;\n  border-radius: 14px;\n  background: var(--lm-ink-4);\n  color: var(--lm-ink);\n  font: inherit;\n  font-size: 17px;\n  font-weight: 500;\n  font-variant-numeric: tabular-nums;\n  outline: none;\n  transition: border-color .2s, background-color .2s;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__select {\n  font-size: 15px;\n  appearance: none;\n  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);\n  background-position: calc(100% - 22px) 23px, calc(100% - 17px) 23px;\n  background-size: 5px 5px;\n  background-repeat: no-repeat;\n  cursor: pointer;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__input:focus,\n.MortgageCalculator__ClassicType2 .lm-mnav__select:focus {\n  border-color: var(--lm-main);\n  background-color: transparent;\n}\n\n/* Ползунок «прилипает» к нижнему краю поля */\n.MortgageCalculator__ClassicType2 .lm-mnav__range {\n  -webkit-appearance: none;\n  appearance: none;\n  width: calc(100% - 28px);\n  height: 4px;\n  margin: -9px 14px 4px;\n  border-radius: 4px;\n  background: linear-gradient(var(--lm-main), var(--lm-main)) 0 / var(--lm-p, 0%) 100% no-repeat, var(--lm-ink-8);\n  outline: none;\n  cursor: pointer;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__range::-webkit-slider-thumb {\n  -webkit-appearance: none;\n  width: 20px;\n  height: 20px;\n  border-radius: 50%;\n  border: 4px solid var(--lm-main);\n  background: #fff;\n  box-shadow: 0 2px 8px rgba(7, 7, 31, .2);\n  transition: transform .2s var(--lm-ease);\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__range::-moz-range-thumb {\n  width: 12px;\n  height: 12px;\n  border-radius: 50%;\n  border: 4px solid var(--lm-main);\n  background: #fff;\n  box-shadow: 0 2px 8px rgba(7, 7, 31, .2);\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__range:active::-webkit-slider-thumb,\n.MortgageCalculator__ClassicType2 .lm-mnav__range:focus-visible::-webkit-slider-thumb {\n  transform: scale(1.25);\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__cta {\n  height: 54px;\n  border: 0;\n  border-radius: 14px;\n  background: var(--lm-main);\n  color: #fff;\n  font-size: 16px !important;\n  font-weight: 600;\n  transition: transform .25s var(--lm-ease), box-shadow .25s var(--lm-ease);\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__cta:hover {\n  transform: translateY(-2px);\n  box-shadow: 0 12px 24px -10px var(--ui-main-color-64, rgba(106, 49, 235, .64));\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__note {\n  margin: -8px 0 0;\n  font-size: 12px;\n  color: var(--lm-ink-48);\n}\n\n/* ---------- Правая колонка ---------- */\n\n.MortgageCalculator__ClassicType2 .lm-mnav__toolbar {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 16px;\n  margin-bottom: 14px;\n  flex-wrap: wrap;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__count {\n  font-size: 14px;\n  color: var(--lm-ink-64);\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__sort {\n  display: inline-flex;\n  padding: 4px;\n  border-radius: 999px;\n  background: var(--lm-ink-4);\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__sort button {\n  padding: 8px 16px;\n  border: 0;\n  border-radius: 999px;\n  background: transparent;\n  color: var(--lm-ink-64);\n  font-size: 14px;\n  font-weight: 500;\n  transition: background-color .25s, color .25s, box-shadow .25s;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__sort button[aria-selected=\"true\"] {\n  background: #fff;\n  color: var(--lm-ink);\n  box-shadow: 0 2px 8px rgba(7, 7, 31, .08);\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__list {\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__row {\n  position: relative;\n  display: grid;\n  grid-template-columns: 1.5fr .9fr 1.3fr;\n  gap: 8px 20px;\n  align-items: center;\n  padding: 18px 22px;\n  border: 1px solid var(--lm-ink-8);\n  border-radius: 20px;\n  background: #fff;\n  transition: border-color .3s, box-shadow .3s, transform .3s var(--lm-ease);\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__row:hover {\n  transform: translateY(-2px);\n  box-shadow: 0 14px 30px -18px rgba(7, 7, 31, .3);\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__row.is-best {\n  border-color: var(--lm-main);\n  box-shadow: 0 0 0 1px var(--lm-main);\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__row.is-off {\n  background: transparent;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__row > div {\n  transition: opacity .4s var(--lm-ease);\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__row.is-off > .lm-mnav__bank,\n.MortgageCalculator__ClassicType2 .lm-mnav__row.is-off > .lm-mnav__rate,\n.MortgageCalculator__ClassicType2 .lm-mnav__row.is-off > .lm-mnav__pay {\n  opacity: .45;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__bank {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  min-width: 0;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__logo {\n  flex: none;\n  width: 44px;\n  height: 44px;\n  border-radius: 50%;\n  overflow: hidden;\n  background: var(--lm-bank);\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__logo img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n  display: block;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__bank-name {\n  display: flex;\n  flex-direction: column;\n  align-items: flex-start;\n  gap: 4px;\n  min-width: 0;\n  font-size: 16px;\n  font-weight: 600;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__badges {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 4px;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__badges:empty,\n.MortgageCalculator__ClassicType2 .lm-mnav__issues:empty {\n  display: none;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__badge,\n.MortgageCalculator__ClassicType2 .lm-mnav__tag {\n  animation: lm-mnav-pop .35s cubic-bezier(.2, .7, .1, 1);\n}\n\n@keyframes lm-mnav-pop {\n  from { opacity: 0; transform: scale(.85); }\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__badge,\n.MortgageCalculator__ClassicType2 .lm-mnav__tag {\n  display: inline-block;\n  padding: 2px 8px;\n  border-radius: 999px;\n  font-size: 11px;\n  font-style: normal;\n  font-weight: 600;\n  white-space: nowrap;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__badge {\n  background: var(--lm-main);\n  color: #fff;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__tag {\n  background: var(--ui-main-color-12, rgba(106, 49, 235, .12));\n  color: var(--lm-main);\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__rate,\n.MortgageCalculator__ClassicType2 .lm-mnav__pay {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n  font-variant-numeric: tabular-nums;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__rate b {\n  font-size: 18px;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__pay b {\n  font-size: 20px;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__rate small,\n.MortgageCalculator__ClassicType2 .lm-mnav__pay small {\n  font-size: 12px;\n  color: var(--lm-ink-48);\n}\n\n/* Полоса платежа в фирменном цвете банка */\n.MortgageCalculator__ClassicType2 .lm-mnav__bar {\n  display: block;\n  height: 4px;\n  margin-top: 6px;\n  border-radius: 4px;\n  background: var(--lm-ink-4);\n  overflow: hidden;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__bar i {\n  display: block;\n  height: 100%;\n  width: var(--lm-bar, 0%);\n  border-radius: 4px;\n  background: var(--lm-bank);\n  transition: width .65s var(--lm-ease);\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__issues {\n  grid-column: 1 / -1;\n  display: flex;\n  flex-wrap: wrap;\n  gap: 6px 16px;\n  padding-top: 10px;\n  border-top: 1px dashed var(--lm-ink-8);\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__issue {\n  display: inline-flex;\n  align-items: center;\n  gap: 8px;\n  font-size: 13px;\n  color: var(--lm-ink-64);\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__issue button {\n  padding: 4px 10px;\n  border: 0;\n  border-radius: 999px;\n  background: var(--ui-main-color-12, rgba(106, 49, 235, .12));\n  color: var(--lm-main);\n  font-size: 12px;\n  font-weight: 600;\n  transition: background-color .2s;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__issue button:hover {\n  background: var(--ui-main-color-24, rgba(106, 49, 235, .24));\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__more {\n  width: 100%;\n  height: 48px;\n  margin-top: 12px;\n  border: 1px solid var(--lm-ink-8);\n  border-radius: 14px;\n  background: transparent;\n  color: var(--lm-main);\n  font-weight: 600;\n}\n\n.MortgageCalculator__ClassicType2 .lm-mnav__more[hidden] {\n  display: none;\n}\n\n/* ---------- Мобилка ---------- */\n\n@media (max-width: 900px) {\n  .MortgageCalculator__ClassicType2 .lm-mnav {\n    grid-template-columns: 1fr;\n    gap: 28px;\n    margin-top: 24px;\n  }\n\n  .MortgageCalculator__ClassicType2 .lm-mnav__aside {\n    position: static;\n  }\n\n  .MortgageCalculator__ClassicType2 .lm-mnav__summary-value {\n    font-size: 36px;\n  }\n\n  .MortgageCalculator__ClassicType2 .lm-mnav__sort {\n    width: 100%;\n    overflow-x: auto;\n  }\n\n  .MortgageCalculator__ClassicType2 .lm-mnav__sort button {\n    flex: 1;\n    padding: 8px 10px;\n  }\n\n  .MortgageCalculator__ClassicType2 .lm-mnav__row {\n    grid-template-columns: 1fr 1fr;\n    padding: 16px;\n  }\n\n  .MortgageCalculator__ClassicType2 .lm-mnav__bank {\n    grid-column: 1 / -1;\n  }\n}\n", "js": "/*\n * MortgageCalculator__ClassicType2 → «Ипотечный навигатор» (замена штатного калькулятора)\n *\n * Данные — то же API, что у платформы: /api/mortgage/offers/published (+ /specs), заголовок x-host.\n *  - без параметров API отдаёт ВСЕ предложения → считаем доступность и платежи сами, мгновенно;\n *  - стандартные предложения: аннуитет по ставке и сроку из фильтра (совпадает с платформой до рубля);\n *  - транши (type: tranche): точные платежи берём у API с текущими параметрами (с задержкой 300 мс).\n * Штатный блок не удаляем: прячем его контент (заголовок остаётся), кнопка «Оставить заявку» жмёт штатную.\n * Если данные не загрузились — ничего не прячем, работает штатный калькулятор.\n */\nwindow.LiteMods && LiteMods.register('MortgageCalculator__ClassicType2', function (root, ctx) {\n  var API = '/api/mortgage/offers/published';\n  var VISIBLE_ROWS = 6;\n  var vm = root.__vue__ || {};\n  var props = vm.$props || {};\n  var container = ctx.$('[class*=\"MortgageCalculator-container-\"]');\n  var nuxt = window.$nuxt;\n  if (!container || !nuxt) return;\n\n  var site = nuxt.$store && nuxt.$store.state.site || {};\n  var projectId = site.project && site.project.id;\n  if (!projectId) return ctx.log('нет project_id');\n\n  // ---------- запросы ----------\n  function propertyTypes() {\n    if (props.property_types && props.property_types.length) return props.property_types;\n    if (!props.property_type || props.property_type === 'residential') return ['flat', 'apartment'];\n    return [props.property_type];\n  }\n\n  function query(extra) {\n    var p = new URLSearchParams();\n    p.append('project_id', projectId);\n    propertyTypes().forEach(function (t) { p.append('property_type', t); });\n    if (props.complex_id) p.append('complex_id', props.complex_id);\n    (props.program_ids || []).forEach(function (id) { p.append('program_id', id); });\n    Object.keys(extra || {}).forEach(function (k) { p.append(k, extra[k]); });\n    return p.toString();\n  }\n\n  function get(path, extra) {\n    return fetch(API + path + '?' + query(extra), { headers: { 'x-host': location.host } })\n      .then(function (r) {\n        if (!r.ok) throw new Error('HTTP ' + r.status);\n        return r.json();\n      });\n  }\n\n  // ---------- форматирование и расчёты ----------\n  function rub(n) { return Math.round(n).toLocaleString('ru-RU') + ' ₽'; }\n  function num(n) { return Math.round(n).toLocaleString('ru-RU'); }\n  function years(n) {\n    var m10 = n % 10, m100 = n % 100;\n    var w = m10 === 1 && m100 !== 11 ? 'год' : (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? 'года' : 'лет');\n    return n + ' ' + w;\n  }\n  // «до 21 года», «от 5 лет» — родительный падеж\n  function yearsGen(n) {\n    return n + ' ' + (n % 10 === 1 && n % 100 !== 11 ? 'года' : 'лет');\n  }\n  function annuity(credit, rate, termYears) {\n    var r = rate / 100 / 12, n = termYears * 12;\n    if (!r) return credit / n;\n    return credit * r / (1 - Math.pow(1 + r, -n));\n  }\n  function esc(s) {\n    return String(s == null ? '' : s).replace(/[&<>\"]/g, function (c) {\n      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;' }[c];\n    });\n  }\n  function staticUrl(path) {\n    if (!path) return '';\n    try { if (nuxt.$static && nuxt.$static.gen) return nuxt.$static.gen(path); } catch (e) { /* fallback ниже */ }\n    return 'https://cdn.idalite.ru/s' + path;\n  }\n  function monthYear(iso) {\n    var d = new Date(iso);\n    return isNaN(d) ? '' : ('0' + (d.getMonth() + 1)).slice(-2) + '.' + d.getFullYear();\n  }\n\n  // ---------- состояние ----------\n  var specs, offers, complexes = [];\n  var trancheApi = {}; // id → { payment, special_payment, overpayment } для текущих параметров\n  var platformValues = vm.$data && vm.$data.values || {};\n  var state = {\n    complex: props.complex_id || '',\n    price: 0,\n    deposit: 0,\n    term: 0,\n    sort: 'payment',\n    showAll: false\n  };\n\n  Promise.all([get('/specs'), get('')]).then(function (res) {\n    specs = res[0];\n    offers = Array.isArray(res[1]) ? res[1] : [];\n    if (!offers.length) throw new Error('пустой список предложений');\n    complexes = specs.complex_id || [];\n    state.price = clamp(platformValues.price || specs.price.initial || specs.price.min, specs.price.min, specs.price.max);\n    state.deposit = clamp(platformValues.deposit || specs.deposit.initial || specs.deposit.min, specs.deposit.min, specs.deposit.max);\n    state.term = clamp(platformValues.term || specs.term.initial || 20, specs.term.min, specs.term.max);\n    mount();\n  }).catch(function (e) {\n    ctx.log('навигатор не запущен, остаётся штатный калькулятор:', e.message);\n  });\n\n  function clamp(v, a, b) { return Math.min(Math.max(v, a), b); }\n\n  // ---------- расчёт предложений ----------\n  function evaluate(o) {\n    var credit = state.price * (1 - state.deposit / 100);\n    var tranche = o.type === 'tranche' && o.special_min_rate;\n    var res = { o: o, credit: credit, tranche: !!tranche, issues: [] };\n\n    if (state.deposit < o.min_deposit) {\n      res.issues.push({ kind: 'deposit', value: o.min_deposit,\n        text: 'Нужен взнос от ' + o.min_deposit + '% — ещё ' + rub((o.min_deposit - state.deposit) / 100 * state.price),\n        action: 'Взнос ' + o.min_deposit + '%' });\n    }\n    if (o.max_term && state.term > o.max_term) {\n      res.issues.push({ kind: 'term', value: o.max_term, text: 'Срок до ' + yearsGen(o.max_term), action: 'Срок ' + years(o.max_term) });\n    }\n    if (o.min_term && state.term < o.min_term) {\n      res.issues.push({ kind: 'term', value: o.min_term, text: 'Срок от ' + yearsGen(o.min_term), action: 'Срок ' + years(o.min_term) });\n    }\n    if (o.max_credit_amount && credit > o.max_credit_amount) {\n      res.issues.push({ kind: 'credit', text: 'Кредит не больше ' + rub(o.max_credit_amount) });\n    }\n    res.available = !res.issues.length;\n\n    var api = trancheApi[o.id];\n    if (tranche) {\n      res.firstPayment = api && api.special_payment ? api.special_payment : annuity(credit, o.special_min_rate, state.term);\n      res.payment = api && api.payment ? api.payment : annuity(credit, o.min_rate, state.term);\n      res.overpayment = api && api.overpayment ? api.overpayment : res.payment * state.term * 12 - credit;\n      res.rate = o.min_rate;\n    } else {\n      res.payment = res.firstPayment = annuity(credit, o.min_rate, state.term);\n      res.overpayment = res.payment * state.term * 12 - credit;\n      res.rate = o.min_rate;\n    }\n    // Средний платёж за весь срок: честное сравнение траншей (льготный период короткий)\n    res.avgPayment = (credit + res.overpayment) / (state.term * 12);\n    return res;\n  }\n\n  var SORTS = {\n    payment: { label: 'Платёж', key: function (r) { return r.avgPayment; } },\n    overpayment: { label: 'Переплата', key: function (r) { return r.overpayment; } },\n    rate: { label: 'Ставка', key: function (r) { return r.rate; } },\n    deposit: { label: 'Взнос', key: function (r) { return r.o.min_deposit; } }\n  };\n\n  function results() {\n    var key = SORTS[state.sort].key;\n    var list = offers\n      .filter(function (o) { return !state.complex || o.complex_id === state.complex; })\n      .map(evaluate);\n\n    // По одному лучшему предложению на банк: сначала доступные, затем «ближайшее» недоступное\n    var byBank = {};\n    list.forEach(function (r) {\n      var cur = byBank[r.o.bank];\n      if (!cur || better(r, cur)) byBank[r.o.bank] = r;\n    });\n    function better(a, b) {\n      if (a.available !== b.available) return a.available;\n      if (!a.available) return a.issues.length < b.issues.length;\n      return key(a) < key(b);\n    }\n    return Object.keys(byBank).map(function (b) { return byBank[b]; }).sort(function (a, b) {\n      if (a.available !== b.available) return a.available ? -1 : 1;\n      return key(a) - key(b);\n    });\n  }\n\n  // ---------- разметка ----------\n  var app, els = {};\n\n  function mount() {\n    app = document.createElement('div');\n    app.className = 'lm-mnav';\n    app.innerHTML =\n      '<div class=\"lm-mnav__aside\">' +\n        '<div class=\"lm-mnav__summary\">' +\n          '<div class=\"lm-mnav__summary-label\">Ежемесячный платёж</div>' +\n          '<div class=\"lm-mnav__summary-value\"><span data-el=\"pay\">—</span><span class=\"lm-mnav__summary-unit\">₽/мес</span></div>' +\n          '<div class=\"lm-mnav__summary-bank\" data-el=\"payBank\"></div>' +\n          '<dl class=\"lm-mnav__summary-facts\">' +\n            '<div><dt>Сумма кредита</dt><dd data-el=\"credit\">—</dd></div>' +\n            '<div><dt>Переплата</dt><dd data-el=\"over\">—</dd></div>' +\n          '</dl>' +\n        '</div>' +\n        '<div class=\"lm-mnav__controls\">' +\n          (props.complex_id || complexes.length < 2 ? '' :\n            '<label class=\"lm-mnav__field\"><span class=\"lm-mnav__label\">Жилой комплекс</span>' +\n            '<select class=\"lm-mnav__select\" data-el=\"complex\"><option value=\"\">Все жилые комплексы</option>' +\n            complexes.map(function (c) { return '<option value=\"' + esc(c.id) + '\">' + esc(c.name) + '</option>'; }).join('') +\n            '</select></label>') +\n          field('price', 'Стоимость квартиры', specs.price.min, specs.price.max, 10000) +\n          field('deposit', 'Первоначальный взнос', specs.deposit.min, specs.deposit.max, 1) +\n          field('term', 'Срок кредита', specs.term.min, specs.term.max, 1) +\n        '</div>' +\n        '<button type=\"button\" class=\"lm-mnav__cta\" data-el=\"cta\">Оставить заявку</button>' +\n        '<p class=\"lm-mnav__note\">Расчёт предварительный. Точные условия — после одобрения банком.</p>' +\n      '</div>' +\n      '<div class=\"lm-mnav__main\">' +\n        '<div class=\"lm-mnav__toolbar\">' +\n          '<div class=\"lm-mnav__count\" data-el=\"count\"></div>' +\n          '<div class=\"lm-mnav__sort\" role=\"tablist\" aria-label=\"Сортировка\">' +\n            Object.keys(SORTS).map(function (k) {\n              return '<button type=\"button\" role=\"tab\" data-sort=\"' + k + '\">' + SORTS[k].label + '</button>';\n            }).join('') +\n          '</div>' +\n        '</div>' +\n        '<ol class=\"lm-mnav__list\" data-el=\"list\"></ol>' +\n        '<button type=\"button\" class=\"lm-mnav__more\" data-el=\"more\"></button>' +\n      '</div>';\n\n    function field(name, label, min, max, step) {\n      return '<div class=\"lm-mnav__field\" data-field=\"' + name + '\">' +\n        '<div class=\"lm-mnav__field-head\"><span class=\"lm-mnav__label\">' + label + '</span>' +\n        '<span class=\"lm-mnav__field-extra\" data-el=\"' + name + 'Extra\"></span></div>' +\n        '<input class=\"lm-mnav__input\" data-el=\"' + name + 'Input\" inputmode=\"numeric\" autocomplete=\"off\">' +\n        '<input class=\"lm-mnav__range\" type=\"range\" data-el=\"' + name + 'Range\" min=\"' + min + '\" max=\"' + max + '\" step=\"' + step + '\">' +\n        '</div>';\n    }\n\n    [].forEach.call(app.querySelectorAll('[data-el]'), function (el) { els[el.getAttribute('data-el')] = el; });\n\n    // Ползунки\n    ['price', 'deposit', 'term'].forEach(function (name) {\n      els[name + 'Range'].addEventListener('input', function () {\n        state[name] = +this.value;\n        update({ keepInput: false });\n      });\n      var input = els[name + 'Input'];\n      input.addEventListener('focus', function () { this.select(); });\n      input.addEventListener('keydown', function (e) { if (e.key === 'Enter') this.blur(); });\n      input.addEventListener('blur', function () {\n        var lim = specs[name];\n        var v = name === 'deposit' ? depositFromInput(this.value) : parseInt(this.value.replace(/\\D/g, ''), 10);\n        if (!isNaN(v)) state[name] = clamp(v, lim.min, lim.max);\n        update({});\n      });\n    });\n\n    if (els.complex) {\n      els.complex.value = state.complex;\n      els.complex.addEventListener('change', function () { state.complex = this.value; update({}); });\n    }\n\n    app.querySelector('.lm-mnav__sort').addEventListener('click', function (e) {\n      var b = e.target.closest('[data-sort]');\n      if (!b) return;\n      state.sort = b.getAttribute('data-sort');\n      update({});\n    });\n\n    els.more.addEventListener('click', function () { state.showAll = !state.showAll; render(); });\n\n    // «Подставить» из подсказки недоступного предложения\n    els.list.addEventListener('click', function (e) {\n      var b = e.target.closest('[data-fix]');\n      if (!b) return;\n      state[b.getAttribute('data-fix')] = +b.getAttribute('data-value');\n      update({});\n    });\n\n    els.cta.addEventListener('click', function () {\n      var original = ctx.$('[class*=\"MortgageCalculator-formWrapper-\"] > .IdaButton');\n      if (original) original.click();\n    });\n\n    container.appendChild(app);\n    root.setAttribute('data-lm-nav', '');\n    update({});\n  }\n\n  // ---------- обновление ----------\n  var trancheTimer;\n  function update() {\n    syncControls();\n    render();\n    clearTimeout(trancheTimer);\n    trancheTimer = setTimeout(refreshTranches, 300);\n  }\n\n  function syncControls() {\n    var lim = { price: specs.price, deposit: specs.deposit, term: specs.term };\n    ['price', 'deposit', 'term'].forEach(function (name) {\n      var range = els[name + 'Range'];\n      range.value = state[name];\n      range.style.setProperty('--lm-p', ((state[name] - lim[name].min) / (lim[name].max - lim[name].min) * 100).toFixed(2) + '%');\n      if (document.activeElement !== els[name + 'Input']) {\n        els[name + 'Input'].value = name === 'price' ? num(state.price) + ' ₽' : name === 'deposit' ? num(state.deposit / 100 * state.price) + ' ₽' : years(state.term);\n      }\n    });\n    els.depositExtra.textContent = state.deposit + '%';\n    els.priceExtra.textContent = '';\n    els.termExtra.textContent = '';\n    [].forEach.call(app.querySelectorAll('[data-sort]'), function (b) {\n      b.setAttribute('aria-selected', b.getAttribute('data-sort') === state.sort ? 'true' : 'false');\n    });\n  }\n\n  // Поле взноса показывает рубли, но ввод — в процентах или рублях\n  function depositFromInput(raw) {\n    var v = parseInt(raw.replace(/\\D/g, ''), 10);\n    if (isNaN(v)) return state.deposit;\n    return v > 100 ? Math.round(v / state.price * 100) : v;\n  }\n\n  function render() {\n    var list = results();\n    var available = list.filter(function (r) { return r.available; });\n    var best = available[0];\n    var maxPay = Math.max.apply(null, list.map(function (r) { return r.firstPayment; }));\n\n    tweenTo(els.pay, best ? best.firstPayment : null, num);\n    els.payBank.innerHTML = best\n      ? 'в банке <b>' + esc(best.o.bank) + '</b>, ставка ' + (best.tranche\n        ? best.o.special_min_rate + '% до ' + monthYear(best.o.first_tranche_end) + ', затем ' + rub(best.payment) + '/мес'\n        : best.rate + '%')\n      : 'Нет подходящих предложений — измените параметры';\n    tweenTo(els.credit, state.price * (1 - state.deposit / 100), rub);\n    tweenTo(els.over, best ? best.overpayment : null, rub);\n    els.count.textContent = available.length + ' из ' + list.length + ' банков подходят';\n\n    var shown = state.showAll ? list : list.slice(0, VISIBLE_ROWS);\n    var showBadge = available.length > 1;\n    renderList(shown, function (r, i) { return showBadge && i === 0 && r.available; }, maxPay);\n    els.more.hidden = list.length <= VISIBLE_ROWS;\n    els.more.textContent = state.showAll ? 'Свернуть' : 'Показать все банки (' + list.length + ')';\n  }\n\n  // ---------- плавные числа ----------\n  // Значение докручивается от текущего показанного к новому; при быстром движении ползунка\n  // каждая новая цель подхватывается с места, без рывков.\n  var TWEEN_MS = 650;\n  function easeOut(t) { return 1 - Math.pow(1 - t, 4); }\n  function tweenTo(el, to, format) {\n    if (to === null) {\n      cancelAnimationFrame(el.__lmRaf);\n      el.__lmVal = el.__lmTo = null;\n      el.textContent = '—';\n      return;\n    }\n    if (el.__lmTo === to) return;\n    el.__lmTo = to;\n    var from = el.__lmVal;\n    cancelAnimationFrame(el.__lmRaf);\n    if (from == null || ctx.reducedMotion || Math.abs(to - from) < 0.5) {\n      el.__lmVal = to;\n      el.textContent = format(to);\n      return;\n    }\n    var start = performance.now();\n    (function step(now) {\n      var t = Math.min((now - start) / TWEEN_MS, 1);\n      el.__lmVal = from + (to - from) * easeOut(t);\n      el.textContent = format(el.__lmVal);\n      if (t < 1) el.__lmRaf = requestAnimationFrame(step);\n    })(start);\n  }\n\n  function pct(v) { return String(Math.round(v * 10) / 10).replace('.', ',') + '%'; }\n\n  // ---------- строки банков: создаются один раз, дальше обновляются на месте ----------\n  var rowEls = {};\n\n  function createRow() {\n    var li = document.createElement('li');\n    li.className = 'lm-mnav__row';\n    li.innerHTML =\n      '<div class=\"lm-mnav__bank\">' +\n        '<span class=\"lm-mnav__logo\"><img alt=\"\" loading=\"lazy\"></span>' +\n        '<span class=\"lm-mnav__bank-name\"><span data-r=\"name\"></span><span class=\"lm-mnav__badges\" data-r=\"badges\"></span></span>' +\n      '</div>' +\n      '<div class=\"lm-mnav__rate\"><b data-r=\"rate\"></b><small data-r=\"rateNote\"></small></div>' +\n      '<div class=\"lm-mnav__pay\"><b data-r=\"pay\"></b><small><span data-r=\"payLabel\"></span><span data-r=\"payNote\"></span></small>' +\n        '<span class=\"lm-mnav__bar\"><i></i></span></div>' +\n      '<div class=\"lm-mnav__issues\" data-r=\"issues\"></div>';\n    li.__r = {};\n    [].forEach.call(li.querySelectorAll('[data-r]'), function (el) { li.__r[el.getAttribute('data-r')] = el; });\n    li.__r.img = li.querySelector('img');\n    return li;\n  }\n\n  function setHtml(el, html) { if (el.__lmHtml !== html) { el.__lmHtml = html; el.innerHTML = html; } }\n\n  function updateRow(li, r, isBest, maxPay) {\n    var o = r.o, q = li.__r;\n    li.classList.toggle('is-off', !r.available);\n    li.classList.toggle('is-best', isBest);\n    li.style.setProperty('--lm-bank', o.background_color || '#6A31EB');\n    li.style.setProperty('--lm-bar', (r.firstPayment / maxPay * 100).toFixed(1) + '%');\n\n    var logo = staticUrl(o.color_mini);\n    if (q.img.getAttribute('src') !== logo) q.img.setAttribute('src', logo);\n    q.name.textContent = o.bank;\n\n    var tag = o.program_name ? esc(o.program_name) : r.tranche ? 'Льготный период' : o.is_special ? 'Спецпредложение' : '';\n    setHtml(q.badges, (isBest ? '<em class=\"lm-mnav__badge\">Выгоднее всего</em>' : '') + (tag ? '<em class=\"lm-mnav__tag\">' + tag + '</em>' : ''));\n\n    tweenTo(q.rate, r.tranche ? o.special_min_rate : r.rate, pct);\n    q.rateNote.textContent = r.tranche\n      ? 'до ' + monthYear(o.first_tranche_end) + ', затем ' + o.min_rate + '%'\n      : 'до ' + yearsGen(o.max_term);\n\n    tweenTo(q.pay, r.tranche ? r.firstPayment : r.payment, rub);\n    q.payLabel.textContent = r.tranche ? 'затем ' : 'переплата ';\n    tweenTo(q.payNote, r.tranche ? r.payment : r.overpayment, rub);\n\n    setHtml(q.issues, r.issues.map(function (is) {\n      return '<span class=\"lm-mnav__issue\">' + esc(is.text) +\n        (is.action && (is.kind === 'deposit' || is.kind === 'term')\n          ? ' <button type=\"button\" data-fix=\"' + is.kind + '\" data-value=\"' + is.value + '\">' + esc(is.action) + '</button>' : '') +\n        '</span>';\n    }).join(''));\n  }\n\n  // Перестановка с анимацией (FLIP): запоминаем, где строки были, переставляем, плавно доводим\n  var EASING = 'cubic-bezier(.2, .7, .1, 1)';\n  function renderList(shown, isBestFn, maxPay) {\n    var animate = !ctx.reducedMotion && typeof Element.prototype.animate === 'function';\n    var before = {};\n    if (animate) {\n      Object.keys(rowEls).forEach(function (b) {\n        if (rowEls[b].isConnected) before[b] = rowEls[b].getBoundingClientRect().top;\n      });\n    }\n\n    var keep = {};\n    shown.forEach(function (r, i) {\n      var b = r.o.bank;\n      var li = rowEls[b] || (rowEls[b] = createRow());\n      updateRow(li, r, isBestFn(r, i), maxPay);\n      keep[b] = true;\n      if (els.list.children[i] !== li) els.list.insertBefore(li, els.list.children[i] || null);\n    });\n    Object.keys(rowEls).forEach(function (b) {\n      if (!keep[b] && rowEls[b].isConnected) rowEls[b].remove();\n    });\n\n    if (!animate) return;\n    shown.forEach(function (r) {\n      var li = rowEls[r.o.bank];\n      if (before[r.o.bank] == null) {\n        li.__lmAnim = li.animate(\n          [{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'none' }],\n          { duration: 450, easing: EASING });\n        return;\n      }\n      // before — видимое положение (с учётом идущей анимации); итоговое меряем без неё\n      if (li.__lmAnim) li.__lmAnim.cancel();\n      var dy = before[r.o.bank] - li.getBoundingClientRect().top;\n      if (Math.abs(dy) < 1) return;\n      li.__lmAnim = li.animate(\n        [{ transform: 'translateY(' + dy + 'px)' }, { transform: 'none' }],\n        { duration: 550, easing: EASING });\n    });\n  }\n\n  // Точные платежи по траншам — от API платформы\n  function refreshTranches() {\n    if (!offers.some(function (o) { return o.type === 'tranche'; })) return;\n    var params = { price: Math.round(state.price), deposit: state.deposit, term: state.term, ignore_priority: 'false' };\n    if (state.complex && !props.complex_id) params.complex_id = state.complex;\n    get('', params).then(function (list) {\n      if (!Array.isArray(list)) return;\n      trancheApi = {};\n      list.forEach(function (o) { if (o.type === 'tranche') trancheApi[o.id] = o; });\n      render();\n    }).catch(function () { /* остаёмся на приблизительном расчёте */ });\n  }\n});\n"}}};
+window.__LITE_MODS_INLINE__ = 'bundle';
 /*
- * lite-mods loader — подключается ОДИН раз в админке Ида.Лайт:
+ * lite-mods loader — подключается ОДИН раз (в админке Ида.Лайт или в HTML-блоке):
  *   <script src="https://asermiajko.github.io/lite-mods/loader.js" defer></script>
+ *
+ * Загружает ОДИН файл сайта sites/<hostname>.js — все включённые патчи (собирает tools/build.py).
+ * Стили блока подключаются, только когда блок есть на странице.
  *
  * Флаги в адресе страницы:
  *   ?dev=1    — черновик: патчи грузятся с http://localhost:3400 (запоминается до закрытия вкладки)
@@ -15,9 +18,11 @@ window.__LITE_MODS_BUNDLE__ = {"manifest": {"version": "20261014141839", "blocks
   var DEV_BASE = 'http://localhost:3400/';
   var DEV_KEY = 'litemods-dev';
 
+  // Встроенная сборка (dist/*.bundle.js — вставка в админку, dist/*.preview.js — превью агента):
+  // патчи идут сразу после загрузчика в том же файле, ничего не скачиваем
+  var inline = window.__LITE_MODS_INLINE__;
   var qs = new URLSearchParams(location.search);
-  var preview = window.__LITE_MODS_BUNDLE__ && window.__LITE_MODS_BUNDLE__.preview;
-  if (qs.get('nomods') === '1' && !preview) {
+  if (qs.get('nomods') === '1' && inline !== 'preview') {
     console.info('[lite-mods] выключены (?nomods=1)');
     return;
   }
@@ -32,16 +37,18 @@ window.__LITE_MODS_BUNDLE__ = {"manifest": {"version": "20261014141839", "blocks
   }
   if (qs.get('dev') === '1') session('set', '1');
   if (qs.get('dev') === '0') session('del');
-  var dev = session('get') === '1' || qs.get('dev') === '1';
+  var dev = !inline && (session('get') === '1' || qs.get('dev') === '1');
 
   var self = document.currentScript;
   var PROD_BASE = self && self.src ? self.src.replace(/[^/]*$/, '') : 'https://asermiajko.github.io/lite-mods/';
   var BASE = dev ? DEV_BASE : PROD_BASE;
 
   var registry = {};        // имя блока -> функция патча
-  var enabled = {};         // имя блока -> конфиг из манифеста
+  var enabled = {};         // имя блока -> { css }
+  var injected = {};        // имя блока -> стили уже на странице
   var done = new WeakSet(); // корневые элементы, к которым патч уже применён
   var ready = false;        // Nuxt закончил гидратацию
+  var initialRoots = new WeakSet(); // блоки, которые были на странице при её загрузке
   var reducedMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function log() {
@@ -55,6 +62,9 @@ window.__LITE_MODS_BUNDLE__ = {"manifest": {"version": "20261014141839", "blocks
       name: name,
       dev: dev,
       reducedMotion: reducedMotion,
+      // true — блок был на странице с самой загрузки (уже виден посетителю),
+      // false — появился позже (переход между страницами, перерисовка Vue)
+      initialLoad: initialRoots.has(root),
       $: function (sel) { return root.querySelector(sel); },
       $$: function (sel) { return [].slice.call(root.querySelectorAll(sel)); },
       // CSS-модули платформы: "src-components-production-InfraBlock-header-2Jmz" -> part('header')
@@ -76,7 +86,20 @@ window.__LITE_MODS_BUNDLE__ = {"manifest": {"version": "20261014141839", "blocks
     };
   }
 
+  // Стили — только для блоков, которые есть на странице (и сразу, ещё до гидратации)
+  function injectCss() {
+    Object.keys(enabled).forEach(function (name) {
+      if (injected[name] || !enabled[name].css || !document.querySelector('.' + name)) return;
+      injected[name] = true;
+      var style = document.createElement('style');
+      style.setAttribute('data-lite-mods', name);
+      style.textContent = enabled[name].css;
+      document.head.appendChild(style);
+    });
+  }
+
   function apply() {
+    injectCss();
     if (!ready) return;
     Object.keys(enabled).forEach(function (name) {
       var fn = registry[name];
@@ -101,23 +124,6 @@ window.__LITE_MODS_BUNDLE__ = {"manifest": {"version": "20261014141839", "blocks
     setTimeout(function () { scheduled = false; apply(); }, 16);
   }
 
-  function addCss(href) {
-    var link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = href;
-    link.setAttribute('data-lite-mods', '');
-    document.head.appendChild(link);
-  }
-
-  function addJs(src) {
-    var s = document.createElement('script');
-    s.src = src;
-    s.async = true;
-    s.setAttribute('data-lite-mods', '');
-    s.onerror = function () { console.error('[lite-mods] не загрузился ' + src); };
-    document.head.appendChild(s);
-  }
-
   // Ждём, пока Nuxt 2 оживит серверную разметку: правки до гидратации Vue может затереть
   function whenHydrated(cb) {
     var started = Date.now();
@@ -128,63 +134,283 @@ window.__LITE_MODS_BUNDLE__ = {"manifest": {"version": "20261014141839", "blocks
   }
 
   window.LiteMods = {
-    version: '1',
+    version: '2',
     dev: dev,
     base: BASE,
+    blocks: enabled,
+    // Вызывается из файла сайта: блок включён, вот его стили
+    define: function (name, opts) {
+      enabled[name] = opts || {};
+      injectCss();
+    },
     register: function (name, fn) {
       registry[name] = fn;
       scheduleApply();
     },
-    blocks: enabled
+    loaded: function (info) {
+      log((inline ? 'встроенная сборка' : dev ? 'ЧЕРНОВИК (localhost)' : 'бой') +
+        (info && info.version ? ' ' + info.version : '') + ', блоки:', Object.keys(enabled).join(', ') || 'нет');
+    }
   };
 
-  // Бандл (dist/*.bundle.js) — всё в одном файле: для вставки прямо в админку и для превью
-  var bundle = window.__LITE_MODS_BUNDLE__;
-  if (bundle) {
-    Object.keys(bundle.manifest.blocks || {}).forEach(function (name) {
-      var cfg = bundle.manifest.blocks[name];
-      if (!cfg || cfg.enabled === false) return;
-      enabled[name] = cfg;
-      var files = bundle.files[cfg.path || name] || {};
-      if (files.css) {
-        var style = document.createElement('style');
-        style.setAttribute('data-lite-mods', name);
-        style.textContent = files.css;
-        document.head.appendChild(style);
-      }
-      if (files.js) {
-        try { new Function(files.js)(); } catch (e) { console.error('[lite-mods] ошибка в патче ' + name, e); }
-      }
-    });
-    log('бандл ' + bundle.manifest.version + ', блоки:', Object.keys(enabled).join(', ') || 'нет');
-  } else {
-    var bust = dev ? Date.now() : Math.floor(Date.now() / 60000); // манифест обновляется не реже раза в минуту
-    fetch(BASE + 'sites/' + location.hostname + '.json?t=' + bust, { cache: 'no-store' })
-      .then(function (r) {
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        return r.json();
-      })
-      .then(function (manifest) {
-        var v = dev ? Date.now() : manifest.version;
-        Object.keys(manifest.blocks || {}).forEach(function (name) {
-          var cfg = manifest.blocks[name];
-          if (!cfg || cfg.enabled === false) return;
-          enabled[name] = cfg;
-          var dir = BASE + 'blocks/' + (cfg.path || name) + '/';
-          if (cfg.css !== false) addCss(dir + 'style.css?v=' + v);
-          if (cfg.js !== false) addJs(dir + 'script.js?v=' + v);
-        });
-        log((dev ? 'ЧЕРНОВИК (localhost)' : 'бой') + ', блоки:', Object.keys(enabled).join(', ') || 'нет');
-      })
-      .catch(function (e) {
-        console.warn('[lite-mods] манифест для ' + location.hostname + ' не загружен:', e.message);
-      });
+  if (!inline) {
+    // Кэш GitHub Pages — 10 минут; метка раз в минуту, чтобы публикация доходила быстро
+    var bust = dev ? Date.now() : Math.floor(Date.now() / 60000);
+    var s = document.createElement('script');
+    s.src = BASE + 'sites/' + location.hostname + '.js?t=' + bust;
+    s.async = true;
+    s.setAttribute('data-lite-mods', '');
+    s.onerror = function () { console.warn('[lite-mods] нет патчей для ' + location.hostname); };
+    document.head.appendChild(s);
   }
 
   whenHydrated(function () {
     ready = true;
+    [].forEach.call(document.querySelectorAll('section[class]'), function (el) { initialRoots.add(el); });
     apply();
     // Vue перерисовывает блоки (переходы между страницами, табы) — подхватываем новые
     new MutationObserver(scheduleApply).observe(document.body, { childList: true, subtree: true });
   });
 })();
+
+/* lite-mods: ohqmp.dev-lite.ru, версия 20261014141839 */
+window.LiteMods && LiteMods.define("InfraBlock__ClassicType5", { css: "/*\n * InfraBlock__ClassicType5 — блок «Инфраструктура»\n * Всё строго внутри .InfraBlock__ClassicType5. Цвета — из переменных темы --ui-*.\n * Скрытие «до появления» работает только при [data-lm-ready] (его ставит script.js).\n */\n\n.InfraBlock__ClassicType5 {\n  --lm-ease: cubic-bezier(.2, .7, .1, 1);\n  --lm-accent: var(--ui-main-color, #6A31EB);\n}\n\n/* ---------- 1. Табы категорий: каскад + живой hover ---------- */\n\n.InfraBlock__ClassicType5[data-lm-ready] .InfraBlock__ClassicType5__Control .ClassicTabs__item {\n  opacity: 0;\n  transform: translateY(14px) scale(.96);\n  transition:\n    opacity .5s var(--lm-ease),\n    transform .6s var(--lm-ease);\n  transition-delay: calc(var(--lm-i, 0) * 40ms + 150ms);\n}\n\n.InfraBlock__ClassicType5[data-lm-ready] .InfraBlock__ClassicType5__Control[data-lm-in] .ClassicTabs__item {\n  opacity: 1;\n  transform: none;\n}\n\n.InfraBlock__ClassicType5 .ClassicTabs__item .IdaButton {\n  transition:\n    background-color .3s, color .3s,\n    transform .35s var(--lm-ease),\n    box-shadow .35s var(--lm-ease);\n}\n\n.InfraBlock__ClassicType5 .ClassicTabs__item .IdaButton:not(.--is-active):hover {\n  transform: translateY(-2px);\n  box-shadow: 0 8px 20px -8px var(--ui-main-color-32, rgba(106, 49, 235, .32));\n}\n\n.InfraBlock__ClassicType5 .ClassicTabs__item .IdaButton svg {\n  transition: transform .4s var(--lm-ease);\n}\n\n.InfraBlock__ClassicType5 .ClassicTabs__item .IdaButton:hover svg {\n  transform: scale(1.18) rotate(-6deg);\n}\n\n/* ---------- 2. Карта: раскрывается из «карточки» на всю ширину ---------- */\n\n.InfraBlock__ClassicType5[data-lm-ready] .InfraBlock__ClassicType5__Map {\n  clip-path: inset(6% 7% round var(--map-border-radius, 24px));\n  transition: clip-path 1.2s var(--lm-ease);\n}\n\n.InfraBlock__ClassicType5[data-lm-ready] .InfraBlock__ClassicType5__Map[data-lm-in] {\n  clip-path: inset(0 0 round 0);\n}\n\n/* ---------- 3. Карточки «Элемент N»: линия-акцент + каскад ---------- */\n\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage {\n  position: relative;\n  padding-top: 20px;\n}\n\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage::before,\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage::after {\n  content: '';\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  height: 2px;\n  border-radius: 2px;\n}\n\n/* серая «дорожка» */\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage::before {\n  background: var(--ui-font-black-color-8, rgba(7, 7, 31, .08));\n}\n\n/* акцентная линия, прорисовывается слева направо */\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage::after {\n  background: var(--lm-accent);\n  transform-origin: left center;\n  transform: scaleX(.18);\n  transition: transform .7s var(--lm-ease);\n}\n\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage:hover::after {\n  transform: scaleX(1);\n}\n\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage h3 {\n  transition: color .3s, transform .45s var(--lm-ease);\n}\n\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage:hover h3 {\n  color: var(--lm-accent);\n  transform: translateX(4px);\n}\n\n[data-lm-ready] .InfraBlock__ClassicType5__Advantage {\n  opacity: 0;\n  transform: translateY(24px);\n  transition:\n    opacity .6s var(--lm-ease),\n    transform .8s var(--lm-ease);\n  transition-delay: calc(var(--lm-i, 0) * 90ms);\n}\n\n[data-lm-ready] [data-lm-in] .InfraBlock__ClassicType5__Advantage {\n  opacity: 1;\n  transform: none;\n}\n\n/* при появлении линия-акцент «пробегает» до своей базовой длины */\n[data-lm-ready] .InfraBlock__ClassicType5__Advantage::after {\n  transform: scaleX(0);\n  transition-delay: calc(var(--lm-i, 0) * 90ms + 250ms);\n}\n\n[data-lm-ready] [data-lm-in] .InfraBlock__ClassicType5__Advantage::after {\n  transform: scaleX(.18);\n}\n\n[data-lm-ready] [data-lm-in] .InfraBlock__ClassicType5__Advantage:hover::after {\n  transform: scaleX(1);\n  transition-delay: 0s;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .InfraBlock__ClassicType5 *,\n  .InfraBlock__ClassicType5 *::before,\n  .InfraBlock__ClassicType5 *::after {\n    transition: none !important;\n  }\n}\n" });
+try {
+/*
+ * InfraBlock__ClassicType5 — блок «Инфраструктура»
+ * Каскадное появление табов категорий и карточек «Элемент N», раскрытие карты при скролле.
+ *
+ * Правило: классы на элементах Vue не трогаем (Vue их перезапишет) — только data-атрибуты и CSS-переменные.
+ */
+window.LiteMods && LiteMods.register('InfraBlock__ClassicType5', function (root, ctx) {
+  if (ctx.reducedMotion) return;
+
+  var control = ctx.$('.InfraBlock__ClassicType5__Control');
+  var advantages = ctx.part('advantages');
+  var map = ctx.$('.InfraBlock__ClassicType5__Map');
+
+  ctx.$$('.ClassicTabs__item').forEach(function (li, i) {
+    li.style.setProperty('--lm-i', i);
+  });
+  ctx.$$('.InfraBlock__ClassicType5__Advantage').forEach(function (el, i) {
+    el.style.setProperty('--lm-i', i);
+  });
+
+  // То, что посетитель уже видит (перезагрузил страницу на этом месте), не прячем — иначе мигнёт
+  function onScreen(el) {
+    if (!el) return false;
+    var r = el.getBoundingClientRect();
+    return r.top < window.innerHeight && r.bottom > 0;
+  }
+  [control, advantages, map].forEach(function (el) {
+    if (el && onScreen(el)) el.setAttribute('data-lm-in', '');
+  });
+
+  // Прячем элементы только когда скрипт точно отработал — без JS блок выглядит как в оригинале
+  root.setAttribute('data-lm-ready', '');
+
+  ctx.inView([control, advantages], function (el) {
+    el.setAttribute('data-lm-in', '');
+  });
+  ctx.inView(map, function (el) {
+    el.setAttribute('data-lm-in', '');
+  }, { threshold: 0.05 });
+});
+
+} catch (e) { console.error('[lite-mods] ошибка в патче InfraBlock__ClassicType5', e); }
+window.LiteMods && LiteMods.define("ObjectGalleryA__ClassicType23", { css: "/*\n * ObjectGalleryA__ClassicType23 — главный экран\n * Анимации — через @keyframes (перебивают transition платформы у IdaAppear на время проигрывания).\n * Всё «скрытое» — только под атрибутами, которые ставит script.js.\n */\n\n.ObjectGalleryA__ClassicType23 {\n  --lm-ease: cubic-bezier(.2, .7, .1, 1);\n  --lm-scroll: 0;\n  position: relative;\n}\n\n/* ---------- 1. Ken Burns: медленный наезд на фото ---------- */\n\n@keyframes lm-hero-kb {\n  from { transform: scale(1); }\n  to   { transform: scale(1.08); }\n}\n\n.ObjectGalleryA__ClassicType23 [data-lm-kb] .ObjectGalleryA__ClassicType23__Slide__image .IdaImage__wrapper {\n  animation: lm-hero-kb 9s cubic-bezier(.25, .1, .25, 1) var(--lm-kb-delay, 0ms) both;\n  transform-origin: 60% 45%;\n}\n\n/* ---------- 2. Параллакс (переменную --lm-scroll ставит script.js только на десктопе) ---------- */\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Slide__image {\n  transform: translate3d(0, calc(var(--lm-scroll) * 28%), 0);\n  will-change: transform;\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Slide__contentWrapper {\n  opacity: calc(1 - var(--lm-scroll) * 1.8);\n  transform: translate3d(0, calc(var(--lm-scroll) * -90px), 0);\n}\n\n/* ---------- 3. Смена текста слайда ---------- */\n\n@keyframes lm-hero-title {\n  from { clip-path: inset(-20% -5% 100% -5%); transform: translateY(36px); opacity: 0; }\n  20%  { opacity: 1; }\n  to   { clip-path: inset(-20% -5% -20% -5%); transform: none; opacity: 1; }\n}\n\n@keyframes lm-hero-rise {\n  from { transform: translateY(24px); opacity: 0; }\n  to   { transform: none; opacity: 1; }\n}\n\n.ObjectGalleryA__ClassicType23 [data-lm-text]:not([data-lm-text-done]) .ObjectGalleryA__ClassicType23__Slide__title {\n  animation: lm-hero-title 1.1s var(--lm-ease) .25s both;\n}\n\n.ObjectGalleryA__ClassicType23 [data-lm-text]:not([data-lm-text-done]) .ObjectGalleryA__ClassicType23__Slide__text {\n  animation: lm-hero-rise .9s var(--lm-ease) .55s both;\n}\n\n.ObjectGalleryA__ClassicType23 [data-lm-text]:not([data-lm-text-done]) .ObjectGalleryA__ClassicType23__Slide__buttonWrapper {\n  animation: lm-hero-rise .9s var(--lm-ease) .75s both;\n}\n\n/* ---------- 5. Автопрокрутка: полоска-таймер ---------- */\n\n@keyframes lm-hero-progress {\n  from { transform: scaleX(0); }\n  to   { transform: scaleX(1); }\n}\n\n.ObjectGalleryA__ClassicType23[data-lm-auto] .ObjectGalleryA__ClassicType23__Controls__bullets .swiper-pagination-bullet {\n  position: relative;\n  overflow: hidden;\n}\n\n.ObjectGalleryA__ClassicType23[data-lm-auto] .ObjectGalleryA__ClassicType23__Controls__bullets .swiper-pagination-bullet.--is-active::after {\n  content: '';\n  position: absolute;\n  inset: 0;\n  background: var(--ui-base-white-color, #FCFCFC);\n  transform-origin: left center;\n  animation: lm-hero-progress var(--lm-autoplay, 6000ms) linear both;\n}\n\n.ObjectGalleryA__ClassicType23[data-lm-paused] .ObjectGalleryA__ClassicType23__Controls__bullets .swiper-pagination-bullet.--is-active::after {\n  animation-play-state: paused;\n}\n\n/* «Перелистывание» цифры счётчика */\n@keyframes lm-hero-flip {\n  from { transform: translateY(60%); opacity: 0; }\n  to   { transform: none; opacity: 1; }\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Controls__currentValue {\n  display: inline-block;\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Controls__currentValue[data-lm-flip] {\n  animation: lm-hero-flip .5s var(--lm-ease) both;\n}\n\n/* ---------- 6. Карточки внизу ---------- */\n\n@keyframes lm-hero-card {\n  from { transform: translateY(40px); opacity: 0; }\n  to   { transform: none; opacity: 1; }\n}\n\n.ObjectGalleryA__ClassicType23[data-lm-cards] .ObjectGalleryA__ClassicType23__Card {\n  animation: lm-hero-card .9s var(--lm-ease) both;\n  animation-delay: calc(1s + var(--lm-i, 0) * 120ms);\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Card__wrapper {\n  transition:\n    transform .45s var(--lm-ease),\n    box-shadow .45s var(--lm-ease);\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Card:hover .ObjectGalleryA__ClassicType23__Card__wrapper {\n  transform: translateY(-6px);\n  box-shadow: 0 18px 40px -18px rgba(7, 7, 31, .45);\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Card__image,\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Card__icon {\n  transition: transform .6s var(--lm-ease);\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Card:hover .ObjectGalleryA__ClassicType23__Card__image {\n  transform: scale(1.1);\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Card:hover .ObjectGalleryA__ClassicType23__Card__icon {\n  transform: scale(1.15) rotate(-8deg);\n}\n\n/* ---------- 7. Магнитные кнопки + блик ---------- */\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Slide__button,\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Slide__secondButton {\n  translate: var(--lm-mx, 0px) var(--lm-my, 0px);\n  transition:\n    translate .35s var(--lm-ease),\n    background-color .3s, color .3s, border-color .3s;\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Slide__button {\n  position: relative;\n  overflow: hidden;\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Slide__button::after {\n  content: '';\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: -60%;\n  width: 45%;\n  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .45), transparent);\n  transform: skewX(-20deg);\n  pointer-events: none;\n}\n\n.ObjectGalleryA__ClassicType23 .ObjectGalleryA__ClassicType23__Slide__button:hover::after {\n  left: 130%;\n  transition: left .7s var(--lm-ease);\n}\n\n/* ---------- 8. Подсказка «листайте вниз» ---------- */\n\n@keyframes lm-hero-wheel {\n  0%   { transform: translateY(0); opacity: 1; }\n  70%  { transform: translateY(10px); opacity: 0; }\n  100% { transform: translateY(0); opacity: 0; }\n}\n\n@keyframes lm-hero-hint-in {\n  from { opacity: 0; transform: translateY(12px); }\n  to   { opacity: 1; transform: none; }\n}\n\n.ObjectGalleryA__ClassicType23 .lm-hero-hint {\n  position: absolute;\n  right: 40px;\n  top: 300px;\n  z-index: 5;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 10px;\n  color: var(--ui-base-white-color, #FCFCFC);\n  pointer-events: none;\n  animation: lm-hero-hint-in .8s var(--lm-ease) 1.6s both;\n  transition: opacity .4s, transform .4s var(--lm-ease);\n}\n\n.ObjectGalleryA__ClassicType23 .lm-hero-hint[data-lm-hidden] {\n  opacity: 0 !important;\n  transform: translateY(12px);\n}\n\n.ObjectGalleryA__ClassicType23 .lm-hero-hint__mouse {\n  width: 22px;\n  height: 34px;\n  border: 1.5px solid currentColor;\n  border-radius: 12px;\n  display: flex;\n  justify-content: center;\n  padding-top: 6px;\n  box-sizing: border-box;\n  opacity: .85;\n}\n\n.ObjectGalleryA__ClassicType23 .lm-hero-hint__wheel {\n  width: 3px;\n  height: 7px;\n  border-radius: 2px;\n  background: currentColor;\n  animation: lm-hero-wheel 1.6s ease-in-out infinite;\n}\n\n.ObjectGalleryA__ClassicType23 .lm-hero-hint__label {\n  font-size: 11px;\n  letter-spacing: .14em;\n  text-transform: uppercase;\n  opacity: .7;\n  writing-mode: vertical-rl;\n}\n" });
+try {
+/*
+ * ObjectGalleryA__ClassicType23 — главный экран (полноэкранный слайдер)
+ * 1. Медленный наезд на фото активного слайда (Ken Burns)
+ * 2. Параллакс при скролле (только десктоп)
+ * 3. Кинематографичная смена текста слайда
+ * 5. Автопрокрутка: полоска активного слайда заполняется как таймер, пауза при наведении
+ *    + «перелистывание» цифры счётчика
+ * 6. Карточки внизу: каскадное появление и живой hover
+ * 7. «Магнитные» кнопки и блик на основной кнопке (только десктоп с мышью)
+ * 8. Подсказка «листайте вниз» (только десктоп)
+ *
+ * Swiper платформы зациклен вручную: слайды [копия 3, 1, 2, 3, копия 1]. С копии на настоящий
+ * слайд платформа прыгает мгновенно (setTransition 0) — такие прыжки не считаются сменой слайда.
+ */
+window.LiteMods && LiteMods.register('ObjectGalleryA__ClassicType23', function (root, ctx) {
+  if (ctx.reducedMotion) return;
+
+  var P = '.ObjectGalleryA__ClassicType23__';
+  var AUTOPLAY_MS = 6000;
+  var desktop = !!ctx.$('.--is-desktop');
+  var mouse = window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  var container = ctx.$(P + 'Gallery__slider .swiper-container');
+  if (!container) return;
+
+  // Swiper платформа запускает лениво (на мобилке — когда блок отрисован), ждём до 30 секунд
+  (function waitSwiper(tries) {
+    if (container.swiper) return init(container.swiper);
+    if (tries > 300) return ctx.log('swiper не найден');
+    setTimeout(function () { waitSwiper(tries + 1); }, 100);
+  })(0);
+
+  function init(sw) {
+    root.setAttribute('data-lm-ready', '');
+    root.style.setProperty('--lm-autoplay', AUTOPLAY_MS + 'ms');
+
+    // ---------- 1 + 3: фото и текст активного слайда ----------
+    var kbStart = 0;
+    var lastDuration = sw.params.speed;
+
+    function restart(el, attr) {
+      el.removeAttribute(attr);
+      void el.offsetWidth; // перезапуск CSS-анимации
+      el.setAttribute(attr, '');
+    }
+
+    function activate(slide, isJump, keepText) {
+      if (!slide) return;
+      if (keepText) {
+        // Блок уже виден с загрузки страницы: текст не прячем и не переигрываем (иначе мигнёт),
+        // наезд на фото начинается с исходного масштаба — без скачка
+        kbStart = performance.now();
+        slide.style.setProperty('--lm-kb-delay', '0ms');
+        slide.setAttribute('data-lm-kb', '');
+        slide.setAttribute('data-lm-text-done', '');
+        return;
+      }
+      if (isJump) {
+        // Прыжок с копии: продолжаем наезд с того же места, текст не переигрываем
+        slide.style.setProperty('--lm-kb-delay', -(performance.now() - kbStart) + 'ms');
+        slide.setAttribute('data-lm-kb', '');
+        slide.setAttribute('data-lm-text-done', '');
+        return;
+      }
+      kbStart = performance.now();
+      slide.style.setProperty('--lm-kb-delay', '0ms');
+      restart(slide, 'data-lm-kb');
+      slide.removeAttribute('data-lm-text-done');
+      restart(slide, 'data-lm-text');
+    }
+
+    function cleanupInactive() {
+      [].forEach.call(sw.slides, function (s, i) {
+        if (i === sw.activeIndex) return;
+        s.removeAttribute('data-lm-kb');
+        s.removeAttribute('data-lm-text');
+      });
+    }
+
+    sw.on('setTransition', function (a, b) {
+      lastDuration = typeof a === 'number' ? a : b;
+    });
+    sw.on('slideChangeTransitionStart', function () {
+      activate(sw.slides[sw.activeIndex], lastDuration === 0);
+    });
+    sw.on('slideChangeTransitionEnd', cleanupInactive);
+
+    activate(sw.slides[sw.activeIndex], false, ctx.initialLoad);
+
+    // ---------- 5: автопрокрутка, синхронная с полоской-таймером ----------
+    var next = ctx.$(P + 'Controls .--right-direction');
+    var bullets = ctx.$(P + 'Controls__bullets');
+    var counter = ctx.$(P + 'Controls__currentValue');
+
+    if (next && bullets) {
+      root.setAttribute('data-lm-auto', '');
+
+      // Конец анимации заполнения полоски (::after) = пора листать
+      bullets.addEventListener('animationend', function (e) {
+        if (e.animationName !== 'lm-hero-progress') return;
+        var before = counter ? counter.textContent : '';
+        next.click();
+        // Если платформа только перепрыгнула с копии на оригинал — листаем ещё раз
+        setTimeout(function () {
+          if (counter && counter.textContent === before && !sw.animating) next.click();
+        }, 80);
+      });
+
+      var hovered = false;
+      var visible = true;
+      function syncPause() {
+        if (hovered || !visible) root.setAttribute('data-lm-paused', '');
+        else root.removeAttribute('data-lm-paused');
+      }
+      if (mouse) {
+        root.addEventListener('mouseenter', function () { hovered = true; syncPause(); });
+        root.addEventListener('mouseleave', function () { hovered = false; syncPause(); });
+      }
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+          visible = entries[0].isIntersecting;
+          syncPause();
+        }, { threshold: 0.4 }).observe(root);
+      }
+    }
+
+    // Цифра счётчика «перелистывается» при смене слайда
+    if (counter && 'MutationObserver' in window) {
+      new MutationObserver(function () { restart(counter, 'data-lm-flip'); })
+        .observe(counter, { childList: true, characterData: true, subtree: true });
+    }
+
+    // ---------- 6: карточки ----------
+    ctx.$$(P + 'Card').forEach(function (card, i) {
+      card.style.setProperty('--lm-i', i);
+    });
+    // Въезд карточек — только если блок появился позже (переход между страницами);
+    // при загрузке они уже видны, и «въезд» выглядел бы как мигание
+    if (!ctx.initialLoad) root.setAttribute('data-lm-cards', '');
+
+    if (!desktop) return; // дальше — только десктоп
+
+    // ---------- 2: параллакс ----------
+    var ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        ticking = false;
+        var r = root.getBoundingClientRect();
+        var p = Math.min(Math.max(-r.top / r.height, 0), 1);
+        root.style.setProperty('--lm-scroll', p.toFixed(4));
+        if (hint) hint.toggleAttribute('data-lm-hidden', window.scrollY > 40);
+      });
+    }
+
+    // ---------- 8: подсказка «листайте вниз» ----------
+    var hint = document.createElement('div');
+    hint.className = 'lm-hero-hint';
+    hint.setAttribute('aria-hidden', 'true');
+    hint.innerHTML = '<span class="lm-hero-hint__mouse"><span class="lm-hero-hint__wheel"></span></span>' +
+      '<span class="lm-hero-hint__label">Листайте</span>';
+    root.appendChild(hint);
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // ---------- 7: магнитные кнопки ----------
+    if (!mouse) return;
+    var RADIUS = 110;
+    var MAX = 8;
+    root.addEventListener('mousemove', function (e) {
+      var active = sw.slides[sw.activeIndex];
+      if (!active) return;
+      [].forEach.call(active.querySelectorAll(P + 'Slide__button, ' + P + 'Slide__secondButton'), function (btn) {
+        var r = btn.getBoundingClientRect();
+        var dx = e.clientX - (r.left + r.width / 2);
+        var dy = e.clientY - (r.top + r.height / 2);
+        var near = Math.hypot(dx, dy) < RADIUS + r.width / 2;
+        btn.style.setProperty('--lm-mx', near ? Math.max(-MAX, Math.min(MAX, dx * 0.18)).toFixed(1) + 'px' : '0px');
+        btn.style.setProperty('--lm-my', near ? Math.max(-MAX, Math.min(MAX, dy * 0.3)).toFixed(1) + 'px' : '0px');
+      });
+    });
+    root.addEventListener('mouseleave', function () {
+      ctx.$$(P + 'Slide__button, ' + P + 'Slide__secondButton').forEach(function (btn) {
+        btn.style.setProperty('--lm-mx', '0px');
+        btn.style.setProperty('--lm-my', '0px');
+      });
+    });
+  }
+});
+
+} catch (e) { console.error('[lite-mods] ошибка в патче ObjectGalleryA__ClassicType23', e); }
+window.LiteMods && LiteMods.loaded({"version": "20261014141839"});

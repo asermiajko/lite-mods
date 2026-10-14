@@ -18,6 +18,16 @@ window.LiteMods && LiteMods.register('InfraBlock__ClassicType5', function (root,
     el.style.setProperty('--lm-i', i);
   });
 
+  // То, что посетитель уже видит (перезагрузил страницу на этом месте), не прячем — иначе мигнёт
+  function onScreen(el) {
+    if (!el) return false;
+    var r = el.getBoundingClientRect();
+    return r.top < window.innerHeight && r.bottom > 0;
+  }
+  [control, advantages, map].forEach(function (el) {
+    if (el && onScreen(el)) el.setAttribute('data-lm-in', '');
+  });
+
   // Прячем элементы только когда скрипт точно отработал — без JS блок выглядит как в оригинале
   root.setAttribute('data-lm-ready', '');
 

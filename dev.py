@@ -4,15 +4,26 @@
 Сайт с ?dev=1 грузит патчи отсюда, а не с GitHub Pages.
 Запуск: python3 dev.py
 """
+import re
+import sys
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 PORT = 3400
 ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT / "tools"))
+import build  # noqa: E402
 
 
 class Handler(SimpleHTTPRequestHandler):
+    def do_GET(self):
+        # Файл сайта всегда свежий: пересобираем из blocks/ на каждый запрос
+        m = re.match(r"^/sites/([\w.-]+)\.js", self.path)
+        if m and (ROOT / "sites" / f"{m.group(1)}.json").exists():
+            build.build(ROOT / "sites" / f"{m.group(1)}.json")
+        super().do_GET()
+
     def end_headers(self):
         self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Access-Control-Allow-Private-Network", "true")
