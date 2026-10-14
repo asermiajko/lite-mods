@@ -43,4 +43,8 @@ window.LiteMods && LiteMods.register('Блок__ClassicTypeN', function (root, c
 ```
 
 ## Сайты
-- `ohqmp.dev-lite.ru` — тестовый сайт, пилот.
+- `ohqmp.dev-lite.ru` — тестовый сайт, пилот. Сайт в режиме превью: глобальные скрипты не выполняются, загрузчик подключён через HTML-блок внизу главной (см. README). На других страницах патчей нет, пока туда не добавлен такой же блок.
+
+## Как проверить, что загрузчик на странице
+`window.LiteMods` существует, `LiteMods.base` = адрес GitHub Pages, у `section.<Блок>` есть атрибут `data-lm-ready`.
+Причина, если глобальные скрипты молчат: в коде платформы они выводятся только при `!site.is_preview_mode && site.project.has_balance` (`$nuxt.$store.state.site`).

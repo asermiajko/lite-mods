@@ -9,6 +9,21 @@
 <script src="https://asermiajko.github.io/lite-mods/loader.js" defer></script>
 ```
 
+### Сайт в режиме превью (dev-lite.ru)
+На превью-сайтах (`is_preview_mode: true`) платформа **не выполняет** глобальные скрипты из настроек сайта. Тогда на каждую нужную страницу добавляется HTML-блок (лучше в самый низ):
+- вкладка **JS**:
+  ```js
+  (function () {
+    if (window.LiteMods) return;
+    var s = document.createElement('script');
+    s.src = 'https://asermiajko.github.io/lite-mods/loader.js';
+    document.head.appendChild(s);
+  })();
+  ```
+- вкладка **HTML**: `<div hidden></div>`. Пустой HTML нельзя: платформа подставит картинку-заглушку `default_html.jpg` высотой ~1500px.
+
+Глобальный тег оставить: на боевом сайте он заработает сам, а повторно загрузчик не подключится.
+
 ## Как пользоваться
 Пишешь агенту (Claude Code в этой папке), например:
 > в InfraBlock__ClassicType5 сделай карточки покрупнее и анимацию появления
