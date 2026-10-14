@@ -1,0 +1,46 @@
+# ObjectGalleryA__ClassicType23 — https://ohqmp.dev-lite.ru/ — desktop 1280px — снято 2026-10-14
+# Первый блок страницы, сразу под липкой шапкой (Header__ClassicType1, sticky, 72px). Высота 720 (мобилка 639).
+# Классы БЭМ без хэшей — стабильные. Мобилка: --is-mobile вместо --is-desktop.
+section.ObjectGalleryA__ClassicType23
+  div.~__wrapper.--is-desktop
+    div.IdaAppear.--appear-top
+      div.~__Gallery
+        div.UiFullPageBlock.~__Gallery__fullPage
+          div.~__Gallery__wrapper.--is-desktop
+            div.~__Gallery__video-wrapper.--has-overlay            (пусто — видео не задано)
+            div.~__Gallery__slider.IdaGallery.UiGallery--loop       (класс UiGallery--pre-init до запуска Swiper)
+              div.swiper-container.IdaGallery__container            (.swiper — экземпляр Swiper; speed 650, effect slide, allowTouchMove: desktop false / mobile true)
+                div.swiper-wrapper
+                  div.swiper-slide (×5: копия 3, 1, 2, 3, копия 1; активный — .swiper-slide-active)
+                    div.~__Slide
+                      div.~__Slide__wrapper.--is-desktop.--has-overlay   (1300×610)
+                        div.~__Slide__content
+                          div.~__Slide__contentInner
+                            div.~__Slide__contentWrapper
+                              h2.~__Slide__title.IdaAppear "Заголовок слайда длиною в пять слов"
+                              div.~__Slide__text.IdaAppear "В конструкторе Ида.Лайт множество…"
+                              div.~__Slide__buttonWrapper.IdaAppear
+                                button.~__Slide__button.IdaButton "Кнопка"            (фон --ui-main-color)
+                                button.~__Slide__secondButton.IdaButton "Кнопка"      (прозрачная, рамка белая 48%)
+                        div.~__Slide__image.IdaImage                     (::after — затемнение rgba(0,0,0,.32))
+                          div.IdaImage__wrapper > picture.IdaImage__preview + picture.IdaImage__origin > img.swiper-lazy
+            div.~__Cards.~__Gallery__cards                           (перекрывает низ слайда)
+              div.~__Cards__wrapper.--is-desktop
+                div.~__Cards__slider.IdaGallery.UiGallery--auto > .swiper-container (slidesPerView auto, 3 шт.)
+                  div.swiper-slide
+                    button.~__Card.IdaPlate.--is-interactive       (клик → модалка «Заявка на консультацию»)
+                      div.IdaPlate__wrapper.ClassicPlate__wrapper
+                        div.~__Card__wrapper.--is-desktop             (белый, radius 20px, shadow 0 4px 24px rgba(0,0,0,.06))
+                          div.~__Card__content
+                            div.~__Card__title.IdaAppear "Заголовок карточки в несколько слов или строк"
+                            div.~__Card__text.IdaAppear "В конструкторе Ида.Лайт множество различных блоков"
+                          div.~__Card__image-wrapper                  (108×108, фон --ui-main-color-12, radius 16)
+                            div.~__Card__icon.IdaLiteIcon | div.~__Card__image.IdaImage
+            div.~__Controls.~__Gallery__controls
+              div.~__Controls__wrapper.--is-desktop
+                div.~__Controls__fraction > span.~__Controls__currentValue "01" + span.~__Controls__totalValue "03"
+                div.ClassicSliderBullets.~__Controls__bullets
+                  span.swiper-pagination-bullet (×3, 351×2, белые 24%; у активного .--is-active, соседи .--is-active-prev/-next)
+                div.~__Controls__arrows
+                  button.ClassicSliderArrow.--left-direction / .--right-direction
+# "~" = ObjectGalleryA__ClassicType23

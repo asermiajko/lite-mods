@@ -3,6 +3,9 @@
   "blocks": {
     "InfraBlock__ClassicType5": {
       "enabled": true
+    },
+    "ObjectGalleryA__ClassicType23": {
+      "enabled": true
     }
   }
 }

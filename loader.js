@@ -15,7 +15,8 @@
   var DEV_KEY = 'litemods-dev';
 
   var qs = new URLSearchParams(location.search);
-  if (qs.get('nomods') === '1') {
+  var preview = window.__LITE_MODS_BUNDLE__ && window.__LITE_MODS_BUNDLE__.preview;
+  if (qs.get('nomods') === '1' && !preview) {
     console.info('[lite-mods] выключены (?nomods=1)');
     return;
   }
