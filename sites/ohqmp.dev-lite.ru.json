@@ -1,6 +1,8 @@
 {
-  "version": "0",
+  "version": "20261014133248",
   "blocks": {
-    "InfraBlock__ClassicType5": { "enabled": true }
+    "InfraBlock__ClassicType5": {
+      "enabled": true
+    }
   }
 }

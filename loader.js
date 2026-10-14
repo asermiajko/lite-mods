@@ -91,11 +91,12 @@
     });
   }
 
+  // setTimeout, а не requestAnimationFrame: rAF стоит на паузе в фоновых вкладках
   var scheduled = false;
   function scheduleApply() {
     if (scheduled) return;
     scheduled = true;
-    requestAnimationFrame(function () { scheduled = false; apply(); });
+    setTimeout(function () { scheduled = false; apply(); }, 16);
   }
 
   function addCss(href) {
