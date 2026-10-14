@@ -317,69 +317,149 @@ window.LiteMods && LiteMods.register('MortgageCalculator__ClassicType2', functio
     var best = available[0];
     var maxPay = Math.max.apply(null, list.map(function (r) { return r.firstPayment; }));
 
-    tweenNumber(els.pay, best ? best.firstPayment : 0);
+    tweenTo(els.pay, best ? best.firstPayment : null, num);
     els.payBank.innerHTML = best
       ? 'в банке <b>' + esc(best.o.bank) + '</b>, ставка ' + (best.tranche
         ? best.o.special_min_rate + '% до ' + monthYear(best.o.first_tranche_end) + ', затем ' + rub(best.payment) + '/мес'
         : best.rate + '%')
       : 'Нет подходящих предложений — измените параметры';
-    els.credit.textContent = rub(state.price * (1 - state.deposit / 100));
-    els.over.textContent = best ? rub(best.overpayment) : '—';
+    tweenTo(els.credit, state.price * (1 - state.deposit / 100), rub);
+    tweenTo(els.over, best ? best.overpayment : null, rub);
     els.count.textContent = available.length + ' из ' + list.length + ' банков подходят';
 
     var shown = state.showAll ? list : list.slice(0, VISIBLE_ROWS);
     var showBadge = available.length > 1;
-    els.list.innerHTML = shown.map(function (r, i) { return row(r, showBadge && i === 0 && r.available, maxPay); }).join('');
+    renderList(shown, function (r, i) { return showBadge && i === 0 && r.available; }, maxPay);
     els.more.hidden = list.length <= VISIBLE_ROWS;
     els.more.textContent = state.showAll ? 'Свернуть' : 'Показать все банки (' + list.length + ')';
   }
 
-  function row(r, isBest, maxPay) {
-    var o = r.o;
+  // ---------- плавные числа ----------
+  // Значение докручивается от текущего показанного к новому; при быстром движении ползунка
+  // каждая новая цель подхватывается с места, без рывков.
+  var TWEEN_MS = 650;
+  function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
+  function tweenTo(el, to, format) {
+    if (to === null) {
+      cancelAnimationFrame(el.__lmRaf);
+      el.__lmVal = el.__lmTo = null;
+      el.textContent = '—';
+      return;
+    }
+    if (el.__lmTo === to) return;
+    el.__lmTo = to;
+    var from = el.__lmVal;
+    cancelAnimationFrame(el.__lmRaf);
+    if (from == null || ctx.reducedMotion || Math.abs(to - from) < 0.5) {
+      el.__lmVal = to;
+      el.textContent = format(to);
+      return;
+    }
+    var start = performance.now();
+    (function step(now) {
+      var t = Math.min((now - start) / TWEEN_MS, 1);
+      el.__lmVal = from + (to - from) * easeOut(t);
+      el.textContent = format(el.__lmVal);
+      if (t < 1) el.__lmRaf = requestAnimationFrame(step);
+    })(start);
+  }
+
+  function pct(v) { return String(Math.round(v * 10) / 10).replace('.', ',') + '%'; }
+
+  // ---------- строки банков: создаются один раз, дальше обновляются на месте ----------
+  var rowEls = {};
+
+  function createRow() {
+    var li = document.createElement('li');
+    li.className = 'lm-mnav__row';
+    li.innerHTML =
+      '<div class="lm-mnav__bank">' +
+        '<span class="lm-mnav__logo"><img alt="" loading="lazy"></span>' +
+        '<span class="lm-mnav__bank-name"><span data-r="name"></span><span class="lm-mnav__badges" data-r="badges"></span></span>' +
+      '</div>' +
+      '<div class="lm-mnav__rate"><b data-r="rate"></b><small data-r="rateNote"></small></div>' +
+      '<div class="lm-mnav__pay"><b data-r="pay"></b><small><span data-r="payLabel"></span><span data-r="payNote"></span></small>' +
+        '<span class="lm-mnav__bar"><i></i></span></div>' +
+      '<div class="lm-mnav__issues" data-r="issues"></div>';
+    li.__r = {};
+    [].forEach.call(li.querySelectorAll('[data-r]'), function (el) { li.__r[el.getAttribute('data-r')] = el; });
+    li.__r.img = li.querySelector('img');
+    return li;
+  }
+
+  function setHtml(el, html) { if (el.__lmHtml !== html) { el.__lmHtml = html; el.innerHTML = html; } }
+
+  function updateRow(li, r, isBest, maxPay) {
+    var o = r.o, q = li.__r;
+    li.classList.toggle('is-off', !r.available);
+    li.classList.toggle('is-best', isBest);
+    li.style.setProperty('--lm-bank', o.background_color || '#6A31EB');
+    li.style.setProperty('--lm-bar', (r.firstPayment / maxPay * 100).toFixed(1) + '%');
+
+    var logo = staticUrl(o.color_mini);
+    if (q.img.getAttribute('src') !== logo) q.img.setAttribute('src', logo);
+    q.name.textContent = o.bank;
+
     var tag = o.program_name ? esc(o.program_name) : r.tranche ? 'Льготный период' : o.is_special ? 'Спецпредложение' : '';
-    var rate = r.tranche
-      ? '<b>' + o.special_min_rate + '%</b><small>до ' + monthYear(o.first_tranche_end) + ', затем ' + o.min_rate + '%</small>'
-      : '<b>' + r.rate + '%</b><small>до ' + yearsGen(o.max_term) + '</small>';
-    var pay = r.tranche
-      ? '<b>' + rub(r.firstPayment) + '</b><small>затем ' + rub(r.payment) + '</small>'
-      : '<b>' + rub(r.payment) + '</b><small>переплата ' + rub(r.overpayment) + '</small>';
-    var issues = r.issues.map(function (is) {
+    setHtml(q.badges, (isBest ? '<em class="lm-mnav__badge">Выгоднее всего</em>' : '') + (tag ? '<em class="lm-mnav__tag">' + tag + '</em>' : ''));
+
+    tweenTo(q.rate, r.tranche ? o.special_min_rate : r.rate, pct);
+    q.rateNote.textContent = r.tranche
+      ? 'до ' + monthYear(o.first_tranche_end) + ', затем ' + o.min_rate + '%'
+      : 'до ' + yearsGen(o.max_term);
+
+    tweenTo(q.pay, r.tranche ? r.firstPayment : r.payment, rub);
+    q.payLabel.textContent = r.tranche ? 'затем ' : 'переплата ';
+    tweenTo(q.payNote, r.tranche ? r.payment : r.overpayment, rub);
+
+    setHtml(q.issues, r.issues.map(function (is) {
       return '<span class="lm-mnav__issue">' + esc(is.text) +
         (is.action && (is.kind === 'deposit' || is.kind === 'term')
           ? ' <button type="button" data-fix="' + is.kind + '" data-value="' + is.value + '">' + esc(is.action) + '</button>' : '') +
         '</span>';
-    }).join('');
-
-    return '<li class="lm-mnav__row' + (r.available ? '' : ' is-off') + (isBest ? ' is-best' : '') + '"' +
-      ' style="--lm-bank:' + esc(o.background_color || '#6A31EB') + ';--lm-bar:' + (r.firstPayment / maxPay * 100).toFixed(1) + '%">' +
-      '<div class="lm-mnav__bank">' +
-        '<span class="lm-mnav__logo"><img src="' + esc(staticUrl(o.color_mini)) + '" alt="" loading="lazy"></span>' +
-        '<span class="lm-mnav__bank-name">' + esc(o.bank) +
-          (isBest ? '<em class="lm-mnav__badge">Выгоднее всего</em>' : '') +
-          (tag ? '<em class="lm-mnav__tag">' + tag + '</em>' : '') +
-        '</span>' +
-      '</div>' +
-      '<div class="lm-mnav__rate">' + rate + '</div>' +
-      '<div class="lm-mnav__pay">' + pay + '<span class="lm-mnav__bar"><i></i></span></div>' +
-      (issues ? '<div class="lm-mnav__issues">' + issues + '</div>' : '') +
-      '</li>';
+    }).join(''));
   }
 
-  // Плавное «перетекание» главной цифры
-  var tweenFrom = 0, tweenRaf;
-  function tweenNumber(el, to) {
-    cancelAnimationFrame(tweenRaf);
-    var from = tweenFrom, start = performance.now(), dur = 450;
-    if (ctx.reducedMotion || !from) { tweenFrom = to; el.textContent = num(to); return; }
-    (function step(now) {
-      var t = Math.min((now - start) / dur, 1);
-      var v = from + (to - from) * (1 - Math.pow(1 - t, 3));
-      tweenFrom = v;
-      el.textContent = num(v);
-      if (t < 1) tweenRaf = requestAnimationFrame(step);
-    })(start);
-    // Если вкладка в фоне и rAF стоит — сразу ставим итог
-    setTimeout(function () { if (tweenFrom !== to && performance.now() - start > dur + 200) { tweenFrom = to; el.textContent = num(to); } }, dur + 250);
+  // Перестановка с анимацией (FLIP): запоминаем, где строки были, переставляем, плавно доводим
+  var EASING = 'cubic-bezier(.2, .7, .1, 1)';
+  function renderList(shown, isBestFn, maxPay) {
+    var animate = !ctx.reducedMotion && typeof Element.prototype.animate === 'function';
+    var before = {};
+    if (animate) {
+      Object.keys(rowEls).forEach(function (b) {
+        if (rowEls[b].isConnected) before[b] = rowEls[b].getBoundingClientRect().top;
+      });
+    }
+
+    var keep = {};
+    shown.forEach(function (r, i) {
+      var b = r.o.bank;
+      var li = rowEls[b] || (rowEls[b] = createRow());
+      updateRow(li, r, isBestFn(r, i), maxPay);
+      keep[b] = true;
+      if (els.list.children[i] !== li) els.list.insertBefore(li, els.list.children[i] || null);
+    });
+    Object.keys(rowEls).forEach(function (b) {
+      if (!keep[b] && rowEls[b].isConnected) rowEls[b].remove();
+    });
+
+    if (!animate) return;
+    shown.forEach(function (r) {
+      var li = rowEls[r.o.bank];
+      if (before[r.o.bank] == null) {
+        li.__lmAnim = li.animate(
+          [{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'none' }],
+          { duration: 450, easing: EASING });
+        return;
+      }
+      // before — видимое положение (с учётом идущей анимации); итоговое меряем без неё
+      if (li.__lmAnim) li.__lmAnim.cancel();
+      var dy = before[r.o.bank] - li.getBoundingClientRect().top;
+      if (Math.abs(dy) < 1) return;
+      li.__lmAnim = li.animate(
+        [{ transform: 'translateY(' + dy + 'px)' }, { transform: 'none' }],
+        { duration: 550, easing: EASING });
+    });
   }
 
   // Точные платежи по траншам — от API платформы

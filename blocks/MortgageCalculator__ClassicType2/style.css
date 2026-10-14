@@ -302,6 +302,10 @@
   background: transparent;
 }
 
+.MortgageCalculator__ClassicType2 .lm-mnav__row > div {
+  transition: opacity .4s var(--lm-ease);
+}
+
 .MortgageCalculator__ClassicType2 .lm-mnav__row.is-off > .lm-mnav__bank,
 .MortgageCalculator__ClassicType2 .lm-mnav__row.is-off > .lm-mnav__rate,
 .MortgageCalculator__ClassicType2 .lm-mnav__row.is-off > .lm-mnav__pay {
@@ -339,6 +343,26 @@
   min-width: 0;
   font-size: 16px;
   font-weight: 600;
+}
+
+.MortgageCalculator__ClassicType2 .lm-mnav__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.MortgageCalculator__ClassicType2 .lm-mnav__badges:empty,
+.MortgageCalculator__ClassicType2 .lm-mnav__issues:empty {
+  display: none;
+}
+
+.MortgageCalculator__ClassicType2 .lm-mnav__badge,
+.MortgageCalculator__ClassicType2 .lm-mnav__tag {
+  animation: lm-mnav-pop .35s cubic-bezier(.2, .7, .1, 1);
+}
+
+@keyframes lm-mnav-pop {
+  from { opacity: 0; transform: scale(.85); }
 }
 
 .MortgageCalculator__ClassicType2 .lm-mnav__badge,
@@ -400,7 +424,7 @@
   width: var(--lm-bar, 0%);
   border-radius: 4px;
   background: var(--lm-bank);
-  transition: width .45s var(--lm-ease);
+  transition: width .65s var(--lm-ease);
 }
 
 .MortgageCalculator__ClassicType2 .lm-mnav__issues {
