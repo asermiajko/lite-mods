@@ -407,6 +407,8 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
     var t = r.type;
     var med = M.median(r.flats.map(function (f) { return f.price; }));
     var anyLight = r.flats.some(function (f) { return f.light; });
+    var anyWall = r.flats.some(function (f) { return f.wall; });
+    var anyEntrance = r.flats.some(function (f) { return f.entrance; });
     var aMin = Math.min.apply(null, r.flats.map(function (f) { return f.area; }));
     var aMax = Math.max.apply(null, r.flats.map(function (f) { return f.area; }));
     var pMin = Math.min.apply(null, r.flats.map(function (f) { return f.price; }));
@@ -419,8 +421,8 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
         '<p class="lmp__type-price">' + priceRange(pMin, pMax) + '</p>' +
         '<p class="lmp__type-meta"><span>' + esc(t.complex) + '</span></p></div>' +
       '</div>' +
-      '<p class="lmp__panel-lead">Планировка та же, а квартиры разные. Сравнили этаж, тишину, пыль' + (anyLight ? ', свет' : '') + ' и цену под ваш запрос.</p>' +
-      '<ol class="lmp__flats">' + r.flats.map(function (f, i) { return flatRow(f, i === 0, r.best, med, anyLight, i === 0 ? r.why : ''); }).join('') + '</ol>';
+      '<p class="lmp__panel-lead">Планировка та же, а квартиры разные. Сравнили этаж, тишину, пыль' + (anyLight ? ', свет' : '') + (anyWall ? ', соседей за стеной спальни' : '') + (anyEntrance ? ', вход' : '') + ' и цену под ваш запрос.</p>' +
+      '<ol class="lmp__flats">' + r.flats.map(function (f, i) { return flatRow(f, i === 0, r.best, med, { light: anyLight, wall: anyWall, entrance: anyEntrance }, i === 0 ? r.why : ''); }).join('') + '</ol>';
     drawer.hidden = false;
     document.documentElement.classList.add('lmp-lock');
     panel.scrollTop = 0;
@@ -431,7 +433,7 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
     return '<span class="lmp__bar"><i style="width:' + Math.round(score * 100) + '%"></i></span>';
   }
 
-  function flatRow(f, isBest, best, med, anyLight, why) {
+  function flatRow(f, isBest, best, med, show, why) {
     var url = flatUrl(f);
     var diff = isBest ? '' : diffText(f, best);
     var dp = med ? Math.round((f.price / med - 1) * 100) : 0;
@@ -447,7 +449,9 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
       '<dl class="lmp__factors">' +
         '<div><dt>Тишина</dt><dd>' + f.noise.label + bar(f.noise.score) + '</dd></div>' +
         '<div><dt>Пыль</dt><dd>' + f.dust.label + bar(f.dust.score) + '</dd></div>' +
-        (anyLight ? '<div><dt>Свет</dt><dd>' + (f.light ? f.light.label + bar(f.light.score) : 'Не указано') + '</dd></div>' : '') +
+        (show.light ? '<div><dt>Свет</dt><dd>' + (f.light ? f.light.label + bar(f.light.score) : 'Не указано') + '</dd></div>' : '') +
+        (show.wall ? '<div><dt>За стеной спальни</dt><dd>' + (f.wall ? f.wall.label + bar(f.wall.score) : 'Не указано') + '</dd></div>' : '') +
+        (show.entrance ? '<div><dt>Вход</dt><dd>' + (f.entrance ? f.entrance.label + bar(f.entrance.score) : 'Не указано') + '</dd></div>' : '') +
         '<div><dt>Отделка</dt><dd>' + esc(f.finishing ? f.finishing.charAt(0).toUpperCase() + f.finishing.slice(1) : 'Не указано') + '</dd></div>' +
         (f.completion ? '<div><dt>Сдача</dt><dd>' + esc(f.completion) + '</dd></div>' : '') +
       '</dl>' +
@@ -465,6 +469,8 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
     if (df) out.push((df > 0 ? 'выше' : 'ниже') + ' на ' + plural(Math.abs(df), 'этаж', 'этажа', 'этажей'));
     if (f.noise.label !== best.noise.label) out.push(f.noise.score > best.noise.score ? 'тише' : 'шумнее');
     if (f.dust.label !== best.dust.label) out.push(f.dust.score > best.dust.score ? 'меньше пыли' : 'больше пыли');
+    if (f.wall && best.wall && f.wall.label !== best.wall.label) out.push(f.wall.score > best.wall.score ? 'тише за стеной спальни' : 'шумнее за стеной спальни');
+    if (f.light && best.light && f.light.label !== best.light.label) out.push(f.light.score > best.light.score ? 'светлее' : 'темнее');
     if (f.finishGrade != null && best.finishGrade != null && f.finishGrade !== best.finishGrade) out.push(f.finishGrade > best.finishGrade ? 'отделка лучше' : 'отделка проще');
     var dp = f.price - best.price;
     if (Math.abs(dp) >= 50000) out.push(dp < 0 ? '<b class="is-good">дешевле на ' + rub(-dp) + '</b>' : 'дороже на ' + rub(dp));

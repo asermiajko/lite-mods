@@ -39,8 +39,8 @@ def site_patches(site_file: Path, compact: bool = False, only: str = None) -> st
         block_dir = ROOT / "blocks" / cfg.get("path", name)
         css_file = block_dir / "style.css"
         css = css_file.read_text() if cfg.get("css", True) and css_file.exists() else ""
-        # model.js (если есть) — общие функции блока, грузится перед script.js
-        js_files = [block_dir / n for n in ("model.js", "script.js") if (block_dir / n).exists()]
+        # model.js и stacks.js (если есть) — модель и данные блока, грузятся перед script.js
+        js_files = [block_dir / n for n in ("model.js", "stacks.js", "script.js") if (block_dir / n).exists()]
         js = "\n".join(p.read_text() for p in js_files) if cfg.get("js", True) else ""
         if compact:
             css, js = strip(css), strip(js)

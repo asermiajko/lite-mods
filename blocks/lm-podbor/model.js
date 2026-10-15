@@ -82,6 +82,44 @@
     north: { name: 'север', sun: 0.25, heat: 0, text: 'ровный рассеянный свет, прохладно' }
   };
 
+  // Свет только по числу сторон с окнами (сторона света неизвестна)
+  function lightByFacades(facades, floor) {
+    if (!facades) return null;
+    var sun = facades >= 2 ? 0.75 : 0.45;
+    if (floor <= 3) sun *= 0.85;
+    return {
+      score: sun, sunny: null, shadeSide: null, names: [],
+      label: facades >= 2 ? 'Окна на две стороны' : 'Окна на одну сторону'
+    };
+  }
+
+  // Соседство: что за стеной спальни (дБ бытового шума через стену)
+  var WALL = {
+    outer: { db: 0, label: 'Наружная стена' },
+    neighbor_bedroom: { db: 0.5, label: 'Спальня соседей' },
+    neighbor_living: { db: 2, label: 'Кухня-гостиная соседей' },
+    corridor: { db: 2.5, label: 'Общий коридор' },
+    stair: { db: 3, label: 'Лестница' },
+    lift: { db: 4, label: 'Шахта лифта' }
+  };
+
+  function neighbours(wall) {
+    var w = WALL[wall];
+    if (!w) return null;
+    var score = clamp(1 - w.db / 4, 0, 1);
+    return { score: score, label: w.label };
+  }
+
+  // Вход: дверь напротив соседа и сколько дверей рядом (хлопки, разговоры, курьеры)
+  function entrance(near, opp) {
+    if (near == null) return null;
+    var score = clamp(1 - (opp ? 0.3 : 0) - Math.min(near, 3) * 0.15, 0, 1);
+    return {
+      score: score,
+      label: opp ? 'Дверь напротив соседа' : near >= 3 ? 'Много дверей рядом' : near >= 2 ? 'Рядом две двери' : 'Спокойный вход'
+    };
+  }
+
   function light(dirs, floor) {
     if (!dirs || !dirs.length) return null;
     var known = dirs.filter(function (d) { return DIRS[d]; });
@@ -291,7 +329,10 @@
         noise: noise(floor, side, 'closed'),
         noiseOpen: noise(floor, side, 'open'),
         dust: dust(floor, side, stack.distance),
-        light: light(stack.dirs || f.directions, floor)
+        light: light(stack.dirs || f.directions, floor) || lightByFacades(stack.facades, floor),
+        facades: stack.facades || null,
+        wall: neighbours(stack.wall),
+        entrance: entrance(stack.near, stack.opp)
       };
       return flat;
     });
@@ -396,12 +437,12 @@
   // Планировка у квартир одного типа одна, поэтому сравниваем то, чем они реально отличаются:
   // этаж, тишину, пыль, свет и цену относительно типа. Веса — под цель покупки.
   var PROFILES = {
-    family:  { floor: 'mid',  w: { noise: .3,  floor: .15, light: .15, dust: .1,  price: .3 } },
-    parents: { floor: 'low',  w: { noise: .25, floor: .3,  light: .15, dust: .05, price: .25 } },
-    remote:  { floor: 'high', w: { noise: .35, floor: .15, light: .15, dust: .05, price: .3 } },
-    view:    { floor: 'high', w: { noise: .1,  floor: .35, light: .2,  dust: .05, price: .3 } },
-    budget:  { floor: 'any',  w: { noise: .15, floor: .1,  light: .1,  dust: .05, price: .6 } },
-    invest:  { floor: 'mid',  w: { noise: .1,  floor: .25, light: .1,  dust: .05, price: .5 } }
+    family:  { floor: 'mid',  w: { noise: .3,  floor: .15, light: .15, dust: .1,  price: .3,  wall: .1,  entrance: .05 } },
+    parents: { floor: 'low',  w: { noise: .25, floor: .3,  light: .15, dust: .05, price: .25, wall: .1,  entrance: .1 } },
+    remote:  { floor: 'high', w: { noise: .35, floor: .15, light: .15, dust: .05, price: .3,  wall: .15, entrance: .05 } },
+    view:    { floor: 'high', w: { noise: .1,  floor: .35, light: .2,  dust: .05, price: .3,  wall: .05, entrance: .03 } },
+    budget:  { floor: 'any',  w: { noise: .15, floor: .1,  light: .1,  dust: .05, price: .6,  wall: .05, entrance: .03 } },
+    invest:  { floor: 'mid',  w: { noise: .1,  floor: .25, light: .1,  dust: .05, price: .5,  wall: .03, entrance: .03 } }
   };
 
   // Насколько этаж подходит цели: 1 — в оптимальном диапазоне, дальше — плавно хуже
@@ -429,7 +470,9 @@
       dust: f.dust.score,
       light: f.light ? f.light.score : UNKNOWN,
       floor: floorFit(f, profile.floor),
-      price: priceFit(f)
+      price: priceFit(f),
+      wall: f.wall ? f.wall.score : UNKNOWN,
+      entrance: f.entrance ? f.entrance.score : UNKNOWN
     };
   }
 
@@ -444,6 +487,8 @@
     dust: 'меньше пыли',
     light: 'светлее',
     price: 'выгоднее по цене за м²',
+    wall: 'тише за стеной спальни',
+    entrance: 'спокойнее у входа',
     floor: { mid: 'удобный средний этаж', high: 'высокий этаж', low: 'невысоко, но не на первом', any: 'не первый этаж' }
   };
 
@@ -454,13 +499,14 @@
     var spread = best.fit - Math.min.apply(null, flats.map(function (f) { return f.fit; }));
     if (spread < 0.03) return 'Квартиры почти одинаковы, выбрали самую выгодную по цене';
     var cheaper = flats.filter(function (f) { return f.price < best.price; }).length;
+    var cheapRank = cheaper / (flats.length - 1); // 0 — самая дешёвая в типе, 1 — самая дорогая
     var avg = {};
     Object.keys(profile.w).forEach(function (k) {
       avg[k] = flats.reduce(function (s, f) { return s + f.fx[k]; }, 0) / flats.length;
     });
     var gains = Object.keys(profile.w)
       .map(function (k) { return { k: k, g: (best.fx[k] - avg[k]) * profile.w[k] }; })
-      .filter(function (x) { return x.g > 0.01 && (x.k !== 'price' || best.price <= median(flats.map(function (f) { return f.price; }))); })
+      .filter(function (x) { return x.g > 0.01 && (x.k !== 'price' || cheapRank <= 0.34); })
       .sort(function (a, b) { return b.g - a.g; })
       .slice(0, 2)
       .map(function (x) { return x.k === 'floor' ? FACTOR_TEXT.floor[profile.floor] : FACTOR_TEXT[x.k]; });

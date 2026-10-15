@@ -173,7 +173,7 @@ window.__LITE_MODS_INLINE__ = 'bundle';
   });
 })();
 
-/* lite-mods: ohqmp.dev-lite.ru, версия 20261015183252 */
+/* lite-mods: ohqmp.dev-lite.ru, версия 20261015183841 */
 window.LiteMods && LiteMods.define("InfraBlock__ClassicType5", { css: "/*\n * InfraBlock__ClassicType5 — блок «Инфраструктура»\n * Всё строго внутри .InfraBlock__ClassicType5. Цвета — из переменных темы --ui-*.\n * Скрытие «до появления» работает только при [data-lm-ready] (его ставит script.js).\n */\n\n.InfraBlock__ClassicType5 {\n  --lm-ease: cubic-bezier(.2, .7, .1, 1);\n  --lm-accent: var(--ui-main-color, #6A31EB);\n}\n\n/* ---------- 1. Табы категорий: каскад + живой hover ---------- */\n\n.InfraBlock__ClassicType5[data-lm-ready] .InfraBlock__ClassicType5__Control .ClassicTabs__item {\n  opacity: 0;\n  transform: translateY(14px) scale(.96);\n  transition:\n    opacity .5s var(--lm-ease),\n    transform .6s var(--lm-ease);\n  transition-delay: calc(var(--lm-i, 0) * 40ms + 150ms);\n}\n\n.InfraBlock__ClassicType5[data-lm-ready] .InfraBlock__ClassicType5__Control[data-lm-in] .ClassicTabs__item {\n  opacity: 1;\n  transform: none;\n}\n\n.InfraBlock__ClassicType5 .ClassicTabs__item .IdaButton {\n  transition:\n    background-color .3s, color .3s,\n    transform .35s var(--lm-ease),\n    box-shadow .35s var(--lm-ease);\n}\n\n.InfraBlock__ClassicType5 .ClassicTabs__item .IdaButton:not(.--is-active):hover {\n  transform: translateY(-2px);\n  box-shadow: 0 8px 20px -8px var(--ui-main-color-32, rgba(106, 49, 235, .32));\n}\n\n.InfraBlock__ClassicType5 .ClassicTabs__item .IdaButton svg {\n  transition: transform .4s var(--lm-ease);\n}\n\n.InfraBlock__ClassicType5 .ClassicTabs__item .IdaButton:hover svg {\n  transform: scale(1.18) rotate(-6deg);\n}\n\n/* ---------- 2. Карта: раскрывается из «карточки» на всю ширину ---------- */\n\n.InfraBlock__ClassicType5[data-lm-ready] .InfraBlock__ClassicType5__Map {\n  clip-path: inset(6% 7% round var(--map-border-radius, 24px));\n  transition: clip-path 1.2s var(--lm-ease);\n}\n\n.InfraBlock__ClassicType5[data-lm-ready] .InfraBlock__ClassicType5__Map[data-lm-in] {\n  clip-path: inset(0 0 round 0);\n}\n\n/* ---------- 3. Карточки «Элемент N»: линия-акцент + каскад ---------- */\n\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage {\n  position: relative;\n  padding-top: 20px;\n}\n\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage::before,\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage::after {\n  content: '';\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  height: 2px;\n  border-radius: 2px;\n}\n\n/* серая «дорожка» */\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage::before {\n  background: var(--ui-font-black-color-8, rgba(7, 7, 31, .08));\n}\n\n/* акцентная линия, прорисовывается слева направо */\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage::after {\n  background: var(--lm-accent);\n  transform-origin: left center;\n  transform: scaleX(.18);\n  transition: transform .7s var(--lm-ease);\n}\n\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage:hover::after {\n  transform: scaleX(1);\n}\n\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage h3 {\n  transition: color .3s, transform .45s var(--lm-ease);\n}\n\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage:hover h3 {\n  color: var(--lm-accent);\n  transform: translateX(4px);\n}\n\n[data-lm-ready] .InfraBlock__ClassicType5__Advantage {\n  opacity: 0;\n  transform: translateY(24px);\n  transition:\n    opacity .6s var(--lm-ease),\n    transform .8s var(--lm-ease);\n  transition-delay: calc(var(--lm-i, 0) * 90ms);\n}\n\n[data-lm-ready] [data-lm-in] .InfraBlock__ClassicType5__Advantage {\n  opacity: 1;\n  transform: none;\n}\n\n/* при появлении линия-акцент «пробегает» до своей базовой длины */\n[data-lm-ready] .InfraBlock__ClassicType5__Advantage::after {\n  transform: scaleX(0);\n  transition-delay: calc(var(--lm-i, 0) * 90ms + 250ms);\n}\n\n[data-lm-ready] [data-lm-in] .InfraBlock__ClassicType5__Advantage::after {\n  transform: scaleX(.18);\n}\n\n[data-lm-ready] [data-lm-in] .InfraBlock__ClassicType5__Advantage:hover::after {\n  transform: scaleX(1);\n  transition-delay: 0s;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .InfraBlock__ClassicType5 *,\n  .InfraBlock__ClassicType5 *::before,\n  .InfraBlock__ClassicType5 *::after {\n    transition: none !important;\n  }\n}\n" });
 try {
 /*
@@ -499,6 +499,44 @@ try {
     north: { name: 'север', sun: 0.25, heat: 0, text: 'ровный рассеянный свет, прохладно' }
   };
 
+  // Свет только по числу сторон с окнами (сторона света неизвестна)
+  function lightByFacades(facades, floor) {
+    if (!facades) return null;
+    var sun = facades >= 2 ? 0.75 : 0.45;
+    if (floor <= 3) sun *= 0.85;
+    return {
+      score: sun, sunny: null, shadeSide: null, names: [],
+      label: facades >= 2 ? 'Окна на две стороны' : 'Окна на одну сторону'
+    };
+  }
+
+  // Соседство: что за стеной спальни (дБ бытового шума через стену)
+  var WALL = {
+    outer: { db: 0, label: 'Наружная стена' },
+    neighbor_bedroom: { db: 0.5, label: 'Спальня соседей' },
+    neighbor_living: { db: 2, label: 'Кухня-гостиная соседей' },
+    corridor: { db: 2.5, label: 'Общий коридор' },
+    stair: { db: 3, label: 'Лестница' },
+    lift: { db: 4, label: 'Шахта лифта' }
+  };
+
+  function neighbours(wall) {
+    var w = WALL[wall];
+    if (!w) return null;
+    var score = clamp(1 - w.db / 4, 0, 1);
+    return { score: score, label: w.label };
+  }
+
+  // Вход: дверь напротив соседа и сколько дверей рядом (хлопки, разговоры, курьеры)
+  function entrance(near, opp) {
+    if (near == null) return null;
+    var score = clamp(1 - (opp ? 0.3 : 0) - Math.min(near, 3) * 0.15, 0, 1);
+    return {
+      score: score,
+      label: opp ? 'Дверь напротив соседа' : near >= 3 ? 'Много дверей рядом' : near >= 2 ? 'Рядом две двери' : 'Спокойный вход'
+    };
+  }
+
   function light(dirs, floor) {
     if (!dirs || !dirs.length) return null;
     var known = dirs.filter(function (d) { return DIRS[d]; });
@@ -708,7 +746,10 @@ try {
         noise: noise(floor, side, 'closed'),
         noiseOpen: noise(floor, side, 'open'),
         dust: dust(floor, side, stack.distance),
-        light: light(stack.dirs || f.directions, floor)
+        light: light(stack.dirs || f.directions, floor) || lightByFacades(stack.facades, floor),
+        facades: stack.facades || null,
+        wall: neighbours(stack.wall),
+        entrance: entrance(stack.near, stack.opp)
       };
       return flat;
     });
@@ -813,12 +854,12 @@ try {
   // Планировка у квартир одного типа одна, поэтому сравниваем то, чем они реально отличаются:
   // этаж, тишину, пыль, свет и цену относительно типа. Веса — под цель покупки.
   var PROFILES = {
-    family:  { floor: 'mid',  w: { noise: .3,  floor: .15, light: .15, dust: .1,  price: .3 } },
-    parents: { floor: 'low',  w: { noise: .25, floor: .3,  light: .15, dust: .05, price: .25 } },
-    remote:  { floor: 'high', w: { noise: .35, floor: .15, light: .15, dust: .05, price: .3 } },
-    view:    { floor: 'high', w: { noise: .1,  floor: .35, light: .2,  dust: .05, price: .3 } },
-    budget:  { floor: 'any',  w: { noise: .15, floor: .1,  light: .1,  dust: .05, price: .6 } },
-    invest:  { floor: 'mid',  w: { noise: .1,  floor: .25, light: .1,  dust: .05, price: .5 } }
+    family:  { floor: 'mid',  w: { noise: .3,  floor: .15, light: .15, dust: .1,  price: .3,  wall: .1,  entrance: .05 } },
+    parents: { floor: 'low',  w: { noise: .25, floor: .3,  light: .15, dust: .05, price: .25, wall: .1,  entrance: .1 } },
+    remote:  { floor: 'high', w: { noise: .35, floor: .15, light: .15, dust: .05, price: .3,  wall: .15, entrance: .05 } },
+    view:    { floor: 'high', w: { noise: .1,  floor: .35, light: .2,  dust: .05, price: .3,  wall: .05, entrance: .03 } },
+    budget:  { floor: 'any',  w: { noise: .15, floor: .1,  light: .1,  dust: .05, price: .6,  wall: .05, entrance: .03 } },
+    invest:  { floor: 'mid',  w: { noise: .1,  floor: .25, light: .1,  dust: .05, price: .5,  wall: .03, entrance: .03 } }
   };
 
   // Насколько этаж подходит цели: 1 — в оптимальном диапазоне, дальше — плавно хуже
@@ -846,7 +887,9 @@ try {
       dust: f.dust.score,
       light: f.light ? f.light.score : UNKNOWN,
       floor: floorFit(f, profile.floor),
-      price: priceFit(f)
+      price: priceFit(f),
+      wall: f.wall ? f.wall.score : UNKNOWN,
+      entrance: f.entrance ? f.entrance.score : UNKNOWN
     };
   }
 
@@ -861,6 +904,8 @@ try {
     dust: 'меньше пыли',
     light: 'светлее',
     price: 'выгоднее по цене за м²',
+    wall: 'тише за стеной спальни',
+    entrance: 'спокойнее у входа',
     floor: { mid: 'удобный средний этаж', high: 'высокий этаж', low: 'невысоко, но не на первом', any: 'не первый этаж' }
   };
 
@@ -871,13 +916,14 @@ try {
     var spread = best.fit - Math.min.apply(null, flats.map(function (f) { return f.fit; }));
     if (spread < 0.03) return 'Квартиры почти одинаковы, выбрали самую выгодную по цене';
     var cheaper = flats.filter(function (f) { return f.price < best.price; }).length;
+    var cheapRank = cheaper / (flats.length - 1); // 0 — самая дешёвая в типе, 1 — самая дорогая
     var avg = {};
     Object.keys(profile.w).forEach(function (k) {
       avg[k] = flats.reduce(function (s, f) { return s + f.fx[k]; }, 0) / flats.length;
     });
     var gains = Object.keys(profile.w)
       .map(function (k) { return { k: k, g: (best.fx[k] - avg[k]) * profile.w[k] }; })
-      .filter(function (x) { return x.g > 0.01 && (x.k !== 'price' || best.price <= median(flats.map(function (f) { return f.price; }))); })
+      .filter(function (x) { return x.g > 0.01 && (x.k !== 'price' || cheapRank <= 0.34); })
       .sort(function (a, b) { return b.g - a.g; })
       .slice(0, 2)
       .map(function (x) { return x.k === 'floor' ? FACTOR_TEXT.floor[profile.floor] : FACTOR_TEXT[x.k]; });
@@ -931,6 +977,400 @@ try {
     noise: noise, dust: dust, light: light, prepare: prepare, aggregate: aggregate, rank: rank, median: median, PROFILES: PROFILES
   };
 })();
+
+/*
+ * lm-podbor — разметка стояков (секция + ось) по планам этажей, 2026-10-15.
+ *  facades — сколько сторон с окнами (1 — окна на одну сторону, 2+ — угловая);
+ *  wall    — что за стеной спальни: outer | neighbor_bedroom | neighbor_living | corridor | stair | lift;
+ *  near    — сколько чужих входных дверей рядом на площадке; opp — дверь напротив соседа;
+ *  dirs    — стороны света окон (только где известен азимут севера на плане).
+ * Двор или улица и расстояние до дороги по планам секций не определяются — остаются допущения model.js.
+ * Как размечено и где не размечено — blocks/lm-podbor/notes.md.
+ */
+window.LM_PODBOR_STACKS = window.LM_PODBOR_STACKS || {};
+window.LM_PODBOR_STACKS['ohqmp.dev-lite.ru'] = {
+ "00ce8a46-0b3c-4dd1-b3a2-ab392c99d001:1": {
+  "facades": 1,
+  "near": 2,
+  "opp": false,
+  "wall": "neighbor_living",
+  "dirs": [
+   "north"
+  ]
+ },
+ "00ce8a46-0b3c-4dd1-b3a2-ab392c99d001:2": {
+  "facades": 2,
+  "near": 2,
+  "opp": true,
+  "wall": "neighbor_bedroom",
+  "dirs": [
+   "east",
+   "north"
+  ]
+ },
+ "00ce8a46-0b3c-4dd1-b3a2-ab392c99d001:3": {
+  "facades": 2,
+  "near": 1,
+  "opp": true,
+  "wall": "neighbor_bedroom",
+  "dirs": [
+   "south",
+   "east"
+  ]
+ },
+ "00ce8a46-0b3c-4dd1-b3a2-ab392c99d001:4": {
+  "facades": 1,
+  "near": 1,
+  "opp": false,
+  "wall": "neighbor_living",
+  "dirs": [
+   "south"
+  ]
+ },
+ "00ce8a46-0b3c-4dd1-b3a2-ab392c99d001:5": {
+  "facades": 1,
+  "near": 1,
+  "opp": false,
+  "wall": "neighbor_bedroom",
+  "dirs": [
+   "south"
+  ]
+ },
+ "00ce8a46-0b3c-4dd1-b3a2-ab392c99d001:6": {
+  "facades": 2,
+  "near": 1,
+  "opp": true,
+  "wall": "outer",
+  "dirs": [
+   "south",
+   "west"
+  ]
+ },
+ "00ce8a46-0b3c-4dd1-b3a2-ab392c99d001:7": {
+  "facades": 2,
+  "near": 2,
+  "opp": true,
+  "wall": "outer",
+  "dirs": [
+   "west",
+   "north"
+  ]
+ },
+ "00ce8a46-0b3c-4dd1-b3a2-ab392c99d001:8": {
+  "facades": 1,
+  "near": 2,
+  "opp": false,
+  "wall": "neighbor_living",
+  "dirs": [
+   "north"
+  ]
+ },
+ "9957db46-65d0-4fba-b483-37da7d729845:1": {
+  "facades": 1,
+  "near": 2,
+  "opp": false,
+  "wall": "neighbor_living"
+ },
+ "9957db46-65d0-4fba-b483-37da7d729845:2": {
+  "facades": 1,
+  "near": 3,
+  "opp": false,
+  "wall": "outer"
+ },
+ "9957db46-65d0-4fba-b483-37da7d729845:3": {
+  "facades": 2,
+  "near": 2,
+  "opp": false,
+  "wall": "neighbor_living"
+ },
+ "9957db46-65d0-4fba-b483-37da7d729845:4": {
+  "facades": 2,
+  "near": 2,
+  "opp": true,
+  "wall": "outer"
+ },
+ "9957db46-65d0-4fba-b483-37da7d729845:5": {
+  "facades": 1,
+  "near": 2,
+  "opp": true,
+  "wall": "neighbor_bedroom"
+ },
+ "9957db46-65d0-4fba-b483-37da7d729845:6": {
+  "facades": 1,
+  "near": 1,
+  "opp": false,
+  "wall": "neighbor_bedroom"
+ },
+ "9957db46-65d0-4fba-b483-37da7d729845:7": {
+  "facades": 1,
+  "near": 1,
+  "opp": false,
+  "wall": "neighbor_living"
+ },
+ "9957db46-65d0-4fba-b483-37da7d729845:8": {
+  "facades": 1,
+  "near": 3,
+  "opp": false,
+  "wall": "neighbor_bedroom"
+ },
+ "9957db46-65d0-4fba-b483-37da7d729845:9": {
+  "facades": 2,
+  "near": 3,
+  "opp": false,
+  "wall": "neighbor_living"
+ },
+ "9957db46-65d0-4fba-b483-37da7d729845:10": {
+  "facades": 1,
+  "near": 3,
+  "opp": true,
+  "wall": "neighbor_bedroom"
+ },
+ "9957db46-65d0-4fba-b483-37da7d729845:11": {
+  "facades": 2,
+  "near": 3,
+  "opp": true,
+  "wall": "neighbor_living"
+ },
+ "9957db46-65d0-4fba-b483-37da7d729845:12": {
+  "facades": 1,
+  "near": 1,
+  "opp": false,
+  "wall": "neighbor_bedroom"
+ },
+ "9957db46-65d0-4fba-b483-37da7d729845:13": {
+  "facades": 1,
+  "near": 1,
+  "opp": false,
+  "wall": "neighbor_bedroom"
+ },
+ "561b8838-1126-4685-82ec-59113bae3833:1": {
+  "facades": 2,
+  "near": 1,
+  "opp": false,
+  "wall": "outer"
+ },
+ "561b8838-1126-4685-82ec-59113bae3833:2": {
+  "facades": 1,
+  "near": 1,
+  "opp": false,
+  "wall": "neighbor_bedroom"
+ },
+ "561b8838-1126-4685-82ec-59113bae3833:3": {
+  "facades": 2,
+  "near": 1,
+  "opp": true,
+  "wall": "outer"
+ },
+ "561b8838-1126-4685-82ec-59113bae3833:4": {
+  "facades": 2,
+  "near": 2,
+  "opp": true,
+  "wall": "outer"
+ },
+ "561b8838-1126-4685-82ec-59113bae3833:5": {
+  "facades": 1,
+  "near": 2,
+  "opp": false,
+  "wall": "neighbor_bedroom"
+ },
+ "561b8838-1126-4685-82ec-59113bae3833:6": {
+  "facades": 1,
+  "near": 2,
+  "opp": false,
+  "wall": "neighbor_living"
+ },
+ "561b8838-1126-4685-82ec-59113bae3833:7": {
+  "facades": 1,
+  "near": 2,
+  "opp": false,
+  "wall": "neighbor_bedroom"
+ },
+ "561b8838-1126-4685-82ec-59113bae3833:8": {
+  "facades": 2,
+  "near": 1,
+  "opp": false,
+  "wall": "outer"
+ },
+ "6b903d16-d1ba-49e8-b41a-0bdd9dec77b5:1": {
+  "facades": 2,
+  "near": 1,
+  "opp": false
+ },
+ "6b903d16-d1ba-49e8-b41a-0bdd9dec77b5:2": {
+  "facades": 1,
+  "near": 1,
+  "opp": false
+ },
+ "6b903d16-d1ba-49e8-b41a-0bdd9dec77b5:3": {
+  "facades": 2,
+  "near": 1,
+  "opp": false
+ },
+ "6b903d16-d1ba-49e8-b41a-0bdd9dec77b5:4": {
+  "facades": 2,
+  "near": 1,
+  "opp": false
+ },
+ "6b903d16-d1ba-49e8-b41a-0bdd9dec77b5:5": {
+  "facades": 1,
+  "near": 2,
+  "opp": false
+ },
+ "6b903d16-d1ba-49e8-b41a-0bdd9dec77b5:6": {
+  "facades": 1,
+  "near": 2,
+  "opp": false
+ },
+ "6b903d16-d1ba-49e8-b41a-0bdd9dec77b5:7": {
+  "facades": 2,
+  "near": 1,
+  "opp": false
+ },
+ "3cce9ecc-d8d3-40a4-9f17-39d8813e17be:1": {
+  "facades": 2,
+  "near": 1,
+  "opp": true,
+  "wall": "outer"
+ },
+ "3cce9ecc-d8d3-40a4-9f17-39d8813e17be:2": {
+  "facades": 1,
+  "near": 1,
+  "opp": true,
+  "wall": "neighbor_living"
+ },
+ "3cce9ecc-d8d3-40a4-9f17-39d8813e17be:3": {
+  "facades": 2,
+  "near": 1,
+  "opp": true,
+  "wall": "neighbor_living"
+ },
+ "3cce9ecc-d8d3-40a4-9f17-39d8813e17be:4": {
+  "facades": 1,
+  "near": 1,
+  "opp": true,
+  "wall": "neighbor_bedroom"
+ },
+ "3cce9ecc-d8d3-40a4-9f17-39d8813e17be:5": {
+  "facades": 2,
+  "near": 1,
+  "opp": false,
+  "wall": "corridor"
+ },
+ "3cce9ecc-d8d3-40a4-9f17-39d8813e17be:6": {
+  "facades": 1,
+  "near": 1,
+  "opp": true,
+  "wall": "neighbor_bedroom"
+ },
+ "3cce9ecc-d8d3-40a4-9f17-39d8813e17be:7": {
+  "facades": 2,
+  "near": 1,
+  "opp": true,
+  "wall": "neighbor_bedroom"
+ },
+ "c031aae6-29d8-4e9d-9059-7f8e99f88600:1": {
+  "facades": 2,
+  "near": 1,
+  "opp": true,
+  "wall": "neighbor_bedroom"
+ },
+ "c031aae6-29d8-4e9d-9059-7f8e99f88600:2": {
+  "facades": 2,
+  "near": 2,
+  "opp": true,
+  "wall": "outer"
+ },
+ "c031aae6-29d8-4e9d-9059-7f8e99f88600:3": {
+  "facades": 1,
+  "near": 1,
+  "opp": true,
+  "wall": "outer"
+ },
+ "c031aae6-29d8-4e9d-9059-7f8e99f88600:4": {
+  "facades": 2,
+  "near": 1,
+  "opp": true,
+  "wall": "outer"
+ },
+ "c031aae6-29d8-4e9d-9059-7f8e99f88600:5": {
+  "facades": 1,
+  "near": 1,
+  "opp": false,
+  "wall": "neighbor_living"
+ },
+ "c031aae6-29d8-4e9d-9059-7f8e99f88600:6": {
+  "facades": 2,
+  "near": 1,
+  "opp": false,
+  "wall": "neighbor_living"
+ },
+ "c031aae6-29d8-4e9d-9059-7f8e99f88600:7": {
+  "facades": 1,
+  "near": 2,
+  "opp": true,
+  "wall": "outer"
+ },
+ "c031aae6-29d8-4e9d-9059-7f8e99f88600:8": {
+  "facades": 1,
+  "near": 1,
+  "opp": true,
+  "wall": "neighbor_bedroom"
+ },
+ "c031aae6-29d8-4e9d-9059-7f8e99f88600:9": {
+  "facades": 1,
+  "near": 2,
+  "opp": true,
+  "wall": "neighbor_bedroom"
+ },
+ "7093215f-bcb3-4f97-80fe-354ecb0e9c51:1": {
+  "facades": 2,
+  "near": 1,
+  "opp": true,
+  "wall": "outer"
+ },
+ "7093215f-bcb3-4f97-80fe-354ecb0e9c51:2": {
+  "facades": 1,
+  "near": 1,
+  "opp": false,
+  "wall": "neighbor_bedroom"
+ },
+ "7093215f-bcb3-4f97-80fe-354ecb0e9c51:5": {
+  "facades": 1,
+  "near": 2,
+  "opp": false,
+  "wall": "neighbor_living"
+ },
+ "7093215f-bcb3-4f97-80fe-354ecb0e9c51:6": {
+  "facades": 1,
+  "near": 2,
+  "opp": false,
+  "wall": "neighbor_bedroom"
+ },
+ "7093215f-bcb3-4f97-80fe-354ecb0e9c51:7": {
+  "facades": 2,
+  "near": 1,
+  "opp": true,
+  "wall": "outer"
+ },
+ "b42cb203-60e9-446a-973a-66a44f3a26c7:2": {
+  "facades": 2,
+  "near": 2,
+  "opp": false,
+  "wall": "outer"
+ },
+ "b42cb203-60e9-446a-973a-66a44f3a26c7:4": {
+  "facades": 2,
+  "near": 2,
+  "opp": false,
+  "wall": "neighbor_living"
+ },
+ "b42cb203-60e9-446a-973a-66a44f3a26c7:10": {
+  "facades": 1,
+  "near": 1,
+  "opp": false,
+  "wall": "neighbor_bedroom"
+ }
+};
 
 /*
  * lm-podbor — «Подбор квартиры под вашу жизнь»: цель покупки → кто будет жить → что важно → типы квартир
@@ -1341,6 +1781,8 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
     var t = r.type;
     var med = M.median(r.flats.map(function (f) { return f.price; }));
     var anyLight = r.flats.some(function (f) { return f.light; });
+    var anyWall = r.flats.some(function (f) { return f.wall; });
+    var anyEntrance = r.flats.some(function (f) { return f.entrance; });
     var aMin = Math.min.apply(null, r.flats.map(function (f) { return f.area; }));
     var aMax = Math.max.apply(null, r.flats.map(function (f) { return f.area; }));
     var pMin = Math.min.apply(null, r.flats.map(function (f) { return f.price; }));
@@ -1353,8 +1795,8 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
         '<p class="lmp__type-price">' + priceRange(pMin, pMax) + '</p>' +
         '<p class="lmp__type-meta"><span>' + esc(t.complex) + '</span></p></div>' +
       '</div>' +
-      '<p class="lmp__panel-lead">Планировка та же, а квартиры разные. Сравнили этаж, тишину, пыль' + (anyLight ? ', свет' : '') + ' и цену под ваш запрос.</p>' +
-      '<ol class="lmp__flats">' + r.flats.map(function (f, i) { return flatRow(f, i === 0, r.best, med, anyLight, i === 0 ? r.why : ''); }).join('') + '</ol>';
+      '<p class="lmp__panel-lead">Планировка та же, а квартиры разные. Сравнили этаж, тишину, пыль' + (anyLight ? ', свет' : '') + (anyWall ? ', соседей за стеной спальни' : '') + (anyEntrance ? ', вход' : '') + ' и цену под ваш запрос.</p>' +
+      '<ol class="lmp__flats">' + r.flats.map(function (f, i) { return flatRow(f, i === 0, r.best, med, { light: anyLight, wall: anyWall, entrance: anyEntrance }, i === 0 ? r.why : ''); }).join('') + '</ol>';
     drawer.hidden = false;
     document.documentElement.classList.add('lmp-lock');
     panel.scrollTop = 0;
@@ -1365,7 +1807,7 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
     return '<span class="lmp__bar"><i style="width:' + Math.round(score * 100) + '%"></i></span>';
   }
 
-  function flatRow(f, isBest, best, med, anyLight, why) {
+  function flatRow(f, isBest, best, med, show, why) {
     var url = flatUrl(f);
     var diff = isBest ? '' : diffText(f, best);
     var dp = med ? Math.round((f.price / med - 1) * 100) : 0;
@@ -1381,7 +1823,9 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
       '<dl class="lmp__factors">' +
         '<div><dt>Тишина</dt><dd>' + f.noise.label + bar(f.noise.score) + '</dd></div>' +
         '<div><dt>Пыль</dt><dd>' + f.dust.label + bar(f.dust.score) + '</dd></div>' +
-        (anyLight ? '<div><dt>Свет</dt><dd>' + (f.light ? f.light.label + bar(f.light.score) : 'Не указано') + '</dd></div>' : '') +
+        (show.light ? '<div><dt>Свет</dt><dd>' + (f.light ? f.light.label + bar(f.light.score) : 'Не указано') + '</dd></div>' : '') +
+        (show.wall ? '<div><dt>За стеной спальни</dt><dd>' + (f.wall ? f.wall.label + bar(f.wall.score) : 'Не указано') + '</dd></div>' : '') +
+        (show.entrance ? '<div><dt>Вход</dt><dd>' + (f.entrance ? f.entrance.label + bar(f.entrance.score) : 'Не указано') + '</dd></div>' : '') +
         '<div><dt>Отделка</dt><dd>' + esc(f.finishing ? f.finishing.charAt(0).toUpperCase() + f.finishing.slice(1) : 'Не указано') + '</dd></div>' +
         (f.completion ? '<div><dt>Сдача</dt><dd>' + esc(f.completion) + '</dd></div>' : '') +
       '</dl>' +
@@ -1399,6 +1843,8 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
     if (df) out.push((df > 0 ? 'выше' : 'ниже') + ' на ' + plural(Math.abs(df), 'этаж', 'этажа', 'этажей'));
     if (f.noise.label !== best.noise.label) out.push(f.noise.score > best.noise.score ? 'тише' : 'шумнее');
     if (f.dust.label !== best.dust.label) out.push(f.dust.score > best.dust.score ? 'меньше пыли' : 'больше пыли');
+    if (f.wall && best.wall && f.wall.label !== best.wall.label) out.push(f.wall.score > best.wall.score ? 'тише за стеной спальни' : 'шумнее за стеной спальни');
+    if (f.light && best.light && f.light.label !== best.light.label) out.push(f.light.score > best.light.score ? 'светлее' : 'темнее');
     if (f.finishGrade != null && best.finishGrade != null && f.finishGrade !== best.finishGrade) out.push(f.finishGrade > best.finishGrade ? 'отделка лучше' : 'отделка проще');
     var dp = f.price - best.price;
     if (Math.abs(dp) >= 50000) out.push(dp < 0 ? '<b class="is-good">дешевле на ' + rub(-dp) + '</b>' : 'дороже на ' + rub(dp));
@@ -1501,4 +1947,4 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
 });
 
 } catch (e) { console.error('[lite-mods] ошибка в патче lm-podbor', e); }
-window.LiteMods && LiteMods.loaded({"version": "20261015183252"});
+window.LiteMods && LiteMods.loaded({"version": "20261015183841"});
