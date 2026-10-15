@@ -9,6 +9,9 @@
     },
     "MortgageCalculator__ClassicType2": {
       "enabled": false
+    },
+    "lm-podbor": {
+      "enabled": false
     }
   }
 }

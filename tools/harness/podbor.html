@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Стенд: подбор квартиры</title>
+<link rel="stylesheet" href="../../blocks/lm-podbor/style.css">
+<style>
+  /* Стенд: тема как на ohqmp.dev-lite.ru. Данные — снимок API сайта в tools/harness/data/ */
+  body { margin: 0; background: #FCFCFC; font-family: Montserrat, -apple-system, system-ui, sans-serif; }
+  .site { max-width: 1280px; margin: 0 auto; padding: 0 16px;
+    --ui-main-color: #6A31EBff; --ui-main-color-64: #6A31EBa3; --ui-main-color-12: #6A31EB1e; --ui-main-color-8: #6A31EB14;
+    --ui-font-black-color: #07071Fff; --ui-font-black-color-64: #07071Fa3; --ui-font-black-color-48: #07071F7a;
+    --ui-font-black-color-12: #07071F1e; --ui-font-black-color-8: #07071F14; --ui-font-black-color-4: #07071F0a;
+    --ui-base-white-color: #FCFCFCff; --ui-title-font-family: Montserrat, system-ui, sans-serif; --ui-main-font-family: Montserrat, system-ui, sans-serif; }
+</style>
+</head>
+<body>
+<div class="site"><div class="lm-podbor"></div></div>
+<script>
+  // Мок окружения Ида.Лайт: $nuxt, страницы сайта, CDN картинок, API каталога из файлов
+  window.$nuxt = {
+    $store: { state: { site: { project: { id: 'c87f777b-1970-486c-8fb5-fcd527e9d678' }, pages: [
+      { type: 'flat_detail', complex_id: 'd11c6fc7-a542-494d-bb1c-44fd62492f6f', path: 'https://ohqmp.dev-lite.ru/complexes/grafit/flats/*' },
+      { type: 'flat_detail', complex_id: '73083f16-07f3-48a1-8eb9-fb6919914771', path: 'https://ohqmp.dev-lite.ru/complexes/zhk-parklaif/flats/*' },
+      { type: 'flat_detail', complex_id: '0b92e5fd-9782-4459-8245-154a6b767d33', path: 'https://ohqmp.dev-lite.ru/complexes/olkhovskii-park/flats/*' },
+      { type: 'flat_detail', complex_id: 'bba02079-028e-4f6f-bc21-71fe978fa6d7', path: 'https://ohqmp.dev-lite.ru/complexes/dominanta/flats/*' },
+      { type: 'flat_detail', complex_id: '83685d6d-ce29-4685-930e-d1a99e1fe071', path: 'https://ohqmp.dev-lite.ru/complexes/forum-siti/flats/*' },
+      { type: 'flat_detail', complex_id: '0777ba16-7af0-4b06-a5ef-be6c851fc2b2', path: 'https://ohqmp.dev-lite.ru/complexes/forma/flats/*' }
+    ] } } },
+    $static: { gen: function (p) { return 'https://cdn.idalite.ru/s/' + String(p).replace(/^\//, ''); } }
+  };
+  var flatsP = fetch('data/flats.json').then(function (r) { return r.json(); });
+  var realFetch = window.fetch.bind(window);
+  window.fetch = function (url, opts) {
+    var u = new URL(url, location.href);
+    var json = function (d) { return Promise.resolve(new Response(JSON.stringify(d), { headers: { 'Content-Type': 'application/json' } })); };
+    if (u.pathname.endsWith('/api/realty-filter/residential/real-estates')) {
+      var off = +u.searchParams.get('offset') || 0, lim = +u.searchParams.get('limit') || 100;
+      return flatsP.then(function (a) { return json(a.slice(off, off + lim)); });
+    }
+    if (u.pathname.endsWith('/api/realty-filter/residential/sections')) {
+      return realFetch('data/s_' + u.searchParams.get('complex_id') + '.json');
+    }
+    return realFetch(url, opts);
+  };
+  window.LiteMods = { register: function (name, fn) {
+    document.querySelectorAll('.' + name).forEach(function (root) {
+      fn(root, { root: root, reducedMotion: false, initialLoad: false,
+        $: function (s) { return root.querySelector(s); }, $$: function (s) { return [].slice.call(root.querySelectorAll(s)); },
+        log: function () { console.info.apply(console, ['[podbor]'].concat([].slice.call(arguments))); } });
+    });
+  } };
+</script>
+<script src="../../blocks/lm-podbor/model.js"></script>
+<script src="../../blocks/lm-podbor/script.js"></script>
+</body>
+</html>

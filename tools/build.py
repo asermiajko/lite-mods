@@ -9,7 +9,7 @@
   dist/<hostname>.preview.js  — то же без комментариев и работает поверх ?nomods=1 (превью агента)
 
 Запуск: python3 tools/build.py [hostname]        (без аргумента — все сайты)
-        python3 tools/build.py --preview [hostname]  — дополнительно собрать превью
+        python3 tools/build.py --preview [hostname] [--only <блок>]  — превью (--only: один блок, даже выключенный)
 """
 import json
 import re
@@ -26,17 +26,22 @@ def strip(code: str) -> str:
     return "\n".join(line.strip() for line in code.splitlines() if line.strip())
 
 
-def site_patches(site_file: Path, compact: bool = False) -> str:
+def site_patches(site_file: Path, compact: bool = False, only: str = None) -> str:
     manifest = json.loads(site_file.read_text())
     version = manifest.get("version", "")
     parts = [f"/* lite-mods: {site_file.stem}, версия {version} */"]
     for name, cfg in manifest.get("blocks", {}).items():
-        if cfg.get("enabled") is False:
+        # --only <блок>: превью одного блока, даже выключенного в манифесте
+        if only and name != only:
+            continue
+        if cfg.get("enabled") is False and not only:
             continue
         block_dir = ROOT / "blocks" / cfg.get("path", name)
-        css_file, js_file = block_dir / "style.css", block_dir / "script.js"
+        css_file = block_dir / "style.css"
         css = css_file.read_text() if cfg.get("css", True) and css_file.exists() else ""
-        js = js_file.read_text() if cfg.get("js", True) and js_file.exists() else ""
+        # model.js (если есть) — общие функции блока, грузится перед script.js
+        js_files = [block_dir / n for n in ("model.js", "script.js") if (block_dir / n).exists()]
+        js = "\n".join(p.read_text() for p in js_files) if cfg.get("js", True) else ""
         if compact:
             css, js = strip(css), strip(js)
         parts.append(f"window.LiteMods && LiteMods.define({json.dumps(name)}, {{ css: {json.dumps(css, ensure_ascii=False)} }});")
@@ -47,7 +52,7 @@ def site_patches(site_file: Path, compact: bool = False) -> str:
     return "\n".join(parts) + "\n"
 
 
-def build(site_file: Path, preview: bool = False) -> list:
+def build(site_file: Path, preview: bool = False, only: str = None) -> list:
     host = site_file.stem
     out = []
 
@@ -63,7 +68,7 @@ def build(site_file: Path, preview: bool = False) -> list:
 
     if preview:
         prev = ROOT / "dist" / f"{host}.preview.js"
-        prev.write_text("window.__LITE_MODS_INLINE__ = 'preview';\n" + strip(loader) + "\n" + site_patches(site_file, compact=True))
+        prev.write_text("window.__LITE_MODS_INLINE__ = 'preview';\n" + strip(loader) + "\n" + site_patches(site_file, compact=True, only=only))
         out.append(prev)
     return out
 
@@ -71,10 +76,14 @@ def build(site_file: Path, preview: bool = False) -> list:
 if __name__ == "__main__":
     args = sys.argv[1:]
     preview = "--preview" in args
+    only = None
+    if "--only" in args:
+        only = args[args.index("--only") + 1]
+        args = [a for a in args if a not in ("--only", only)]
     args = [a for a in args if a != "--preview"]
     sites = sorted((ROOT / "sites").glob("*.json"))
     if args:
         sites = [s for s in sites if s.stem == args[0]]
     for site in sites:
-        for path in build(site, preview):
+        for path in build(site, preview, only):
             print(path.relative_to(ROOT))
