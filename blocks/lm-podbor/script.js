@@ -496,6 +496,10 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
     if (act === 'need') {
       var i = state.needs.indexOf(v);
       if (i >= 0) state.needs.splice(i, 1); else state.needs.push(v);
+      // Порядок = вес (первые три важнее): критерии пресета держим в его порядке, добавленные — следом
+      var preset = (sub() || {}).needs || [];
+      state.needs = preset.filter(function (id) { return state.needs.indexOf(id) >= 0; })
+        .concat(state.needs.filter(function (id) { return preset.indexOf(id) < 0; }));
       [].forEach.call(root.querySelectorAll('[data-act=need][data-value="' + v + '"]'), function (b) {
         b.classList.toggle('is-active', i < 0);
         b.setAttribute('aria-pressed', i < 0);
