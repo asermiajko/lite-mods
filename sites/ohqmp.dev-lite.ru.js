@@ -1,4 +1,4 @@
-/* lite-mods: ohqmp.dev-lite.ru, версия 20261015154547 */
+/* lite-mods: ohqmp.dev-lite.ru, версия 20261015181648 */
 window.LiteMods && LiteMods.define("InfraBlock__ClassicType5", { css: "/*\n * InfraBlock__ClassicType5 — блок «Инфраструктура»\n * Всё строго внутри .InfraBlock__ClassicType5. Цвета — из переменных темы --ui-*.\n * Скрытие «до появления» работает только при [data-lm-ready] (его ставит script.js).\n */\n\n.InfraBlock__ClassicType5 {\n  --lm-ease: cubic-bezier(.2, .7, .1, 1);\n  --lm-accent: var(--ui-main-color, #6A31EB);\n}\n\n/* ---------- 1. Табы категорий: каскад + живой hover ---------- */\n\n.InfraBlock__ClassicType5[data-lm-ready] .InfraBlock__ClassicType5__Control .ClassicTabs__item {\n  opacity: 0;\n  transform: translateY(14px) scale(.96);\n  transition:\n    opacity .5s var(--lm-ease),\n    transform .6s var(--lm-ease);\n  transition-delay: calc(var(--lm-i, 0) * 40ms + 150ms);\n}\n\n.InfraBlock__ClassicType5[data-lm-ready] .InfraBlock__ClassicType5__Control[data-lm-in] .ClassicTabs__item {\n  opacity: 1;\n  transform: none;\n}\n\n.InfraBlock__ClassicType5 .ClassicTabs__item .IdaButton {\n  transition:\n    background-color .3s, color .3s,\n    transform .35s var(--lm-ease),\n    box-shadow .35s var(--lm-ease);\n}\n\n.InfraBlock__ClassicType5 .ClassicTabs__item .IdaButton:not(.--is-active):hover {\n  transform: translateY(-2px);\n  box-shadow: 0 8px 20px -8px var(--ui-main-color-32, rgba(106, 49, 235, .32));\n}\n\n.InfraBlock__ClassicType5 .ClassicTabs__item .IdaButton svg {\n  transition: transform .4s var(--lm-ease);\n}\n\n.InfraBlock__ClassicType5 .ClassicTabs__item .IdaButton:hover svg {\n  transform: scale(1.18) rotate(-6deg);\n}\n\n/* ---------- 2. Карта: раскрывается из «карточки» на всю ширину ---------- */\n\n.InfraBlock__ClassicType5[data-lm-ready] .InfraBlock__ClassicType5__Map {\n  clip-path: inset(6% 7% round var(--map-border-radius, 24px));\n  transition: clip-path 1.2s var(--lm-ease);\n}\n\n.InfraBlock__ClassicType5[data-lm-ready] .InfraBlock__ClassicType5__Map[data-lm-in] {\n  clip-path: inset(0 0 round 0);\n}\n\n/* ---------- 3. Карточки «Элемент N»: линия-акцент + каскад ---------- */\n\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage {\n  position: relative;\n  padding-top: 20px;\n}\n\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage::before,\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage::after {\n  content: '';\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  height: 2px;\n  border-radius: 2px;\n}\n\n/* серая «дорожка» */\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage::before {\n  background: var(--ui-font-black-color-8, rgba(7, 7, 31, .08));\n}\n\n/* акцентная линия, прорисовывается слева направо */\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage::after {\n  background: var(--lm-accent);\n  transform-origin: left center;\n  transform: scaleX(.18);\n  transition: transform .7s var(--lm-ease);\n}\n\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage:hover::after {\n  transform: scaleX(1);\n}\n\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage h3 {\n  transition: color .3s, transform .45s var(--lm-ease);\n}\n\n.InfraBlock__ClassicType5 .InfraBlock__ClassicType5__Advantage:hover h3 {\n  color: var(--lm-accent);\n  transform: translateX(4px);\n}\n\n[data-lm-ready] .InfraBlock__ClassicType5__Advantage {\n  opacity: 0;\n  transform: translateY(24px);\n  transition:\n    opacity .6s var(--lm-ease),\n    transform .8s var(--lm-ease);\n  transition-delay: calc(var(--lm-i, 0) * 90ms);\n}\n\n[data-lm-ready] [data-lm-in] .InfraBlock__ClassicType5__Advantage {\n  opacity: 1;\n  transform: none;\n}\n\n/* при появлении линия-акцент «пробегает» до своей базовой длины */\n[data-lm-ready] .InfraBlock__ClassicType5__Advantage::after {\n  transform: scaleX(0);\n  transition-delay: calc(var(--lm-i, 0) * 90ms + 250ms);\n}\n\n[data-lm-ready] [data-lm-in] .InfraBlock__ClassicType5__Advantage::after {\n  transform: scaleX(.18);\n}\n\n[data-lm-ready] [data-lm-in] .InfraBlock__ClassicType5__Advantage:hover::after {\n  transform: scaleX(1);\n  transition-delay: 0s;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .InfraBlock__ClassicType5 *,\n  .InfraBlock__ClassicType5 *::before,\n  .InfraBlock__ClassicType5 *::after {\n    transition: none !important;\n  }\n}\n" });
 try {
 /*
@@ -238,7 +238,7 @@ window.LiteMods && LiteMods.register('ObjectGalleryA__ClassicType23', function (
 });
 
 } catch (e) { console.error('[lite-mods] ошибка в патче ObjectGalleryA__ClassicType23', e); }
-window.LiteMods && LiteMods.define("lm-podbor", { css: "/*\n * lm-podbor — в дизайн-системе сайта: сетка и отступы как у штатных блоков (--ui-col, --ui-unit,\n * брейкпоинт 812px), типографика блока (заголовок ui-unit×8 / текст ×4), токены цвета --ui-*,\n * карточки r=20 с мягкой тенью, кнопки 48px r=8, «пилюли» r=500.\n */\n\n.lm-podbor {\n  --lmp-main: var(--ui-main-color, #6A31EB);\n  --lmp-main-12: var(--ui-main-color-12, rgba(106, 49, 235, .12));\n  --lmp-main-8: var(--ui-main-color-8, rgba(106, 49, 235, .08));\n  --lmp-ink: var(--ui-font-black-color, #07071F);\n  --lmp-ink-64: var(--ui-font-black-color-64, rgba(7, 7, 31, .64));\n  --lmp-ink-48: var(--ui-font-black-color-48, rgba(7, 7, 31, .48));\n  --lmp-ink-12: var(--ui-font-black-color-12, rgba(7, 7, 31, .12));\n  --lmp-ink-8: var(--ui-font-black-color-8, rgba(7, 7, 31, .08));\n  --lmp-ink-4: var(--ui-font-black-color-4, rgba(7, 7, 31, .04));\n  --lmp-white: var(--ui-base-white-color, #FCFCFC);\n  --lmp-title: var(--ui-title-font-family, inherit);\n  --lmp-text: var(--ui-main-font-family, inherit);\n  --lmp-shadow: 0 4px 24px rgba(7, 7, 31, .06);\n  --lmp-ease: cubic-bezier(.2, .7, .1, 1);\n  --lmp-good: #1F9D55;\n  font-family: var(--lmp-text);\n  color: var(--lmp-ink);\n}\n\n.lm-podbor *,\n.lm-podbor *::before,\n.lm-podbor *::after {\n  box-sizing: border-box;\n}\n\n.lm-podbor button {\n  font: inherit;\n  color: inherit;\n  cursor: pointer;\n}\n\n/* ---------- Сетка и отступы — как у штатных блоков сайта ---------- */\n/* wrapper: padding-block ui-unit×12 (моб. ×6), фон base-white; container: ui-col×32 по центру (моб. 100% − ui-unit×8) */\n\n.lm-podbor .lmp {\n  --u: var(--ui-unit, 4px);\n  --col: var(--ui-col, 40px);\n  padding-block: var(--ui-padding-top, calc(var(--u) * 12)) var(--ui-padding-bottom, calc(var(--u) * 12));\n  background-color: var(--lmp-white);\n}\n\n.lm-podbor .lmp__container {\n  width: calc(var(--col) * 32);\n  margin: 0 auto;\n}\n\n/* ---------- Шапка: «заголовок | текст», как у штатных блоков ---------- */\n\n.lm-podbor .lmp__head {\n  display: flex;\n  align-items: flex-start;\n  column-gap: calc(var(--col) * 2);\n}\n\n.lm-podbor .lmp__title {\n  flex: none;\n  width: calc(var(--col) * 10);\n  margin: 0;\n  font-family: var(--lmp-title);\n  font-size: calc(var(--u) * 8);\n  font-weight: 400;\n  line-height: 120%;\n  word-break: break-word;\n  color: var(--ui-base-black-color, var(--lmp-ink));\n}\n\n.lm-podbor .lmp__lead {\n  max-width: calc(var(--col) * 13);\n  margin: 0 0 0 auto;\n  font-size: calc(var(--u) * 4);\n  line-height: 150%;\n  color: var(--ui-base-black-color-48, var(--lmp-ink-48));\n}\n\n.lm-podbor .lmp__steps {\n  display: flex;\n  gap: calc(var(--u) * 2);\n  margin: calc(var(--u) * 10) 0 0;\n  padding: 0;\n  list-style: none;\n  counter-reset: lmp-step;\n  overflow-x: auto;\n  scrollbar-width: none;\n}\n\n.lm-podbor .lmp__steps::-webkit-scrollbar {\n  display: none;\n}\n\n.lm-podbor .lmp__steps li {\n  counter-increment: lmp-step;\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  flex: none;\n  height: 40px;\n  padding: 0 18px 0 8px;\n  border-radius: 500px;\n  background: var(--lmp-white);\n  box-shadow: var(--lmp-shadow);\n  font-size: 14px;\n  color: var(--lmp-ink-48);\n  transition: color .3s, background-color .3s;\n}\n\n.lm-podbor .lmp__steps li::before {\n  content: counter(lmp-step);\n  display: grid;\n  place-items: center;\n  width: 26px;\n  height: 26px;\n  border-radius: 50%;\n  background: var(--lmp-ink-4);\n  font-size: 12px;\n}\n\n.lm-podbor .lmp__steps li.is-current {\n  background: var(--lmp-ink);\n  color: var(--lmp-white);\n}\n\n.lm-podbor .lmp__steps li.is-current::before {\n  background: var(--lmp-main);\n  color: #fff;\n}\n\n.lm-podbor .lmp__steps li.is-done {\n  color: var(--lmp-ink);\n}\n\n.lm-podbor .lmp__steps li.is-done::before {\n  content: '✓';\n  background: var(--lmp-main-12);\n  color: var(--lmp-main);\n}\n\n/* ---------- Шаги ---------- */\n\n.lm-podbor .lmp__view {\n  margin-top: calc(var(--u) * 10);\n  animation: lmp-in .5s var(--lmp-ease);\n}\n\n@keyframes lmp-in {\n  from { opacity: 0; transform: translateY(12px); }\n}\n\n.lm-podbor .lmp__loading {\n  padding: 60px 0;\n  color: var(--lmp-ink-48);\n}\n\n.lm-podbor .lmp__q {\n  margin: 0 0 calc(var(--u) * 6);\n  font-family: var(--lmp-title);\n  font-size: calc(var(--u) * 6);\n  font-weight: 400;\n  line-height: 120%;\n}\n\n.lm-podbor .lmp__sub {\n  margin: calc(var(--u) * 8) 0 calc(var(--u) * 3);\n  font-family: var(--lmp-title);\n  font-size: calc(var(--u) * 4);\n  font-weight: 400;\n}\n\n.lm-podbor .lmp__hint {\n  margin: calc(var(--u) * -3) 0 calc(var(--u) * 5);\n  font-size: calc(var(--u) * 3.5);\n  line-height: 150%;\n  color: var(--lmp-ink-48);\n}\n\n.lm-podbor .lmp__back {\n  margin: 0 0 16px;\n  padding: 0;\n  border: 0;\n  background: none;\n  font-size: 14px;\n  color: var(--lmp-ink-48);\n  transition: color .2s;\n}\n\n.lm-podbor .lmp__back:hover {\n  color: var(--lmp-main);\n}\n\n.lm-podbor .lmp__cards {\n  display: grid;\n  gap: 16px;\n}\n\n.lm-podbor .lmp__cards--4 { grid-template-columns: repeat(4, 1fr); }\n.lm-podbor .lmp__cards--3 { grid-template-columns: repeat(3, 1fr); }\n\n.lm-podbor .lmp__card {\n  position: relative;\n  display: flex;\n  flex-direction: column;\n  align-items: flex-start;\n  gap: 8px;\n  min-height: 180px;\n  padding: 28px 28px 24px;\n  border: 1px solid transparent;\n  border-radius: 20px;\n  background: var(--lmp-white);\n  box-shadow: var(--lmp-shadow);\n  text-align: left;\n  transition: transform .35s var(--lmp-ease), box-shadow .35s var(--lmp-ease), border-color .25s;\n}\n\n.lm-podbor .lmp__card:hover {\n  transform: translateY(-4px);\n  box-shadow: 0 16px 40px -16px rgba(7, 7, 31, .25);\n}\n\n.lm-podbor .lmp__card.is-selected {\n  border-color: var(--lmp-main);\n}\n\n.lm-podbor .lmp__card-title {\n  font-family: var(--lmp-title);\n  font-size: 22px;\n  line-height: 1.2;\n}\n\n.lm-podbor .lmp__card-text {\n  font-size: 14px;\n  line-height: 20px;\n  color: var(--lmp-ink-48);\n}\n\n.lm-podbor .lmp__card-arrow {\n  margin-top: auto;\n  display: grid;\n  place-items: center;\n  width: 40px;\n  height: 40px;\n  border-radius: 50%;\n  background: var(--lmp-main-8);\n  color: var(--lmp-main);\n  transition: background-color .25s, color .25s, transform .35s var(--lmp-ease);\n}\n\n.lm-podbor .lmp__card:hover .lmp__card-arrow {\n  background: var(--lmp-main);\n  color: #fff;\n  transform: translateX(4px);\n}\n\n/* ---------- Чипы, сегменты, ползунок ---------- */\n\n.lm-podbor .lmp__chips {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 8px;\n}\n\n.lm-podbor .lmp__chip {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  height: 40px;\n  padding: 0 18px;\n  border: 1px solid var(--lmp-ink-8);\n  border-radius: 500px;\n  background: var(--lmp-white);\n  font-size: 14px;\n  transition: background-color .2s, color .2s, border-color .2s, transform .2s var(--lmp-ease);\n}\n\n.lm-podbor button.lmp__chip:hover {\n  border-color: var(--lmp-main);\n}\n\n.lm-podbor .lmp__chip.is-on {\n  border-color: var(--lmp-main);\n  background: var(--lmp-main);\n  color: #fff;\n}\n\n.lm-podbor .lmp__chip small {\n  font-size: 11px;\n  opacity: .7;\n}\n\n.lm-podbor .lmp__chip.is-disabled {\n  opacity: .45;\n  cursor: help;\n}\n\n.lm-podbor .lmp__chips--small .lmp__chip {\n  height: 32px;\n  padding: 0 12px;\n  font-size: 13px;\n}\n\n.lm-podbor .lmp__more {\n  margin-top: 16px;\n}\n\n.lm-podbor .lmp__more summary {\n  display: inline-block;\n  margin-bottom: 12px;\n  font-size: 14px;\n  color: var(--lmp-main);\n  cursor: pointer;\n  list-style: none;\n}\n\n.lm-podbor .lmp__more summary::-webkit-details-marker {\n  display: none;\n}\n\n.lm-podbor .lmp__seg {\n  display: inline-flex;\n  flex-wrap: wrap;\n  gap: 4px;\n  padding: 4px;\n  border-radius: 500px;\n  background: var(--lmp-ink-4);\n}\n\n.lm-podbor .lmp__seg button {\n  height: 40px;\n  padding: 0 18px;\n  border: 0;\n  border-radius: 500px;\n  background: transparent;\n  font-size: 14px;\n  color: var(--lmp-ink-64);\n  transition: background-color .25s, color .25s, box-shadow .25s;\n}\n\n.lm-podbor .lmp__seg button[aria-pressed=\"true\"] {\n  background: var(--lmp-white);\n  color: var(--lmp-ink);\n  box-shadow: 0 2px 8px rgba(7, 7, 31, .08);\n}\n\n.lm-podbor .lmp__seg--small button {\n  height: 32px;\n  padding: 0 14px;\n  font-size: 13px;\n}\n\n.lm-podbor .lmp__range {\n  -webkit-appearance: none;\n  appearance: none;\n  width: 100%;\n  max-width: 520px;\n  height: 4px;\n  border-radius: 4px;\n  background: linear-gradient(var(--lmp-main), var(--lmp-main)) 0 / var(--lmp-p, 100%) 100% no-repeat, var(--lmp-ink-8);\n  outline: none;\n  cursor: pointer;\n}\n\n.lm-podbor .lmp__range::-webkit-slider-thumb {\n  -webkit-appearance: none;\n  width: 20px;\n  height: 20px;\n  border-radius: 50%;\n  border: 4px solid var(--lmp-main);\n  background: #fff;\n  box-shadow: 0 2px 8px rgba(7, 7, 31, .2);\n}\n\n.lm-podbor .lmp__range::-moz-range-thumb {\n  width: 12px;\n  height: 12px;\n  border-radius: 50%;\n  border: 4px solid var(--lmp-main);\n  background: #fff;\n}\n\n.lm-podbor .lmp__actions {\n  margin-top: 40px;\n}\n\n.lm-podbor .lmp__btn {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  height: 48px;\n  padding: 0 32px;\n  border: 1px solid var(--lmp-main);\n  border-radius: 8px;\n  background: var(--lmp-main);\n  color: #fff;\n  font-family: var(--lmp-title);\n  font-size: 14px;\n  text-decoration: none;\n  transition: background-color .25s, color .25s, transform .25s var(--lmp-ease), box-shadow .25s;\n}\n\n.lm-podbor .lmp__btn:hover {\n  transform: translateY(-2px);\n  box-shadow: 0 10px 24px -10px var(--ui-main-color-64, rgba(106, 49, 235, .64));\n}\n\n.lm-podbor .lmp__btn--line {\n  background: transparent;\n  color: var(--lmp-main);\n}\n\n.lm-podbor .lmp__btn--line:hover {\n  background: var(--lmp-main);\n  color: #fff;\n}\n\n.lm-podbor .lmp__btn--small {\n  height: 36px;\n  padding: 0 16px;\n  font-size: 13px;\n}\n\n.lm-podbor .lmp__link {\n  display: block;\n  margin-top: 8px;\n  padding: 0;\n  border: 0;\n  background: none;\n  font-size: 14px;\n  color: var(--lmp-main);\n  text-align: left;\n}\n\n/* ---------- Результаты ---------- */\n\n.lm-podbor .lmp__results {\n  display: grid;\n  grid-template-columns: 280px 1fr;\n  gap: 32px;\n  align-items: start;\n}\n\n.lm-podbor .lmp__results > * {\n  min-width: 0;\n}\n\n.lm-podbor .lmp__summary {\n  position: sticky;\n  top: 96px;\n  padding: 24px;\n  border-radius: 20px;\n  background: var(--lmp-white);\n  box-shadow: var(--lmp-shadow);\n}\n\n.lm-podbor .lmp__summary-label {\n  margin: 0;\n  font-size: 13px;\n  color: var(--lmp-ink-48);\n}\n\n.lm-podbor .lmp__summary-goal {\n  margin: 4px 0 16px;\n  font-family: var(--lmp-title);\n  font-size: 18px;\n  line-height: 1.3;\n}\n\n.lm-podbor .lmp__summary-row {\n  margin: 16px 0 8px;\n  font-size: 14px;\n}\n\n.lm-podbor .lmp__list-head {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 16px;\n  flex-wrap: wrap;\n  margin-bottom: 20px;\n}\n\n.lm-podbor .lmp__list-head p {\n  margin: 0;\n  font-size: 16px;\n  color: var(--lmp-ink-64);\n}\n\n.lm-podbor .lmp__list-head b {\n  color: var(--lmp-ink);\n  font-weight: 500;\n}\n\n.lm-podbor .lmp__grid {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: 16px;\n}\n\n.lm-podbor .lmp__type {\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n  border-radius: 20px;\n  background: var(--lmp-white);\n  box-shadow: var(--lmp-shadow);\n  animation: lmp-in .5s var(--lmp-ease) both;\n  animation-delay: calc(var(--i, 0) * 40ms);\n  transition: transform .35s var(--lmp-ease), box-shadow .35s var(--lmp-ease);\n}\n\n.lm-podbor .lmp__type:hover {\n  transform: translateY(-4px);\n  box-shadow: 0 18px 40px -18px rgba(7, 7, 31, .3);\n}\n\n.lm-podbor .lmp__type-plan {\n  position: relative;\n  display: grid;\n  place-items: center;\n  height: 220px;\n  padding: 20px;\n  background: var(--lmp-ink-4);\n}\n\n.lm-podbor .lmp__type-plan img {\n  max-width: 100%;\n  max-height: 100%;\n  object-fit: contain;\n  mix-blend-mode: multiply;\n}\n\n.lm-podbor .lmp__type-noplan {\n  font-family: var(--lmp-title);\n  font-size: 28px;\n  color: var(--lmp-ink-48);\n}\n\n.lm-podbor .lmp__match {\n  position: absolute;\n  top: 12px;\n  right: 12px;\n  padding: 6px 12px;\n  border-radius: 500px;\n  background: var(--lmp-main);\n  color: #fff;\n  font-size: 13px;\n  font-weight: 500;\n}\n\n.lm-podbor .lmp__type-body {\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n  padding: 20px 24px 24px;\n}\n\n.lm-podbor .lmp__type-title {\n  margin: 0;\n  font-family: var(--lmp-title);\n  font-size: 22px;\n  font-weight: 400;\n}\n\n.lm-podbor .lmp__type-complex {\n  margin: 4px 0 0;\n  font-size: 14px;\n  color: var(--lmp-ink-48);\n}\n\n.lm-podbor .lmp__type-price {\n  display: flex;\n  align-items: baseline;\n  gap: 10px;\n  flex-wrap: wrap;\n  margin: 14px 0 0;\n  font-size: 20px;\n}\n\n.lm-podbor .lmp__type-price small {\n  font-size: 13px;\n  color: var(--lmp-ink-48);\n}\n\n.lm-podbor .lmp__type-meta {\n  margin: 6px 0 0;\n  font-size: 13px;\n  color: var(--lmp-ink-48);\n}\n\n.lm-podbor .lmp__label {\n  margin: 16px 0 8px;\n  font-size: 12px;\n  color: var(--lmp-ink-48);\n  text-transform: uppercase;\n  letter-spacing: .06em;\n}\n\n.lm-podbor .lmp__tags {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 6px;\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n\n.lm-podbor .lmp__tags li {\n  padding: 4px 10px;\n  border-radius: 500px;\n  font-size: 13px;\n}\n\n.lm-podbor .lmp__tags--yes li {\n  background: var(--lmp-main-8);\n  color: var(--lmp-main);\n}\n\n.lm-podbor .lmp__tags--yes li::before {\n  content: '✓ ';\n}\n\n.lm-podbor .lmp__tags--no li {\n  background: var(--lmp-ink-4);\n  color: var(--lmp-ink-64);\n}\n\n.lm-podbor .lmp__type .lmp__btn {\n  margin-top: auto;\n  align-self: stretch;\n}\n\n.lm-podbor .lmp__type-body > .lmp__tags:last-of-type {\n  margin-bottom: 20px;\n}\n\n.lm-podbor .lmp__more-btn {\n  width: 100%;\n  height: 48px;\n  margin-top: 16px;\n  border: 1px solid var(--lmp-ink-8);\n  border-radius: 8px;\n  background: transparent;\n  color: var(--lmp-main);\n}\n\n/* ---------- Панель типа ---------- */\n\n/* Панель живёт в <body> (обёртка .lm-podbor.lmp-portal), поверх липкой шапки сайта */\n.lm-podbor.lmp-portal {\n  position: relative;\n  z-index: 2147483000;\n}\n\n.lm-podbor .lmp__drawer {\n  position: fixed;\n  inset: 0;\n  z-index: 2147483000;\n}\n\n.lm-podbor .lmp__drawer[hidden] {\n  display: none;\n}\n\n.lm-podbor .lmp__drawer-backdrop {\n  position: absolute;\n  inset: 0;\n  background: rgba(7, 7, 31, .4);\n  animation: lmp-fade .3s ease;\n}\n\n@keyframes lmp-fade {\n  from { opacity: 0; }\n}\n\n@keyframes lmp-slide {\n  from { transform: translateX(40px); opacity: 0; }\n}\n\n.lm-podbor .lmp__drawer-panel {\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  width: min(820px, 100%);\n  overflow-y: auto;\n  padding: 32px;\n  background: var(--lmp-white);\n  animation: lmp-slide .45s var(--lmp-ease);\n  outline: none;\n}\n\n.lm-podbor .lmp__close {\n  position: sticky;\n  top: 0;\n  float: right;\n  width: 40px;\n  height: 40px;\n  border: 0;\n  border-radius: 50%;\n  background: var(--lmp-ink-4);\n  font-size: 22px;\n  line-height: 1;\n}\n\n.lm-podbor .lmp__panel-head {\n  display: flex;\n  gap: 20px;\n  align-items: center;\n}\n\n.lm-podbor .lmp__panel-head img {\n  width: 120px;\n  height: 120px;\n  object-fit: contain;\n  padding: 8px;\n  border-radius: 16px;\n  background: var(--lmp-ink-4);\n  mix-blend-mode: multiply;\n}\n\n.lm-podbor .lmp__panel-head h3 {\n  margin: 0;\n  font-family: var(--lmp-title);\n  font-size: 28px;\n  font-weight: 400;\n}\n\n.lm-podbor .lmp__panel-head p {\n  margin: 6px 0 0;\n  color: var(--lmp-ink-48);\n}\n\n.lm-podbor .lmp__panel-lead {\n  margin: 24px 0 20px;\n  font-size: 15px;\n  line-height: 22px;\n  color: var(--lmp-ink-64);\n}\n\n.lm-podbor .lmp__flats {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n\n.lm-podbor .lmp__flat {\n  display: grid;\n  grid-template-columns: 1.1fr 1.6fr .9fr;\n  gap: 16px;\n  align-items: start;\n  padding: 18px 20px;\n  border: 1px solid var(--lmp-ink-8);\n  border-radius: 16px;\n  background: #fff;\n}\n\n.lm-podbor .lmp__flat.is-best {\n  border-color: var(--lmp-main);\n  box-shadow: 0 0 0 1px var(--lmp-main);\n}\n\n.lm-podbor .lmp__badge {\n  display: inline-block;\n  margin-bottom: 8px;\n  padding: 3px 10px;\n  border-radius: 500px;\n  background: var(--lmp-main);\n  color: #fff;\n  font-size: 12px;\n}\n\n.lm-podbor .lmp__flat-floor {\n  margin: 0;\n  font-size: 15px;\n}\n\n.lm-podbor .lmp__flat-floor b {\n  font-weight: 500;\n}\n\n.lm-podbor .lmp__flat-meta,\n.lm-podbor .lmp__flat-diff {\n  margin: 4px 0 0;\n  font-size: 13px;\n  line-height: 18px;\n  color: var(--lmp-ink-48);\n}\n\n.lm-podbor .lmp__flat-diff {\n  margin-top: 10px;\n  color: var(--lmp-ink-64);\n}\n\n.lm-podbor .lmp__flat-diff .is-good {\n  color: var(--lmp-good);\n  font-weight: 500;\n}\n\n.lm-podbor .lmp__factors {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: 10px 16px;\n  margin: 0;\n}\n\n.lm-podbor .lmp__factors dt {\n  font-size: 12px;\n  color: var(--lmp-ink-48);\n}\n\n.lm-podbor .lmp__factors dd {\n  margin: 2px 0 0;\n  font-size: 14px;\n}\n\n.lm-podbor .lmp__factors small {\n  display: block;\n  margin-top: 2px;\n  font-size: 11px;\n  color: var(--lmp-ink-48);\n}\n\n.lm-podbor .lmp__bar {\n  display: block;\n  height: 4px;\n  margin-top: 4px;\n  border-radius: 4px;\n  background: var(--lmp-ink-8);\n  overflow: hidden;\n}\n\n.lm-podbor .lmp__bar i {\n  display: block;\n  height: 100%;\n  border-radius: 4px;\n  background: var(--lmp-main);\n}\n\n.lm-podbor .lmp__flat-price {\n  display: flex;\n  flex-direction: column;\n  align-items: flex-end;\n  gap: 4px;\n  text-align: right;\n}\n\n.lm-podbor .lmp__flat-price b {\n  font-size: 17px;\n  font-weight: 500;\n}\n\n.lm-podbor .lmp__flat-price small {\n  font-size: 12px;\n  color: var(--lmp-ink-48);\n}\n\n.lm-podbor .lmp__flat-match {\n  margin: 4px 0 6px;\n  font-size: 12px;\n  color: var(--lmp-main);\n}\n\n.lm-podbor .lmp__note {\n  margin: 20px 0 0;\n  font-size: 12px;\n  line-height: 18px;\n  color: var(--lmp-ink-48);\n}\n\nhtml.lmp-lock {\n  overflow: hidden;\n}\n\n/* ---------- Адаптив: брейкпоинт сайта 812px и мобильные токены штатных блоков ---------- */\n\n@media (max-width: 1100px) {\n  .lm-podbor .lmp__cards--4 { grid-template-columns: repeat(2, 1fr); }\n  .lm-podbor .lmp__grid { grid-template-columns: 1fr; }\n}\n\n@media (max-width: 812px) {\n  .lm-podbor .lmp { padding-block: var(--ui-padding-top, calc(var(--u) * 6)) var(--ui-padding-bottom, calc(var(--u) * 6)); }\n  .lm-podbor .lmp__container { width: calc(100% - var(--u) * 8); }\n  .lm-podbor .lmp__head { flex-direction: column; align-items: stretch; row-gap: calc(var(--u) * 4); }\n  .lm-podbor .lmp__title { width: 100%; font-size: calc(var(--u) * 5); }\n  .lm-podbor .lmp__lead { max-width: none; margin: 0; font-size: calc(var(--u) * 3.5); line-height: 160%; }\n  .lm-podbor .lmp__steps { margin-top: calc(var(--u) * 6); }\n  .lm-podbor .lmp__view { margin-top: calc(var(--u) * 6); }\n  .lm-podbor .lmp__q { font-size: calc(var(--u) * 5); margin-bottom: calc(var(--u) * 4); }\n  .lm-podbor .lmp__cards--4,\n  .lm-podbor .lmp__cards--3 { grid-template-columns: 1fr; }\n  .lm-podbor .lmp__card { min-height: 0; padding: 20px; }\n  /* Заголовки карточек мельче заголовка блока (ui-unit×5) */\n  .lm-podbor .lmp__card-title,\n  .lm-podbor .lmp__type-title { font-size: calc(var(--u) * 4.5); }\n  .lm-podbor .lmp__panel-head h3 { font-size: calc(var(--u) * 5); }\n  .lm-podbor .lmp__type-plan { height: 180px; }\n  .lm-podbor .lmp__results { grid-template-columns: 1fr; gap: 20px; }\n  .lm-podbor .lmp__summary { position: static; padding: 16px; }\n  .lm-podbor .lmp__summary-goal { margin-bottom: 10px; }\n  /* Критерии в одну прокручиваемую строку — выдача видна сразу */\n  .lm-podbor .lmp__summary .lmp__chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px; }\n  .lm-podbor .lmp__summary .lmp__chips::-webkit-scrollbar { display: none; }\n  .lm-podbor .lmp__summary .lmp__chip { flex: none; }\n  .lm-podbor .lmp__summary .lmp__link { display: inline-block; margin-right: 16px; }\n  .lm-podbor .lmp__flat { grid-template-columns: 1fr; }\n  .lm-podbor .lmp__flat-price { align-items: flex-start; text-align: left; }\n  .lm-podbor .lmp__drawer-panel { padding: 20px 16px; }\n  .lm-podbor .lmp__panel-head img { width: 88px; height: 88px; }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .lm-podbor *,\n  .lm-podbor *::before,\n  .lm-podbor *::after {\n    animation: none !important;\n    transition: none !important;\n  }\n}\n" });
+window.LiteMods && LiteMods.define("lm-podbor", { css: "/*\n * lm-podbor — в дизайн-системе сайта. Источники (сняты со страниц сайта):\n *  - сетка и отступы блока: *-wrapper / *-container-* штатных блоков (ui-col×32, ui-unit×12, брейкпоинт 812px);\n *  - шапка блока: заголовок ui-unit×8 | текст ×4;\n *  - кнопки-опции, подписи полей, диапазон: фильтр каталога /flats (Classic__Realty__Filter__*);\n *  - карточка и теги: карточка квартиры каталога (Classic__Realty__Flats__Item__*);\n *  - заглушка плана: ClassicPlanNew__state.\n */\n\n.lm-podbor {\n  --u: var(--ui-unit, 4px);\n  --col: var(--ui-col, 40px);\n  --main: var(--ui-main-color, #6A31EB);\n  --main-64: var(--ui-main-color-64, rgba(106, 49, 235, .64));\n  --main-12: var(--ui-main-color-12, rgba(106, 49, 235, .12));\n  --main-8: var(--ui-main-color-8, rgba(106, 49, 235, .08));\n  --main-4: var(--ui-main-color-4, rgba(106, 49, 235, .04));\n  --black: var(--ui-base-black-color, #07071F);\n  --black-80: var(--ui-base-black-color-80, rgba(7, 7, 31, .8));\n  --black-48: var(--ui-base-black-color-48, rgba(7, 7, 31, .48));\n  --black-12: var(--ui-base-black-color-12, rgba(7, 7, 31, .12));\n  --black-4: var(--ui-base-black-color-4, rgba(7, 7, 31, .04));\n  --ink: var(--ui-font-black-color, #07071F);\n  --ink-48: var(--ui-font-black-color-48, rgba(7, 7, 31, .48));\n  --on-dark: var(--ui-font-white-color, #FCFCFC);\n  --white: var(--ui-base-white-color, #FCFCFC);\n  --title: var(--ui-title-font-family, inherit);\n  --text: var(--ui-main-font-family, inherit);\n  --ease: cubic-bezier(.2, .7, .1, 1);\n  --good: #1F9D55;\n  font-family: var(--text);\n  color: var(--ink);\n}\n\n.lm-podbor *,\n.lm-podbor *::before,\n.lm-podbor *::after {\n  box-sizing: border-box;\n}\n\n.lm-podbor button {\n  font: inherit;\n  color: inherit;\n  cursor: pointer;\n}\n\n.lm-podbor p {\n  margin: 0;\n}\n\n/* ---------- Сетка блока ---------- */\n\n.lm-podbor .lmp {\n  background-color: var(--white);\n}\n\n.lm-podbor .lmp > .lmp__container {\n  padding-block: var(--ui-padding-top, calc(var(--u) * 12)) calc(var(--u) * 10);\n}\n\n.lm-podbor .lmp__container {\n  width: calc(var(--col) * 32);\n  margin: 0 auto;\n}\n\n/* Полоса выдачи на фоне main-4, как список в каталоге */\n.lm-podbor .lmp__band {\n  padding-block: calc(var(--u) * 10) var(--ui-padding-bottom, calc(var(--u) * 12));\n  background-color: var(--main-4);\n}\n\n.lm-podbor .lmp__band[hidden] {\n  display: none;\n}\n\n/* ---------- Шапка блока ---------- */\n\n.lm-podbor .lmp__head {\n  display: flex;\n  align-items: flex-start;\n  column-gap: calc(var(--col) * 2);\n}\n\n.lm-podbor .lmp__title {\n  flex: none;\n  width: calc(var(--col) * 10);\n  margin: 0;\n  font-family: var(--title);\n  font-size: calc(var(--u) * 8);\n  font-weight: 400;\n  line-height: 120%;\n  word-break: break-word;\n  color: var(--black);\n}\n\n.lm-podbor .lmp__lead {\n  max-width: calc(var(--col) * 13);\n  margin-left: auto;\n  font-size: calc(var(--u) * 4);\n  line-height: 150%;\n  color: var(--black-48);\n}\n\n/* Шаги — спокойная строка текста, без своих «пилюль» */\n.lm-podbor .lmp__steps {\n  display: flex;\n  flex-wrap: wrap;\n  gap: calc(var(--u) * 2) calc(var(--u) * 6);\n  margin: calc(var(--u) * 10) 0 0;\n  padding: 0;\n  list-style: none;\n  counter-reset: lmp-step;\n  font-size: calc(var(--u) * 3.5);\n  line-height: 130%;\n  color: var(--black-48);\n}\n\n.lm-podbor .lmp__steps li {\n  counter-increment: lmp-step;\n  display: flex;\n  align-items: center;\n  gap: calc(var(--u) * 2);\n  transition: color .3s;\n}\n\n.lm-podbor .lmp__steps li::before {\n  content: counter(lmp-step);\n  display: grid;\n  place-items: center;\n  width: calc(var(--u) * 6);\n  height: calc(var(--u) * 6);\n  border-radius: 50%;\n  background: var(--main-4);\n  font-size: calc(var(--u) * 3);\n  transition: background-color .3s, color .3s;\n}\n\n.lm-podbor .lmp__steps li.is-current,\n.lm-podbor .lmp__steps li.is-done {\n  color: var(--ink);\n}\n\n.lm-podbor .lmp__steps li.is-current::before {\n  background: var(--black);\n  color: var(--on-dark);\n}\n\n.lm-podbor .lmp__steps li.is-done::before {\n  content: '';\n  background: var(--main) url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\") center / 14px no-repeat;\n}\n\n/* ---------- Шаги квиза ---------- */\n\n.lm-podbor .lmp__view {\n  margin-top: calc(var(--u) * 10);\n  animation: lmp-in .45s var(--ease);\n}\n\n@keyframes lmp-in {\n  from { opacity: 0; transform: translateY(8px); }\n}\n\n.lm-podbor .lmp__loading {\n  padding: calc(var(--u) * 10) 0;\n  font-size: calc(var(--u) * 4);\n  color: var(--black-48);\n}\n\n.lm-podbor .lmp__q {\n  margin: 0 0 calc(var(--u) * 6);\n  font-family: var(--title);\n  font-size: calc(var(--u) * 6);\n  font-weight: 400;\n  line-height: 120%;\n}\n\n.lm-podbor .lmp__back {\n  display: inline-flex;\n  align-items: center;\n  gap: calc(var(--u) * 1.5);\n  margin: 0 0 calc(var(--u) * 4);\n  padding: 0;\n  border: 0;\n  background: none;\n  font-size: calc(var(--u) * 3.5);\n  color: var(--black-48);\n  transition: color .2s;\n}\n\n.lm-podbor .lmp__back svg {\n  width: 16px;\n  height: 16px;\n}\n\n.lm-podbor .lmp__back:hover {\n  color: var(--main);\n}\n\n/* Карточки выбора — как карточки сайта: белые, r=16, мягкая тень */\n.lm-podbor .lmp__cards {\n  display: grid;\n  gap: calc(var(--u) * 4);\n}\n\n.lm-podbor .lmp__cards--4 { grid-template-columns: repeat(4, 1fr); }\n.lm-podbor .lmp__cards--3 { grid-template-columns: repeat(3, 1fr); }\n\n.lm-podbor .lmp__card {\n  display: flex;\n  flex-direction: column;\n  align-items: flex-start;\n  gap: calc(var(--u) * 2);\n  min-height: calc(var(--u) * 44);\n  padding: calc(var(--u) * 7) calc(var(--u) * 6) calc(var(--u) * 6);\n  border: 0;\n  border-radius: calc(var(--u) * 4);\n  outline: 2px solid transparent;\n  background: var(--white);\n  box-shadow: 0 4px 24px rgba(7, 7, 31, .06);\n  text-align: left;\n  transition: transform .35s var(--ease), box-shadow .35s var(--ease), outline-color .25s;\n}\n\n.lm-podbor .lmp__card:hover {\n  transform: translateY(-4px);\n  box-shadow: 0 16px 40px -16px rgba(7, 7, 31, .22);\n}\n\n.lm-podbor .lmp__card.is-selected {\n  outline-color: var(--main);\n}\n\n.lm-podbor .lmp__card-title {\n  font-family: var(--title);\n  font-size: calc(var(--u) * 5);\n  line-height: 120%;\n}\n\n.lm-podbor .lmp__card-text {\n  font-size: calc(var(--u) * 3.5);\n  line-height: 150%;\n  color: var(--black-48);\n}\n\n.lm-podbor .lmp__card-arrow {\n  display: grid;\n  place-items: center;\n  width: calc(var(--u) * 10);\n  height: calc(var(--u) * 10);\n  margin-top: auto;\n  border-radius: 50%;\n  background: var(--main-4);\n  color: var(--main);\n  transition: background-color .25s, color .25s, transform .35s var(--ease);\n}\n\n.lm-podbor .lmp__card-arrow svg {\n  width: 18px;\n  height: 18px;\n}\n\n.lm-podbor .lmp__card:hover .lmp__card-arrow {\n  background: var(--main);\n  color: var(--on-dark);\n  transform: translateX(4px);\n}\n\n/* ---------- Поля и кнопки-опции: как фильтр каталога ---------- */\n\n.lm-podbor .lmp__field {\n  display: flex;\n  flex-direction: column;\n  gap: calc(var(--u) * 2);\n  min-width: 0;\n}\n\n.lm-podbor .lmp__label {\n  font-size: calc(var(--u) * 3);\n  line-height: 130%;\n  color: var(--ink-48);\n}\n\n.lm-podbor .lmp__opts {\n  display: flex;\n  flex-wrap: wrap;\n  gap: calc(var(--u) * 1);\n}\n\n.lm-podbor .lmp__opt {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  height: calc(var(--u) * 12);\n  padding: 0 calc(var(--u) * 4);\n  border: 0;\n  border-radius: calc(var(--u) * 2);\n  background-color: var(--main-4);\n  color: var(--ink);\n  font-size: calc(var(--u) * 3.5);\n  line-height: 130%;\n  white-space: nowrap;\n  transition: background-color .3s, color .3s;\n}\n\n@media (hover: hover) {\n  .lm-podbor .lmp__opt:hover {\n    background-color: var(--main);\n    color: var(--on-dark);\n  }\n  .lm-podbor .lmp__opt.is-active:hover {\n    background-color: var(--black-80);\n  }\n}\n\n.lm-podbor .lmp__opt.is-active {\n  background-color: var(--black);\n  color: var(--on-dark);\n}\n\n.lm-podbor .lmp__more {\n  margin-top: calc(var(--u) * 4);\n}\n\n.lm-podbor .lmp__more summary {\n  display: inline-flex;\n  align-items: center;\n  gap: calc(var(--u) * 1);\n  margin-bottom: calc(var(--u) * 3);\n  font-size: calc(var(--u) * 3.5);\n  cursor: pointer;\n  list-style: none;\n}\n\n.lm-podbor .lmp__more summary::after {\n  content: '';\n  width: 8px;\n  height: 8px;\n  margin-top: -3px;\n  border-right: 1.5px solid currentColor;\n  border-bottom: 1.5px solid currentColor;\n  transform: rotate(45deg);\n  transition: transform .25s;\n}\n\n.lm-podbor .lmp__more[open] summary::after {\n  margin-top: 3px;\n  transform: rotate(-135deg);\n}\n\n.lm-podbor .lmp__more summary::-webkit-details-marker {\n  display: none;\n}\n\n.lm-podbor .lmp__row {\n  display: flex;\n  flex-wrap: wrap;\n  align-items: flex-start;\n  gap: calc(var(--u) * 6) calc(var(--col) * 1);\n  margin-top: calc(var(--u) * 8);\n}\n\n.lm-podbor .lmp__field--range {\n  width: calc(var(--col) * 8);\n}\n\n/* Диапазон: поле 48px с «от | до», линия 2px и ручки 12px по нижнему краю */\n.lm-podbor .lmp__range {\n  position: relative;\n  display: flex;\n  height: calc(var(--u) * 12);\n  border-radius: calc(var(--u) * 2);\n  background-color: var(--main-4);\n  font-size: calc(var(--u) * 3.5);\n}\n\n.lm-podbor .lmp__range-value {\n  flex: 1;\n  display: flex;\n  align-items: center;\n  padding: 0 calc(var(--u) * 5);\n  font-variant-numeric: tabular-nums;\n}\n\n.lm-podbor .lmp__range-value + .lmp__range-value {\n  justify-content: flex-end;\n}\n\n.lm-podbor .lmp__range-track {\n  position: absolute;\n  left: calc(var(--u) * 7);\n  right: calc(var(--u) * 7);\n  bottom: -1px;\n  height: 2px;\n  background: var(--black-12);\n}\n\n.lm-podbor .lmp__range-track i {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  background: var(--main);\n}\n\n.lm-podbor .lmp__range-track input {\n  -webkit-appearance: none;\n  appearance: none;\n  position: absolute;\n  left: -6px;\n  right: -6px;\n  top: -11px;\n  width: calc(100% + 12px);\n  height: 24px;\n  margin: 0;\n  background: none;\n  pointer-events: none;\n  outline: none;\n}\n\n.lm-podbor .lmp__range-track input::-webkit-slider-thumb {\n  -webkit-appearance: none;\n  width: 12px;\n  height: 12px;\n  border: 0;\n  border-radius: 50%;\n  background: var(--main);\n  cursor: pointer;\n  pointer-events: auto;\n}\n\n.lm-podbor .lmp__range-track input::-moz-range-thumb {\n  width: 12px;\n  height: 12px;\n  border: 0;\n  border-radius: 50%;\n  background: var(--main);\n  cursor: pointer;\n  pointer-events: auto;\n}\n\n.lm-podbor .lmp__actions {\n  margin-top: calc(var(--u) * 10);\n}\n\n/* Кнопки — как ClassicButton сайта: 48px, r=8, основной цвет */\n.lm-podbor .lmp__btn {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  height: calc(var(--u) * 12);\n  padding: 0 calc(var(--u) * 8);\n  border: 0;\n  border-radius: calc(var(--u) * 2);\n  background: var(--main);\n  color: var(--on-dark);\n  font-family: var(--title);\n  font-size: calc(var(--u) * 3.5);\n  text-decoration: none;\n  transition: background-color .3s, color .3s;\n}\n\n@media (hover: hover) {\n  .lm-podbor .lmp__btn:hover {\n    background: var(--black);\n  }\n}\n\n.lm-podbor .lmp__btn--light {\n  background: var(--white);\n  color: var(--main);\n}\n\n.lm-podbor .lmp__btn--small {\n  height: calc(var(--u) * 9);\n  padding: 0 calc(var(--u) * 4);\n  font-size: calc(var(--u) * 3.25);\n}\n\n.lm-podbor .lmp__link {\n  padding: 0;\n  border: 0;\n  background: none;\n  font-size: calc(var(--u) * 3.5);\n  color: var(--main);\n}\n\n.lm-podbor .lmp__link:hover {\n  color: var(--black);\n}\n\n/* ---------- Запрос над выдачей ---------- */\n\n.lm-podbor .lmp__query {\n  display: flex;\n  flex-direction: column;\n  gap: calc(var(--u) * 5);\n}\n\n.lm-podbor .lmp__query-head {\n  display: flex;\n  align-items: baseline;\n  justify-content: space-between;\n  gap: calc(var(--u) * 4);\n  flex-wrap: wrap;\n}\n\n.lm-podbor .lmp__query-goal {\n  font-family: var(--title);\n  font-size: calc(var(--u) * 6);\n  line-height: 120%;\n}\n\n.lm-podbor .lmp__query-links {\n  display: flex;\n  gap: calc(var(--u) * 6);\n}\n\n/* ---------- Выдача ---------- */\n\n.lm-podbor [data-el=list] {\n  transition: opacity .18s ease;\n}\n\n.lm-podbor [data-el=list].is-leaving {\n  opacity: 0;\n}\n\n.lm-podbor [data-el=list].is-entering .lmp__type {\n  opacity: 0;\n  transform: translateY(16px);\n}\n\n.lm-podbor .lmp__list-head {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: calc(var(--u) * 4);\n  flex-wrap: wrap;\n  margin-bottom: calc(var(--u) * 6);\n}\n\n.lm-podbor .lmp__count {\n  font-size: calc(var(--u) * 4);\n  line-height: 150%;\n}\n\n.lm-podbor .lmp__sort {\n  display: flex;\n  align-items: center;\n  gap: calc(var(--u) * 4);\n}\n\n.lm-podbor .lmp__sort-btn {\n  padding: 0;\n  border: 0;\n  background: none;\n  font-size: calc(var(--u) * 3.5);\n  color: var(--ink);\n  transition: color .2s;\n}\n\n.lm-podbor .lmp__sort-btn.is-active,\n.lm-podbor .lmp__sort-btn:hover {\n  color: var(--main);\n}\n\n.lm-podbor .lmp__types {\n  display: flex;\n  flex-direction: column;\n  gap: calc(var(--u) * 4);\n}\n\n/* Карточка типа, как у Арбана: слева планировка, справа квартиры этого типа */\n.lm-podbor .lmp__type {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: calc(var(--u) * 6);\n  padding: calc(var(--u) * 4);\n  border-radius: calc(var(--u) * 4);\n  background: var(--white);\n  transition: opacity .45s var(--ease), transform .55s var(--ease);\n  transition-delay: calc(var(--i, 0) * 45ms);\n}\n\n.lm-podbor .lmp__type-main {\n  display: flex;\n  flex-direction: column;\n  gap: calc(var(--u) * 5);\n  min-width: 0;\n  padding: calc(var(--u) * 3) calc(var(--u) * 2) calc(var(--u) * 2) calc(var(--u) * 3);\n}\n\n.lm-podbor .lmp__type-head {\n  display: flex;\n  justify-content: space-between;\n  align-items: flex-start;\n  gap: calc(var(--u) * 4);\n}\n\n.lm-podbor .lmp__type-title {\n  margin: 0;\n  font-family: var(--title);\n  font-size: calc(var(--u) * 6);\n  font-weight: 400;\n  line-height: 120%;\n}\n\n.lm-podbor .lmp__type-price {\n  margin-top: calc(var(--u) * 1);\n  font-family: var(--title);\n  font-size: calc(var(--u) * 6);\n  line-height: 120%;\n  color: var(--main);\n}\n\n.lm-podbor .lmp__type-meta {\n  display: flex;\n  flex-wrap: wrap;\n  gap: calc(var(--u) * 1) calc(var(--u) * 4);\n  margin-top: calc(var(--u) * 3);\n  font-size: calc(var(--u) * 3.5);\n  color: var(--black-48);\n}\n\n.lm-podbor .lmp__type-meta span:first-child {\n  color: var(--ink);\n  text-transform: uppercase;\n  letter-spacing: .02em;\n}\n\n.lm-podbor .lmp__match {\n  flex: none;\n  padding: calc(var(--u) * 1.5) calc(var(--u) * 2.5);\n  border-radius: calc(var(--u) * 1.5);\n  background: var(--main-8);\n  color: var(--main);\n  font-size: calc(var(--u) * 3);\n  line-height: 1;\n}\n\n/* Flex + фиксированная высота: в grid-ячейке max-height в % не работает, и план «уезжал» */\n.lm-podbor .lmp__type-plan {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  height: calc(var(--u) * 80);\n  overflow: hidden;\n}\n\n.lm-podbor .lmp__type-plan img,\n.lm-podbor .lmp__panel-plan img {\n  display: block;\n  width: auto;\n  height: auto;\n  max-width: 100%;\n  max-height: 100%;\n  object-fit: contain;\n}\n\n/* Заглушка плана — как ClassicPlanNew__state */\n.lm-podbor .lmp__plan-state {\n  display: inline-flex;\n  align-items: center;\n  gap: calc(var(--u) * 2);\n  padding: calc(var(--u) * 2) calc(var(--u) * 2.5);\n  border: 1px solid var(--main);\n  border-radius: calc(var(--u) * 1.5);\n  background-color: var(--white);\n  color: var(--main);\n  font-size: calc(var(--u) * 3);\n  line-height: 160%;\n  white-space: nowrap;\n}\n\n.lm-podbor .lmp__plan-state svg {\n  width: calc(var(--u) * 3);\n  height: calc(var(--u) * 3);\n}\n\n.lm-podbor .lmp__plan-state.is-small span {\n  display: none;\n}\n\n/* Теги — как теги карточки квартиры: 12px, r=4, фон base-black-4 */\n.lm-podbor .lmp__type-tags {\n  display: flex;\n  flex-wrap: wrap;\n  gap: calc(var(--u) * 1.5);\n  margin-top: auto;\n}\n\n.lm-podbor .lmp__tag {\n  padding: calc(var(--u) * 1.5) calc(var(--u) * 2);\n  border-radius: calc(var(--u) * 1);\n  background-color: var(--black-4);\n  color: var(--ink-48);\n  font-size: calc(var(--u) * 3);\n  line-height: 1;\n}\n\n.lm-podbor .lmp__tag.is-yes {\n  background-color: var(--main-8);\n  color: var(--main);\n}\n\n.lm-podbor .lmp__type-side {\n  display: flex;\n  flex-direction: column;\n  gap: calc(var(--u) * 2);\n  min-width: 0;\n  padding: calc(var(--u) * 6);\n  border-radius: calc(var(--u) * 4);\n  background: var(--main-4);\n}\n\n.lm-podbor .lmp__side-title {\n  margin-bottom: calc(var(--u) * 2);\n  font-family: var(--title);\n  font-size: calc(var(--u) * 5);\n  line-height: 120%;\n}\n\n.lm-podbor .lmp__rows {\n  display: flex;\n  flex-direction: column;\n  gap: calc(var(--u) * 2);\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n\n.lm-podbor .lmp__line {\n  position: relative;\n  display: grid;\n  grid-template-columns: minmax(0, 1.5fr) .7fr .8fr 1.2fr 1.1fr 1fr;\n  align-items: center;\n  gap: calc(var(--u) * 3);\n  min-height: calc(var(--u) * 14);\n  padding: calc(var(--u) * 3) calc(var(--u) * 4);\n  border-radius: calc(var(--u) * 3);\n  background: var(--white);\n  color: var(--ink);\n  font-size: calc(var(--u) * 3.5);\n  text-decoration: none;\n  transition: box-shadow .3s var(--ease), transform .3s var(--ease);\n}\n\n.lm-podbor a.lmp__line:hover {\n  transform: translateY(-2px);\n  box-shadow: 0 10px 24px -16px rgba(7, 7, 31, .35);\n}\n\n.lm-podbor .lmp__line span {\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.lm-podbor .lmp__line-b,\n.lm-podbor .lmp__line-ppm,\n.lm-podbor .lmp__line-c {\n  color: var(--black-48);\n}\n\n.lm-podbor .lmp__line-price {\n  font-weight: 500;\n}\n\n.lm-podbor .lmp__line.is-best {\n  outline: 1px solid var(--main);\n}\n\n.lm-podbor .lmp__line-best {\n  position: absolute;\n  top: -8px;\n  left: calc(var(--u) * 4);\n  padding: 2px 6px;\n  border-radius: 4px;\n  background: var(--main);\n  color: var(--on-dark);\n  font-size: 11px;\n  font-style: normal;\n  line-height: 1.3;\n}\n\n.lm-podbor .lmp__side-btn {\n  width: 100%;\n  margin-top: auto;\n}\n\n.lm-podbor .lmp__rows + .lmp__side-btn {\n  margin-top: calc(var(--u) * 4);\n}\n\n.lm-podbor .lmp__more-btn {\n  width: 100%;\n  margin-top: calc(var(--u) * 4);\n}\n\n/* ---------- Сравнение внутри типа ---------- */\n\n.lm-podbor.lmp-portal {\n  position: relative;\n  z-index: 2147483000;\n}\n\n.lm-podbor .lmp__drawer {\n  position: fixed;\n  inset: 0;\n  z-index: 2147483000;\n}\n\n.lm-podbor .lmp__drawer[hidden] {\n  display: none;\n}\n\n.lm-podbor .lmp__drawer-backdrop {\n  position: absolute;\n  inset: 0;\n  background: rgba(7, 7, 31, .4);\n  animation: lmp-fade .3s ease;\n}\n\n@keyframes lmp-fade {\n  from { opacity: 0; }\n}\n\n@keyframes lmp-slide {\n  from { transform: translateX(32px); opacity: 0; }\n}\n\n.lm-podbor .lmp__drawer-panel {\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  width: min(calc(var(--col) * 21), 100%);\n  overflow-y: auto;\n  padding: calc(var(--u) * 8);\n  background: var(--white);\n  animation: lmp-slide .45s var(--ease);\n  outline: none;\n}\n\n.lm-podbor .lmp__close {\n  position: sticky;\n  top: 0;\n  z-index: 2;\n  float: right;\n  display: grid;\n  place-items: center;\n  width: calc(var(--u) * 10);\n  height: calc(var(--u) * 10);\n  border: 0;\n  border-radius: 50%;\n  background: var(--main-4);\n  transition: background-color .25s, color .25s;\n}\n\n.lm-podbor .lmp__close svg {\n  width: 18px;\n  height: 18px;\n}\n\n.lm-podbor .lmp__close:hover {\n  background: var(--main);\n  color: var(--on-dark);\n}\n\n.lm-podbor .lmp__panel-head {\n  display: flex;\n  gap: calc(var(--u) * 5);\n  align-items: center;\n}\n\n.lm-podbor .lmp__panel-plan {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  overflow: hidden;\n  flex: none;\n  width: calc(var(--u) * 30);\n  height: calc(var(--u) * 30);\n  padding: calc(var(--u) * 2);\n  border-radius: calc(var(--u) * 3);\n  background: var(--main-4);\n}\n\n.lm-podbor .lmp__panel-head h3 {\n  margin: 0;\n  font-family: var(--title);\n  font-size: calc(var(--u) * 6);\n  font-weight: 400;\n  line-height: 120%;\n}\n\n.lm-podbor .lmp__panel-lead {\n  margin: calc(var(--u) * 6) 0 calc(var(--u) * 5);\n  font-size: calc(var(--u) * 4);\n  line-height: 150%;\n  color: var(--black-48);\n}\n\n.lm-podbor .lmp__flats {\n  display: flex;\n  flex-direction: column;\n  gap: calc(var(--u) * 3);\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n\n.lm-podbor .lmp__flat {\n  display: grid;\n  grid-template-columns: 1.1fr 1.6fr .9fr;\n  gap: calc(var(--u) * 4);\n  align-items: start;\n  padding: calc(var(--u) * 5);\n  border-radius: calc(var(--u) * 4);\n  outline: 2px solid transparent;\n  background: var(--main-4);\n}\n\n.lm-podbor .lmp__flat.is-best {\n  outline-color: var(--main);\n  background: var(--white);\n}\n\n.lm-podbor .lmp__badge {\n  display: inline-block;\n  margin-bottom: calc(var(--u) * 2);\n  padding: calc(var(--u) * 1.5) calc(var(--u) * 2);\n  border-radius: calc(var(--u) * 1);\n  background: var(--main);\n  color: var(--on-dark);\n  font-size: calc(var(--u) * 3);\n  line-height: 1;\n}\n\n.lm-podbor .lmp__flat-floor {\n  font-family: var(--title);\n  font-size: calc(var(--u) * 4.5);\n  line-height: 120%;\n}\n\n.lm-podbor .lmp__flat-meta {\n  margin-top: calc(var(--u) * 1);\n  font-size: calc(var(--u) * 3.25);\n  line-height: 140%;\n  color: var(--black-48);\n}\n\n.lm-podbor .lmp__flat-diff {\n  margin-top: calc(var(--u) * 3);\n  font-size: calc(var(--u) * 3.25);\n  line-height: 140%;\n}\n\n.lm-podbor .lmp__flat-diff .is-good {\n  color: var(--good);\n  font-weight: 500;\n}\n\n.lm-podbor .lmp__factors {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  gap: calc(var(--u) * 3) calc(var(--u) * 4);\n  margin: 0;\n}\n\n.lm-podbor .lmp__factors dt {\n  font-size: calc(var(--u) * 3);\n  color: var(--ink-48);\n}\n\n.lm-podbor .lmp__factors dd {\n  margin: calc(var(--u) * 1) 0 0;\n  font-size: calc(var(--u) * 3.5);\n}\n\n.lm-podbor .lmp__bar {\n  display: block;\n  height: 2px;\n  margin-top: calc(var(--u) * 1.5);\n  background: var(--black-12);\n}\n\n.lm-podbor .lmp__bar i {\n  display: block;\n  height: 100%;\n  background: var(--main);\n}\n\n.lm-podbor .lmp__flat-price {\n  display: flex;\n  flex-direction: column;\n  align-items: flex-end;\n  gap: calc(var(--u) * 1);\n  text-align: right;\n}\n\n.lm-podbor .lmp__flat-price b {\n  font-family: var(--title);\n  font-size: calc(var(--u) * 4.5);\n  font-weight: 400;\n}\n\n.lm-podbor .lmp__flat-price small {\n  font-size: calc(var(--u) * 3);\n  color: var(--black-48);\n}\n\n.lm-podbor .lmp__flat-price .lmp__btn {\n  margin-top: calc(var(--u) * 2);\n}\n\nhtml.lmp-lock {\n  overflow: hidden;\n}\n\n/* ---------- Адаптив: брейкпоинт сайта 812px ---------- */\n\n@media (max-width: 1100px) {\n  .lm-podbor .lmp__cards--4 { grid-template-columns: repeat(2, 1fr); }\n  .lm-podbor .lmp__type { grid-template-columns: 1fr; }\n  .lm-podbor .lmp__line { grid-template-columns: minmax(0, 1.4fr) .7fr .8fr 1.2fr 1fr; }\n  .lm-podbor .lmp__line-c { display: none; }\n}\n\n@media (max-width: 812px) {\n  .lm-podbor .lmp > .lmp__container { padding-block: var(--ui-padding-top, calc(var(--u) * 6)) calc(var(--u) * 6); }\n  .lm-podbor .lmp__band { padding-block: calc(var(--u) * 6) var(--ui-padding-bottom, calc(var(--u) * 6)); }\n  .lm-podbor .lmp__container { width: calc(100% - var(--u) * 8); }\n  .lm-podbor .lmp__head { flex-direction: column; align-items: stretch; row-gap: calc(var(--u) * 4); }\n  .lm-podbor .lmp__title { width: 100%; font-size: calc(var(--u) * 5); }\n  .lm-podbor .lmp__lead { max-width: none; margin: 0; font-size: calc(var(--u) * 3.5); line-height: 160%; }\n  .lm-podbor .lmp__steps { margin-top: calc(var(--u) * 6); gap: calc(var(--u) * 2) calc(var(--u) * 4); font-size: calc(var(--u) * 3); }\n  .lm-podbor .lmp__steps li:not(.is-current) { font-size: 0; gap: 0; }\n  .lm-podbor .lmp__steps li:not(.is-current)::before { font-size: calc(var(--u) * 3); }\n  .lm-podbor .lmp__view { margin-top: calc(var(--u) * 6); }\n  .lm-podbor .lmp__q,\n  .lm-podbor .lmp__query-goal { font-size: calc(var(--u) * 5); }\n  .lm-podbor .lmp__cards--4,\n  .lm-podbor .lmp__cards--3 { grid-template-columns: 1fr; }\n  .lm-podbor .lmp__card { min-height: 0; padding: calc(var(--u) * 5); }\n  .lm-podbor .lmp__card-title { font-size: calc(var(--u) * 4.5); }\n  .lm-podbor .lmp__field--range { width: 100%; }\n  .lm-podbor .lmp__opts--joined .lmp__opt { flex: 1 1 auto; }\n  /* Опции запроса в одну прокручиваемую строку — выдача видна сразу */\n  .lm-podbor .lmp__opts--scroll { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0 calc(var(--u) * -4); padding: 0 calc(var(--u) * 4); }\n  .lm-podbor .lmp__opts--scroll::-webkit-scrollbar { display: none; }\n  .lm-podbor .lmp__opts--scroll .lmp__opt { flex: none; }\n  .lm-podbor .lmp__btn { width: 100%; }\n  .lm-podbor .lmp__type { padding: calc(var(--u) * 3); gap: calc(var(--u) * 3); }\n  .lm-podbor .lmp__type-main { padding: calc(var(--u) * 2); }\n  .lm-podbor .lmp__type-title,\n  .lm-podbor .lmp__type-price { font-size: calc(var(--u) * 4.5); }\n  .lm-podbor .lmp__type-plan { height: calc(var(--u) * 50); }\n  .lm-podbor .lmp__type-side { padding: calc(var(--u) * 4); }\n  .lm-podbor .lmp__side-title { font-size: calc(var(--u) * 4); }\n  .lm-podbor .lmp__line { grid-template-columns: .8fr .9fr 1.3fr; row-gap: calc(var(--u) * 1); }\n  .lm-podbor .lmp__line-b { grid-column: 1 / -1; }\n  .lm-podbor .lmp__line-ppm { display: none; }\n  .lm-podbor .lmp__drawer-panel { padding: calc(var(--u) * 5) calc(var(--u) * 4); }\n  .lm-podbor .lmp__panel-plan { width: calc(var(--u) * 22); height: calc(var(--u) * 22); }\n  .lm-podbor .lmp__panel-head h3 { font-size: calc(var(--u) * 5); }\n  .lm-podbor .lmp__flat { grid-template-columns: 1fr; }\n  .lm-podbor .lmp__flat-price { align-items: flex-start; text-align: left; }\n  .lm-podbor .lmp__flat-price .lmp__btn { width: auto; }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .lm-podbor *,\n  .lm-podbor *::before,\n  .lm-podbor *::after {\n    animation: none !important;\n    transition: none !important;\n  }\n}\n" });
 try {
 /*
  * lm-podbor — модель: пресеты, потребности, факторы квартиры (тишина, пыль, свет), агрегация по типам.
@@ -403,13 +403,13 @@ try {
       test: function (f) { return (f.rooms <= 1 && f.area <= 45) || (f.rooms === 2 && f.area <= 60); } },
     cheap_ppm: { label: 'Цена за м² ниже рынка ЖК', compromise: '₽/м² выше медианы ЖК',
       test: function (f) { return f.ppmVsComplex == null ? null : f.ppmVsComplex <= 0.97; } },
-    rent_ready: { label: 'Можно сразу сдавать', compromise: 'до сдачи в аренду — ремонт или ожидание',
+    rent_ready: { label: 'Можно сразу сдавать', compromise: 'перед сдачей нужен ремонт или ожидание',
       test: function (f) { return f.finishGrade != null && f.finishGrade >= 2 && f.monthsToReady != null && f.monthsToReady <= 6; } },
-    growth: { label: 'Ранняя стадия — потенциал роста цены', compromise: 'дом почти готов, рост цены меньше',
+    growth: { label: 'Ранняя стадия, цена может вырасти', compromise: 'дом почти готов, рост цены меньше',
       test: function (f) { return f.monthsToReady == null ? null : f.monthsToReady >= 12; } },
-    flip: { label: 'Под ремонт и перепродажу', compromise: 'отделка уже есть — меньше маржа на ремонте',
+    flip: { label: 'Под ремонт и перепродажу', compromise: 'отделка уже есть, меньше выгода от ремонта',
       test: function (f) { return f.finishGrade == null ? null : f.finishGrade <= 1; } },
-    mid_floor: { label: 'Средний этаж — проще перепродать', compromise: 'крайний этаж',
+    mid_floor: { label: 'Средний этаж, проще перепродать', compromise: 'крайний этаж',
       test: function (f) { return f.floorPos === 'mid'; } },
     // Нет данных на сайте — показываются выключенными до разметки стояков / данных о паркинге
     parking: { label: 'Быстро из машины в квартиру', compromise: '', unavailable: 'нет данных о паркинге в секции',
@@ -664,11 +664,12 @@ try {
 })();
 
 /*
- * lm-podbor — «Подбор квартиры под вашу жизнь»: цель покупки → состав семьи → что важно → типы квартир
+ * lm-podbor — «Подбор квартиры под вашу жизнь»: цель покупки → кто будет жить → что важно → типы квартир
  * → сравнение квартир внутри типа (этаж, тишина, пыль, свет, цена).
  *
  * Монтируется в HTML-блок страницы /podbor: во вкладке HTML блока — <div class="lm-podbor"></div>.
  * Данные — открытые API каталога сайта; модель (пресеты, факторы, агрегация) — model.js.
+ * Элементы повторяют фильтр каталога сайта: кнопки-опции, подписи полей, диапазон, карточки.
  */
 window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
   if (root.classList.contains('lmp-portal')) return; // это наша же обёртка панели в <body>
@@ -678,23 +679,21 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
 
   var site = nuxt.$store.state.site || {};
   var projectId = site.project && site.project.id;
-  var PAGE = 12;
+  var PAGE = 8;       // типов на странице
+  var ROWS = 5;       // квартир прямо в карточке типа
 
   // ---------- форматирование ----------
   function num(n) { return Math.round(n).toLocaleString('ru-RU'); }
   function rub(n) { return num(n) + ' ₽'; }
-  function mln(n) {
+  function mlnValue(n) {
     var v = n / 1e6;
-    return (v >= 10 ? v.toFixed(1) : v.toFixed(2)).replace(/\.?0+$/, '').replace('.', ',') + ' млн ₽';
+    return (v >= 10 ? v.toFixed(1) : v.toFixed(2)).replace(/\.?0+$/, '').replace('.', ',');
   }
-  function area(a, b) {
-    var f = function (x) { return String(Math.round(x * 10) / 10).replace('.', ','); };
-    return (b == null || Math.abs(b - a) < 0.1 ? f(a) : f(a) + '–' + f(b)) + ' м²';
-  }
-  function roomsLabel(r, euro) {
-    if (r === 0) return 'Студия';
-    return r + '-комн.' + (euro ? ' евро' : '');
-  }
+  function mln(n) { return mlnValue(n) + ' млн ₽'; }
+  function dec(x) { return String(Math.round(x * 10) / 10).replace('.', ','); }
+  function area(a, b) { return (b == null || Math.abs(b - a) < 0.1 ? dec(a) : dec(a) + '–' + dec(b)) + ' м²'; }
+  function priceRange(a, b) { return a === b ? mln(a) : mlnValue(a) + '–' + mln(b); }
+  function roomsLabel(r, euro) { return r === 0 ? 'Студия' : r + '-комн.' + (euro ? ' евро' : ''); }
   function plural(n, one, few, many) {
     var m10 = n % 10, m100 = n % 100;
     return n + ' ' + (m10 === 1 && m100 !== 11 ? one : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? few : many);
@@ -715,10 +714,17 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
   });
   function flatUrl(f) { return flatPaths[f.complexId] ? flatPaths[f.complexId] + f.id : null; }
 
+  // Штатная заглушка платформы для квартиры без плана (ClassicPlanNew__state)
+  var PLAN_ICON = '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M6.6 17.6l2.8 2.8 1.9-1.9-2.8-2.8 2.8-2.8 3.8 3.8 1.9-1.9-3.8-3.8L16 8.2l2.8 2.8 1.9-1.9-2.8-2.8 3.8-3.8a1.3 1.3 0 0 1 1.9 0l6.6 6.6a1.3 1.3 0 0 1 0 1.9L10.1 30.1a1.3 1.3 0 0 1-1.9 0l-6.6-6.6a1.3 1.3 0 0 1 0-1.9z"/></svg>';
+  function planHtml(path, big) {
+    if (path) return '<img src="' + esc(img(path)) + '" alt="Планировка" loading="lazy" decoding="async">';
+    return '<span class="lmp__plan-state' + (big ? '' : ' is-small') + '">' + PLAN_ICON + '<span>Готовим планировку</span></span>';
+  }
+
   // ---------- загрузка данных ----------
   function getJson(url) {
     return fetch(url, { credentials: 'same-origin', headers: { 'x-host': location.host } }).then(function (r) {
-      if (!r.ok) throw new Error(url + ' → ' + r.status);
+      if (!r.ok) throw new Error(url + ' ' + r.status);
       return r.json();
     });
   }
@@ -736,7 +742,7 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
     return page(0);
   }
 
-  // Этажность секции: из списка этажей (включая распроданные), иначе — максимальный этаж квартир
+  // Этажность секции: из списка этажей (включая распроданные), иначе по квартирам
   function loadSectionFloors(complexIds) {
     var map = {};
     return Promise.all(complexIds.map(function (cx) {
@@ -754,8 +760,11 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
 
   // ---------- состояние ----------
   var types = [];
-  var state = readHash() || { step: 1, goal: null, sub: null, needs: [], move: null, budget: null, sort: 'match', shown: PAGE };
-  var priceMax = 0;
+  var priceMin = 0, priceMax = 0;
+  function freshState() {
+    return { step: 1, goal: null, sub: null, needs: [], move: null, budgetFrom: null, budgetTo: null, sort: 'match', shown: PAGE };
+  }
+  var state = readHash() || freshState();
 
   function goal() { return M.GOALS.filter(function (g) { return g.id === state.goal; })[0]; }
   function sub() { var g = goal(); return g && g.subs.filter(function (s) { return s.id === state.sub; })[0]; }
@@ -765,11 +774,24 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
     var needs = state.needs.slice();
     var mv = M.MOVE.filter(function (m) { return m.id === state.move; })[0];
     if (mv && mv.need && needs.indexOf(mv.need) < 0) needs.unshift(mv.need);
-    return { rooms: s.rooms, areaMin: s.areaMin, budget: state.budget, needs: needs };
+    return { rooms: s.rooms, areaMin: s.areaMin, budget: state.budgetTo, budgetFrom: state.budgetFrom, needs: needs };
+  }
+
+  function ranked() {
+    var q = query();
+    var list = M.rank(types, q);
+    if (q.budgetFrom) {
+      list = list.map(function (r) {
+        var fl = r.flats.filter(function (f) { return f.price >= q.budgetFrom; });
+        return fl.length ? { type: r.type, flats: fl, best: fl[0], value: fl[0].match.value } : null;
+      }).filter(Boolean);
+    }
+    if (state.sort === 'price') list.sort(function (a, b) { return a.best.price - b.best.price; });
+    return list;
   }
 
   function writeHash() {
-    var h = [state.goal, state.sub, state.needs.join('.'), state.move || '', state.budget || ''].join('~');
+    var h = [state.goal, state.sub, state.needs.join('.'), state.move || '', state.budgetFrom || '', state.budgetTo || ''].join('~');
     try { history.replaceState(null, '', '#podbor=' + encodeURIComponent(h)); } catch (e) { /* ignore */ }
   }
   function readHash() {
@@ -777,36 +799,48 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
     if (!m) return null;
     var p = decodeURIComponent(m[1]).split('~');
     if (!p[0] || !p[1]) return null;
-    return { step: 4, goal: p[0], sub: p[1], needs: p[2] ? p[2].split('.') : [], move: p[3] || null, budget: p[4] ? +p[4] : null, sort: 'match', shown: PAGE };
+    var s = freshState();
+    s.step = 4; s.goal = p[0]; s.sub = p[1];
+    s.needs = p[2] ? p[2].split('.') : [];
+    s.move = p[3] || null;
+    s.budgetFrom = p[4] ? +p[4] : null;
+    s.budgetTo = p[5] ? +p[5] : null;
+    return s;
   }
 
-  // ---------- каркас ----------
-  // Разметка повторяет штатные блоки: обёртка с отступами блока → контейнер сетки сайта → шапка «заголовок | текст»
+  // ---------- каркас: как у штатных блоков (обёртка → контейнер → шапка «заголовок | текст») ----------
   root.innerHTML =
-    '<div class="lmp"><div class="lmp__container">' +
-      '<header class="lmp__head">' +
-        '<h2 class="lmp__title">Квартира под вашу жизнь</h2>' +
-        '<p class="lmp__lead">Расскажите, для кого покупаете — покажем подходящие планировки и объясним, чем отличаются квартиры одного типа.</p>' +
-      '</header>' +
-      '<ol class="lmp__steps" data-el="steps"><li>Цель</li><li>Кто будет жить</li><li>Что важно</li><li>Квартиры</li></ol>' +
-      '<div class="lmp__view" data-el="view"><div class="lmp__loading">Загружаем квартиры…</div></div>' +
-    '</div></div>' +
+    '<div class="lmp">' +
+      '<div class="lmp__container">' +
+        '<header class="lmp__head">' +
+          '<h2 class="lmp__title">Квартира под вашу жизнь</h2>' +
+          '<p class="lmp__lead">Расскажите, для кого покупаете. Покажем подходящие планировки и объясним, чем отличаются квартиры одного типа.</p>' +
+        '</header>' +
+        '<ol class="lmp__steps" data-el="steps"><li>Цель</li><li>Кто будет жить</li><li>Что важно</li><li>Квартиры</li></ol>' +
+        '<div class="lmp__view" data-el="view"><p class="lmp__loading">Загружаем квартиры</p></div>' +
+      '</div>' +
+      '<div class="lmp__band" data-el="band" hidden><div class="lmp__container" data-el="list"></div></div>' +
+    '</div>' +
     '<div class="lmp__drawer" data-el="drawer" hidden><div class="lmp__drawer-backdrop" data-act="close"></div>' +
-      '<aside class="lmp__drawer-panel" role="dialog" aria-modal="true" data-el="panel"></aside></div>';
+      '<aside class="lmp__drawer-panel" role="dialog" aria-modal="true" tabindex="-1" data-el="panel"></aside></div>';
 
   var view = root.querySelector('[data-el=view]');
   var stepsEl = root.querySelector('[data-el=steps]');
+  var band = root.querySelector('[data-el=band]');
+  var listEl = root.querySelector('[data-el=list]');
   var drawer = root.querySelector('[data-el=drawer]');
   var panel = root.querySelector('[data-el=panel]');
 
-  // Панель выносим в <body>: внутри блока она оказывается под липкой шапкой сайта.
+  // Панель сравнения — в <body>: внутри блока она оказывается под липкой шапкой сайта.
   // Обёртка с классом lm-podbor сохраняет стили, переменные темы копируем с блока.
   var portal = document.createElement('div');
   portal.className = 'lm-podbor lmp-portal';
   var cs = getComputedStyle(root);
-  ['--ui-main-color', '--ui-main-color-64', '--ui-main-color-12', '--ui-main-color-8', '--ui-font-black-color',
-    '--ui-font-black-color-64', '--ui-font-black-color-48', '--ui-font-black-color-12', '--ui-font-black-color-8',
-    '--ui-font-black-color-4', '--ui-base-white-color', '--ui-title-font-family', '--ui-main-font-family'
+  ['--ui-main-color', '--ui-main-color-64', '--ui-main-color-12', '--ui-main-color-8', '--ui-main-color-4',
+    '--ui-font-black-color', '--ui-font-black-color-64', '--ui-font-black-color-48', '--ui-font-black-color-12',
+    '--ui-font-black-color-8', '--ui-font-black-color-4', '--ui-font-white-color', '--ui-base-white-color',
+    '--ui-base-black-color', '--ui-base-black-color-80', '--ui-base-black-color-48', '--ui-base-black-color-12',
+    '--ui-base-black-color-4', '--ui-title-font-family', '--ui-main-font-family', '--ui-unit', '--ui-col'
   ].forEach(function (v) { var val = cs.getPropertyValue(v); if (val) portal.style.setProperty(v, val.trim()); });
   portal.appendChild(drawer);
   document.body.appendChild(portal);
@@ -816,11 +850,13 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
     return loadSectionFloors(cx).then(function (floors) {
       var flats = M.prepare(raw, floors, (window.LM_PODBOR_STACKS || {})[location.hostname]);
       types = M.aggregate(flats);
-      priceMax = Math.max.apply(null, flats.map(function (f) { return f.price; }));
+      var prices = flats.map(function (f) { return f.price; });
+      priceMin = Math.floor(Math.min.apply(null, prices) / 1e5) * 1e5;
+      priceMax = Math.ceil(Math.max.apply(null, prices) / 1e5) * 1e5;
       render();
     });
   }).catch(function (e) {
-    view.innerHTML = '<div class="lmp__loading">Не удалось загрузить квартиры. Обновите страницу.</div>';
+    view.innerHTML = '<p class="lmp__loading">Не удалось загрузить квартиры. Обновите страницу.</p>';
     ctx.log(e.message);
   });
 
@@ -830,10 +866,11 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
       li.classList.toggle('is-done', i + 1 < state.step);
       li.classList.toggle('is-current', i + 1 === state.step);
     });
+    band.hidden = state.step !== 4;
     if (state.step === 1) renderGoals();
     else if (state.step === 2) renderSubs();
     else if (state.step === 3) renderNeeds();
-    else renderResults();
+    else { renderQuery(); renderList(false); }
     if (state.step >= 3) writeHash();
   }
 
@@ -841,7 +878,12 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
     return '<button type="button" class="lmp__card' + (selected ? ' is-selected' : '') + '" data-act="' + act + '" data-value="' + esc(value) + '">' +
       '<span class="lmp__card-title">' + esc(title) + '</span>' +
       '<span class="lmp__card-text">' + esc(text) + '</span>' +
-      '<span class="lmp__card-arrow" aria-hidden="true">→</span></button>';
+      '<span class="lmp__card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>';
+  }
+
+  function back(step, text) {
+    return '<button type="button" class="lmp__back" data-act="step" data-value="' + step + '">' +
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H6m5-5-5 5 5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' + esc(text) + '</button>';
   }
 
   function renderGoals() {
@@ -851,84 +893,130 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
 
   function renderSubs() {
     var g = goal();
-    view.innerHTML = '<button type="button" class="lmp__back" data-act="step" data-value="1">← ' + esc(g.title) + '</button>' +
+    view.innerHTML = back(1, g.title) +
       '<h3 class="lmp__q">' + (g.id === 'invest' ? 'Какая стратегия?' : g.id === 'single' ? 'Что для вас главное?' : 'Кто будет жить?') + '</h3>' +
       '<div class="lmp__cards lmp__cards--' + (g.subs.length > 3 ? 4 : 3) + '">' +
       g.subs.map(function (s) { return card('sub', s.id, s.title, s.text, s.id === state.sub); }).join('') + '</div>';
   }
 
+  // Кнопка-опция как в фильтре каталога (ButtonList): фон main-4, выбранная — base-black
+  function option(act, value, label, on, extraCls) {
+    return '<button type="button" class="lmp__opt' + (on ? ' is-active' : '') + (extraCls ? ' ' + extraCls : '') + '" data-act="' + act + '" data-value="' + esc(value) + '" aria-pressed="' + !!on + '">' + esc(label) + '</button>';
+  }
+
+  function needOption(id) {
+    var n = M.NEEDS[id];
+    if (n.unavailable) return '';
+    return option('need', id, n.label, state.needs.indexOf(id) >= 0);
+  }
+
   function renderNeeds() {
     var g = goal(), s = sub();
     var preset = s.needs;
-    var others = Object.keys(M.NEEDS).filter(function (id) { return preset.indexOf(id) < 0; });
-    function chip(id) {
-      var n = M.NEEDS[id], on = state.needs.indexOf(id) >= 0;
-      if (n.unavailable) {
-        return '<span class="lmp__chip is-disabled" title="' + esc(n.unavailable) + '">' + esc(n.label) + '<small>нет данных</small></span>';
-      }
-      return '<button type="button" class="lmp__chip' + (on ? ' is-on' : '') + '" data-act="need" data-value="' + id + '" aria-pressed="' + on + '">' +
-        esc(n.label) + (n.approx ? '<small>≈</small>' : '') + '</button>';
-    }
-    var count = M.rank(types, query());
+    var others = Object.keys(M.NEEDS).filter(function (id) { return preset.indexOf(id) < 0 && !M.NEEDS[id].unavailable; });
     view.innerHTML =
-      '<button type="button" class="lmp__back" data-act="step" data-value="2">← ' + esc(g.title) + ' · ' + esc(s.title) + '</button>' +
+      back(2, g.title + ', ' + s.title.toLowerCase()) +
       '<h3 class="lmp__q">Что для вас важно?</h3>' +
-      '<p class="lmp__hint">Мы уже отметили типичное для «' + esc(s.title.toLowerCase()) + '». Первые три — самые важные, их учитываем сильнее.</p>' +
-      '<div class="lmp__chips">' + preset.map(chip).join('') + '</div>' +
-      '<details class="lmp__more"><summary>Ещё критерии</summary><div class="lmp__chips">' + others.map(chip).join('') + '</div></details>' +
-      (g.id === 'invest' ? '' :
-        '<h4 class="lmp__sub">Когда планируете переезд?</h4><div class="lmp__seg">' +
-        M.MOVE.map(function (m) {
-          return '<button type="button" data-act="move" data-value="' + m.id + '" aria-pressed="' + (state.move === m.id) + '">' + esc(m.title) + '</button>';
-        }).join('') + '</div>') +
-      '<h4 class="lmp__sub">Бюджет до <b data-el="budgetLabel">' + (state.budget ? mln(state.budget) : 'любой') + '</b></h4>' +
-      '<input class="lmp__range" type="range" data-act="budget" min="3000000" max="' + Math.ceil(priceMax / 1e6) * 1e6 + '" step="100000" value="' + (state.budget || Math.ceil(priceMax / 1e6) * 1e6) + '">' +
-      '<div class="lmp__actions"><button type="button" class="lmp__btn" data-act="step" data-value="4" data-el="go">' + goLabel(count) + '</button></div>';
-    syncRange(view.querySelector('.lmp__range'));
+      '<div class="lmp__field">' +
+        '<span class="lmp__label">Отметили типичное для вашего выбора. Первые три учитываем сильнее</span>' +
+        '<div class="lmp__opts">' + preset.map(needOption).join('') + '</div>' +
+      '</div>' +
+      '<details class="lmp__more"><summary>Ещё критерии</summary><div class="lmp__opts">' + others.map(needOption).join('') + '</div></details>' +
+      '<div class="lmp__row">' +
+        (g.id === 'invest' ? '' :
+          '<div class="lmp__field"><span class="lmp__label">Когда планируете переезд</span><div class="lmp__opts lmp__opts--joined">' +
+          M.MOVE.map(function (m) { return option('move', m.id, m.title, state.move === m.id); }).join('') + '</div></div>') +
+        '<div class="lmp__field lmp__field--range"><span class="lmp__label">Стоимость, ₽</span>' + rangeHtml() + '</div>' +
+      '</div>' +
+      '<div class="lmp__actions"><button type="button" class="lmp__btn" data-act="step" data-value="4" data-el="go">' + goLabel(ranked()) + '</button></div>';
+    syncRange();
   }
 
-  function goLabel(ranked) {
-    var n = ranked.reduce(function (s, r) { return s + r.flats.length; }, 0);
-    return ranked.length ? 'Показать ' + plural(ranked.length, 'планировку', 'планировки', 'планировок') + ' · ' + plural(n, 'квартира', 'квартиры', 'квартир') : 'Нет подходящих квартир — ослабьте условия';
+  // Диапазон как «Стоимость, руб» в фильтре каталога: поле 48px, «от | до», линия 2px с ручками 12px
+  function rangeHtml() {
+    var from = state.budgetFrom || priceMin, to = state.budgetTo || priceMax;
+    return '<div class="lmp__range">' +
+      '<span class="lmp__range-value" data-el="from">' + num(from) + '</span>' +
+      '<span class="lmp__range-value" data-el="to">' + num(to) + '</span>' +
+      '<div class="lmp__range-track"><i data-el="fill"></i>' +
+        '<input type="range" data-act="from" aria-label="Стоимость от" min="' + priceMin + '" max="' + priceMax + '" step="100000" value="' + from + '">' +
+        '<input type="range" data-act="to" aria-label="Стоимость до" min="' + priceMin + '" max="' + priceMax + '" step="100000" value="' + to + '">' +
+      '</div></div>';
   }
 
-  function syncRange(r) {
-    if (!r) return;
-    r.style.setProperty('--lmp-p', ((r.value - r.min) / (r.max - r.min) * 100).toFixed(1) + '%');
+  function syncRange() {
+    var f = root.querySelector('[data-act=from]'), t = root.querySelector('[data-act=to]');
+    if (!f) return;
+    var a = +f.value, b = +t.value, span = priceMax - priceMin || 1;
+    var fill = root.querySelector('[data-el=fill]');
+    fill.style.left = ((a - priceMin) / span * 100) + '%';
+    fill.style.right = (100 - (b - priceMin) / span * 100) + '%';
+    root.querySelector('[data-el=from]').textContent = num(a);
+    root.querySelector('[data-el=to]').textContent = num(b);
+  }
+
+  function goLabel(list) {
+    var n = list.reduce(function (s, r) { return s + r.flats.length; }, 0);
+    return list.length
+      ? 'Показать ' + plural(list.length, 'планировку', 'планировки', 'планировок') + ', ' + plural(n, 'квартира', 'квартиры', 'квартир')
+      : 'Нет подходящих квартир. Ослабьте условия';
   }
 
   // ---------- результаты ----------
-  function renderResults() {
+  // Запрос сверху строкой опций, как фильтр каталога
+  function renderQuery() {
     var g = goal(), s = sub();
     if (!g || !s) { state.step = 1; return render(); }
-    var ranked = M.rank(types, query());
-    if (state.sort === 'price') ranked.sort(function (a, b) { return a.best.price - b.best.price; });
-    var total = ranked.reduce(function (sum, r) { return sum + r.flats.length; }, 0);
     view.innerHTML =
-      '<div class="lmp__results">' +
-        '<aside class="lmp__summary">' +
-          '<p class="lmp__summary-label">Ваш запрос</p>' +
-          '<p class="lmp__summary-goal">' + esc(g.title) + ' · ' + esc(s.title) + '</p>' +
-          '<div class="lmp__chips lmp__chips--small">' + state.needs.map(function (id) {
-            return '<button type="button" class="lmp__chip is-on" data-act="need" data-value="' + id + '" title="Убрать">' + esc(M.NEEDS[id].label) + ' ×</button>';
-          }).join('') + '</div>' +
-          (state.budget ? '<p class="lmp__summary-row">Бюджет до <b>' + mln(state.budget) + '</b></p>' : '') +
-          '<button type="button" class="lmp__link" data-act="step" data-value="3">Изменить критерии</button>' +
-          '<button type="button" class="lmp__link" data-act="restart">Начать заново</button>' +
-        '</aside>' +
-        '<section class="lmp__list">' +
-          '<div class="lmp__list-head"><p>' + (ranked.length
-            ? 'Нашли <b>' + plural(ranked.length, 'планировку', 'планировки', 'планировок') + '</b> · ' + plural(total, 'квартира', 'квартиры', 'квартир')
-            : 'Под эти условия квартир нет — уберите пару критериев или поднимите бюджет') + '</p>' +
-          '<div class="lmp__seg lmp__seg--small">' +
-            '<button type="button" data-act="sort" data-value="match" aria-pressed="' + (state.sort === 'match') + '">По совпадению</button>' +
-            '<button type="button" data-act="sort" data-value="price" aria-pressed="' + (state.sort === 'price') + '">Дешевле</button>' +
-          '</div></div>' +
-          '<div class="lmp__grid">' + ranked.slice(0, state.shown).map(typeCard).join('') + '</div>' +
-          (ranked.length > state.shown ? '<button type="button" class="lmp__more-btn" data-act="more">Показать ещё ' + Math.min(PAGE, ranked.length - state.shown) + '</button>' : '') +
-        '</section>' +
+      '<div class="lmp__query">' +
+        '<div class="lmp__query-head">' +
+          '<p class="lmp__query-goal">' + esc(g.title) + ', ' + esc(s.title.toLowerCase()) + '</p>' +
+          '<div class="lmp__query-links">' +
+            '<button type="button" class="lmp__link" data-act="step" data-value="3">Изменить критерии</button>' +
+            '<button type="button" class="lmp__link" data-act="restart">Начать заново</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="lmp__field"><span class="lmp__label">Что важно</span><div class="lmp__opts lmp__opts--scroll">' +
+          s.needs.concat(state.needs.filter(function (id) { return s.needs.indexOf(id) < 0; })).map(needOption).join('') +
+        '</div></div>' +
       '</div>';
-    lastRanked = ranked;
+  }
+
+  function renderList(animate) {
+    var list = ranked();
+    var total = list.reduce(function (sum, r) { return sum + r.flats.length; }, 0);
+    var html =
+      '<div class="lmp__list-head">' +
+        '<p class="lmp__count">' + (list.length
+          ? 'Найдено ' + plural(list.length, 'планировка', 'планировки', 'планировок') + ', ' + plural(total, 'квартира', 'квартиры', 'квартир')
+          : 'Под эти условия квартир нет. Уберите пару критериев или расширьте бюджет') + '</p>' +
+        '<div class="lmp__sort"><span class="lmp__label">Сортировать</span>' +
+          '<button type="button" class="lmp__sort-btn' + (state.sort === 'match' ? ' is-active' : '') + '" data-act="sort" data-value="match">По совпадению</button>' +
+          '<button type="button" class="lmp__sort-btn' + (state.sort === 'price' ? ' is-active' : '') + '" data-act="sort" data-value="price">Сначала дешевле</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="lmp__types">' + list.slice(0, state.shown).map(typeCard).join('') + '</div>' +
+      (list.length > state.shown ? '<button type="button" class="lmp__btn lmp__btn--light lmp__more-btn" data-act="more">Показать ещё ' + Math.min(PAGE, list.length - state.shown) + '</button>' : '');
+    lastRanked = list;
+    swap(listEl, html, animate);
+  }
+
+  // Плавная смена выдачи: старое гаснет, новое проявляется каскадом
+  var swapTimer;
+  function swap(el, html, animate) {
+    clearTimeout(swapTimer);
+    if (!animate || ctx.reducedMotion) { el.innerHTML = html; el.classList.remove('is-leaving'); return; }
+    var h = el.offsetHeight;
+    el.style.minHeight = h + 'px';
+    el.classList.add('is-leaving');
+    swapTimer = setTimeout(function () {
+      el.innerHTML = html;
+      el.classList.remove('is-leaving');
+      el.classList.add('is-entering');
+      void el.offsetWidth;
+      el.classList.remove('is-entering');
+      setTimeout(function () { el.style.minHeight = ''; }, 500);
+    }, 180);
   }
 
   var lastRanked = [];
@@ -936,103 +1024,121 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
   function typeCard(r, i) {
     var t = r.type, best = r.best;
     var hits = best.match.hits.slice(0, 4), misses = best.match.misses.slice(0, 3);
-    var priceRange = r.flats.length > 1 && r.flats[r.flats.length - 1] ? rangePrice(r.flats) : mln(best.price);
+    var aMin = Math.min.apply(null, r.flats.map(function (f) { return f.area; }));
+    var aMax = Math.max.apply(null, r.flats.map(function (f) { return f.area; }));
+    var pMin = Math.min.apply(null, r.flats.map(function (f) { return f.price; }));
+    var pMax = Math.max.apply(null, r.flats.map(function (f) { return f.price; }));
+    var rest = r.flats.length - Math.min(ROWS, r.flats.length);
     return '<article class="lmp__type" style="--i:' + (i % PAGE) + '">' +
-      '<div class="lmp__type-plan">' + (t.plan
-        ? '<img src="' + esc(img(t.plan)) + '" alt="Планировка" loading="lazy">'
-        : '<span class="lmp__type-noplan">' + esc(roomsLabel(t.rooms, t.euro)) + '</span>') +
-        '<span class="lmp__match" title="Насколько планировка подходит под ваш запрос">' + Math.round(r.value * 100) + '%</span></div>' +
-      '<div class="lmp__type-body">' +
-        '<h4 class="lmp__type-title">' + esc(roomsLabel(t.rooms, t.euro)) + ', ' + area(minArea(r.flats), maxArea(r.flats)) + '</h4>' +
-        '<p class="lmp__type-complex">' + esc(t.complex) + '</p>' +
-        '<p class="lmp__type-price">' + priceRange + (t.mortgageMin ? '<small>от ' + rub(t.mortgageMin) + '/мес</small>' : '') + '</p>' +
-        '<p class="lmp__type-meta">' + plural(r.flats.length, 'квартира', 'квартиры', 'квартир') +
-          ' · этажи ' + range(r.flats, 'floor') + (t.completions.length ? ' · ' + esc(t.completions.slice(0, 2).join(', ')) : '') + '</p>' +
-        (hits.length ? '<p class="lmp__label">Почему подходит</p><ul class="lmp__tags lmp__tags--yes">' + hits.map(function (id) {
-          return '<li>' + esc(M.NEEDS[id].label) + (M.NEEDS[id].approx && !best.sideKnown ? ' ≈' : '') + '</li>';
-        }).join('') + '</ul>' : '') +
-        (misses.length ? '<p class="lmp__label">В обмен на</p><ul class="lmp__tags lmp__tags--no">' + misses.map(function (id) {
-          return '<li>' + esc(M.NEEDS[id].compromise) + '</li>';
-        }).join('') + '</ul>' : '') +
-        '<button type="button" class="lmp__btn lmp__btn--line" data-act="open" data-value="' + i + '">' +
-          (r.flats.length > 1 ? 'Сравнить ' + plural(r.flats.length, 'квартиру', 'квартиры', 'квартир') : 'Подробнее о квартире') + '</button>' +
-      '</div></article>';
+      '<div class="lmp__type-main">' +
+        '<div class="lmp__type-head">' +
+          '<div><h4 class="lmp__type-title">' + esc(roomsLabel(t.rooms, t.euro)) + ', ' + area(aMin, aMax) + '</h4>' +
+          '<p class="lmp__type-price">' + priceRange(pMin, pMax) + '</p>' +
+          '<p class="lmp__type-meta"><span>' + esc(t.complex) + '</span>' + (t.mortgageMin ? '<span>от ' + rub(t.mortgageMin) + '/мес</span>' : '') + '</p></div>' +
+          '<span class="lmp__match" title="Насколько планировка подходит под ваш запрос">' + Math.round(r.value * 100) + '%</span>' +
+        '</div>' +
+        '<div class="lmp__type-plan">' + planHtml(t.plan, true) + '</div>' +
+        (hits.length || misses.length ? '<div class="lmp__type-tags">' +
+          hits.map(function (id) { return '<span class="lmp__tag is-yes">' + esc(M.NEEDS[id].label) + '</span>'; }).join('') +
+          misses.map(function (id) { return '<span class="lmp__tag">' + esc(M.NEEDS[id].compromise) + '</span>'; }).join('') +
+        '</div>' : '') +
+      '</div>' +
+      '<div class="lmp__type-side">' +
+        '<p class="lmp__side-title">' + plural(r.flats.length, 'квартира', 'квартиры', 'квартир') + ' этого типа</p>' +
+        '<ol class="lmp__rows">' + r.flats.slice(0, ROWS).map(function (f, k) { return flatLine(f, k === 0); }).join('') + '</ol>' +
+        '<button type="button" class="lmp__btn lmp__side-btn" data-act="open" data-value="' + i + '">' +
+          (rest > 0 ? 'Сравнить все ' + r.flats.length : 'Сравнить квартиры') + '</button>' +
+      '</div>' +
+    '</article>';
   }
 
-  function minArea(fl) { return Math.min.apply(null, fl.map(function (f) { return f.area; })); }
-  function maxArea(fl) { return Math.max.apply(null, fl.map(function (f) { return f.area; })); }
-  function range(fl, key) {
-    var a = Math.min.apply(null, fl.map(function (f) { return f[key]; }));
-    var b = Math.max.apply(null, fl.map(function (f) { return f[key]; }));
-    return a === b ? String(a) : a + '–' + b;
-  }
-  function rangePrice(fl) {
-    var a = Math.min.apply(null, fl.map(function (f) { return f.price; }));
-    var b = Math.max.apply(null, fl.map(function (f) { return f.price; }));
-    return a === b ? mln(a) : mln(a).replace(' млн ₽', '') + ' — ' + mln(b);
+  function buildingLabel(b) {
+    b = String(b || '').trim();
+    return /^\d+[а-яa-z]?$/i.test(b) ? 'корп. ' + b : b;
   }
 
-  // ---------- внутри типа ----------
+  // Строка квартиры в карточке типа, как у Арбана: корпус, этаж, площадь, цена, ₽/м², сдача
+  function flatLine(f, isBest) {
+    var url = flatUrl(f);
+    var tag = url ? 'a' : 'div';
+    return '<li><' + tag + ' class="lmp__line' + (isBest ? ' is-best' : '') + '"' + (url ? ' href="' + esc(url) + '"' : '') + '>' +
+      '<span class="lmp__line-b" title="' + esc(f.building) + '">' + esc(buildingLabel(f.building)) + '</span>' +
+      '<span>' + f.floor + ' эт.</span>' +
+      '<span>' + dec(f.area) + ' м²</span>' +
+      '<span class="lmp__line-price">' + rub(f.price) + '</span>' +
+      '<span class="lmp__line-ppm">' + num(f.ppm) + ' ₽/м²</span>' +
+      '<span class="lmp__line-c">' + esc(f.completion || '') + '</span>' +
+      (isBest ? '<em class="lmp__line-best">Лучшая</em>' : '') +
+    '</' + tag + '></li>';
+  }
+
+  // ---------- сравнение внутри типа ----------
   function openType(r) {
-    var t = r.type, best = r.best;
+    var t = r.type;
     var med = M.median(r.flats.map(function (f) { return f.price; }));
     var anyLight = r.flats.some(function (f) { return f.light; });
-    var anySideKnown = r.flats.some(function (f) { return f.sideKnown; });
+    var aMin = Math.min.apply(null, r.flats.map(function (f) { return f.area; }));
+    var aMax = Math.max.apply(null, r.flats.map(function (f) { return f.area; }));
+    var pMin = Math.min.apply(null, r.flats.map(function (f) { return f.price; }));
+    var pMax = Math.max.apply(null, r.flats.map(function (f) { return f.price; }));
     panel.innerHTML =
-      '<button type="button" class="lmp__close" data-act="close" aria-label="Закрыть">×</button>' +
+      '<button type="button" class="lmp__close" data-act="close" aria-label="Закрыть"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>' +
       '<div class="lmp__panel-head">' +
-        (t.plan ? '<img src="' + esc(img(t.plan)) + '" alt="Планировка">' : '') +
-        '<div><h3>' + esc(roomsLabel(t.rooms, t.euro)) + ', ' + area(minArea(r.flats), maxArea(r.flats)) + '</h3>' +
-        '<p>' + esc(t.complex) + ' · ' + rangePrice(r.flats) + '</p></div>' +
+        '<div class="lmp__panel-plan">' + planHtml(t.plan, false) + '</div>' +
+        '<div><h3>' + esc(roomsLabel(t.rooms, t.euro)) + ', ' + area(aMin, aMax) + '</h3>' +
+        '<p class="lmp__type-price">' + priceRange(pMin, pMax) + '</p>' +
+        '<p class="lmp__type-meta"><span>' + esc(t.complex) + '</span></p></div>' +
       '</div>' +
-      '<p class="lmp__panel-lead">Планировка та же — а жизнь в этих квартирах разная. Сравнили этаж, тишину, пыль' + (anyLight ? ', свет' : '') + ' и цену под ваш запрос.</p>' +
-      '<ol class="lmp__flats">' + r.flats.map(function (f, i) { return flatRow(f, i === 0, best, med, anyLight); }).join('') + '</ol>' +
-      '<p class="lmp__note">' + (anySideKnown ? '' : 'Тишина и пыль — оценка по этажу и типовым допущениям: окна на улицу спального района, 50–100 м до дороги. ') +
-        'Тишина: +10 дБ ощущается вдвое громче. Пыль: налёт на окнах, 1,0 — как на 2 этаже у шоссе.</p>';
+      '<p class="lmp__panel-lead">Планировка та же, а квартиры разные. Сравнили этаж, тишину, пыль' + (anyLight ? ', свет' : '') + ' и цену под ваш запрос.</p>' +
+      '<ol class="lmp__flats">' + r.flats.map(function (f, i) { return flatRow(f, i === 0, r.best, med, anyLight); }).join('') + '</ol>';
     drawer.hidden = false;
     document.documentElement.classList.add('lmp-lock');
-    panel.focus && panel.focus();
+    panel.scrollTop = 0;
+    panel.focus({ preventScroll: true });
   }
 
-  function bar(score, cls) {
-    return '<span class="lmp__bar ' + (cls || '') + '"><i style="width:' + Math.round(score * 100) + '%"></i></span>';
+  function bar(score) {
+    return '<span class="lmp__bar"><i style="width:' + Math.round(score * 100) + '%"></i></span>';
   }
 
   function flatRow(f, isBest, best, med, anyLight) {
     var url = flatUrl(f);
     var diff = isBest ? '' : diffText(f, best);
     var dp = med ? Math.round((f.price / med - 1) * 100) : 0;
+    var pos = { low: 'нижняя часть дома', mid: 'середина дома', high: 'верхняя часть дома' }[f.floorPos];
     return '<li class="lmp__flat' + (isBest ? ' is-best' : '') + '">' +
       '<div class="lmp__flat-main">' +
         (isBest ? '<span class="lmp__badge">Лучшая для вас</span>' : '') +
-        '<p class="lmp__flat-floor"><b>' + f.floor + ' этаж</b> из ' + f.floors + ' · ' + { low: 'низ дома', mid: 'середина', high: 'верх дома' }[f.floorPos] + '</p>' +
-        '<p class="lmp__flat-meta">Кв. ' + esc(f.number) + ' · ' + esc(f.building) + (f.section ? ', секция ' + esc(f.section) : '') + ' · ' + area(f.area) + '</p>' +
+        '<p class="lmp__flat-floor">' + f.floor + ' этаж из ' + f.floors + '</p>' +
+        '<p class="lmp__flat-meta">' + pos + '</p>' +
+        '<p class="lmp__flat-meta">Кв. ' + esc(f.number) + ', ' + esc(buildingLabel(f.building)) + ', ' + area(f.area) + '</p>' +
         (diff ? '<p class="lmp__flat-diff">' + diff + '</p>' : '') +
       '</div>' +
       '<dl class="lmp__factors">' +
-        '<div><dt>Тишина</dt><dd>' + f.noise.label + bar(f.noise.score) + '<small>' + (f.noise.db > 0 ? '+' + f.noise.db.toFixed(1).replace('.', ',') + ' дБ к тихому двору' : 'как в тихом дворе') + '</small></dd></div>' +
-        '<div><dt>Пыль</dt><dd>' + f.dust.label + bar(f.dust.score) + '<small>×' + f.dust.coef.toFixed(2).replace('.', ',') + '</small></dd></div>' +
-        (anyLight ? '<div><dt>Свет</dt><dd>' + (f.light ? f.light.label + bar(f.light.score) + '<small>' + esc(f.light.names.join(', ')) + '</small>' : '<small>нет данных</small>') + '</dd></div>' : '') +
-        '<div><dt>Отделка</dt><dd>' + esc(f.finishing || '—') + '<small>' + esc(f.completion || '') + '</small></dd></div>' +
+        '<div><dt>Тишина</dt><dd>' + f.noise.label + bar(f.noise.score) + '</dd></div>' +
+        '<div><dt>Пыль</dt><dd>' + f.dust.label + bar(f.dust.score) + '</dd></div>' +
+        (anyLight ? '<div><dt>Свет</dt><dd>' + (f.light ? f.light.label + bar(f.light.score) : 'Не указано') + '</dd></div>' : '') +
+        '<div><dt>Отделка</dt><dd>' + esc(f.finishing ? f.finishing.charAt(0).toUpperCase() + f.finishing.slice(1) : 'Не указано') + '</dd></div>' +
+        (f.completion ? '<div><dt>Сдача</dt><dd>' + esc(f.completion) + '</dd></div>' : '') +
       '</dl>' +
       '<div class="lmp__flat-price"><b>' + rub(f.price) + '</b>' +
-        '<small>' + num(f.ppm) + ' ₽/м²' + (dp ? ' · ' + (dp > 0 ? '+' : '−') + Math.abs(dp) + '% к типу' : '') + '</small>' +
-        '<span class="lmp__flat-match">' + Math.round(f.match.value * 100) + '% совпадение</span>' +
+        '<small>' + num(f.ppm) + ' ₽/м²</small>' +
+        (dp ? '<small>' + (dp > 0 ? 'дороже' : 'дешевле') + ' среднего по типу на ' + Math.abs(dp) + '%</small>' : '') +
         (url ? '<a class="lmp__btn lmp__btn--small" href="' + esc(url) + '">Открыть</a>' : '') +
       '</div></li>';
   }
 
-  // «Чем отличается от лучшей»: самые заметные различия, коротко
+  // Чем квартира отличается от лучшей: самые заметные различия
   function diffText(f, best) {
     var out = [];
     var df = f.floor - best.floor;
-    if (df) out.push((df > 0 ? 'на ' + plural(df, 'этаж', 'этажа', 'этажей') + ' выше' : 'на ' + plural(-df, 'этаж', 'этажа', 'этажей') + ' ниже'));
+    if (df) out.push((df > 0 ? 'выше' : 'ниже') + ' на ' + plural(Math.abs(df), 'этаж', 'этажа', 'этажей'));
     if (f.noise.label !== best.noise.label) out.push(f.noise.score > best.noise.score ? 'тише' : 'шумнее');
     if (f.dust.label !== best.dust.label) out.push(f.dust.score > best.dust.score ? 'меньше пыли' : 'больше пыли');
     if (f.finishGrade != null && best.finishGrade != null && f.finishGrade !== best.finishGrade) out.push(f.finishGrade > best.finishGrade ? 'отделка лучше' : 'отделка проще');
     var dp = f.price - best.price;
     if (Math.abs(dp) >= 50000) out.push(dp < 0 ? '<b class="is-good">дешевле на ' + rub(-dp) + '</b>' : 'дороже на ' + rub(dp));
-    return out.length ? 'По сравнению с лучшей: ' + out.join(', ') : '';
+    return out.length ? 'В сравнении с лучшей: ' + out.join(', ') : '';
   }
 
   function closeDrawer() {
@@ -1041,44 +1147,74 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
   }
 
   // ---------- события ----------
+  function scrollToTop(el) {
+    var top = el.getBoundingClientRect().top + window.scrollY - 100;
+    if (window.scrollY > top) window.scrollTo({ top: top, behavior: ctx.reducedMotion ? 'auto' : 'smooth' });
+  }
+
   function onClick(e) {
     var el = e.target.closest('[data-act]');
     if (!el || !(root.contains(el) || portal.contains(el))) return;
     var act = el.getAttribute('data-act'), v = el.getAttribute('data-value');
+    if (act === 'from' || act === 'to') return;
+
+    if (act === 'need') {
+      var i = state.needs.indexOf(v);
+      if (i >= 0) state.needs.splice(i, 1); else state.needs.push(v);
+      [].forEach.call(root.querySelectorAll('[data-act=need][data-value="' + v + '"]'), function (b) {
+        b.classList.toggle('is-active', i < 0);
+        b.setAttribute('aria-pressed', i < 0);
+      });
+      writeHash();
+      if (state.step === 3) updateGo(); else { state.shown = PAGE; renderList(true); }
+      return;
+    }
+    if (act === 'sort') {
+      state.sort = v;
+      [].forEach.call(root.querySelectorAll('[data-act=sort]'), function (b) { b.classList.toggle('is-active', b === el); });
+      renderList(true);
+      return;
+    }
+    if (act === 'more') { state.shown += PAGE; renderList(false); return; }
+    if (act === 'open') { openType(lastRanked[+v]); return; }
+    if (act === 'close') { closeDrawer(); return; }
+
     if (act === 'goal') { state.goal = v; state.sub = null; state.step = 2; }
     else if (act === 'sub') {
       state.sub = v; state.step = 3;
       state.needs = sub().needs.slice();
-      state.move = goal().id === 'invest' ? null : state.move;
+      if (goal().id === 'invest') state.move = null;
     }
-    else if (act === 'need') {
-      var i = state.needs.indexOf(v);
-      if (i >= 0) state.needs.splice(i, 1); else state.needs.push(v);
-      if (state.step === 3) { el.classList.toggle('is-on'); el.setAttribute('aria-pressed', i < 0); updateGo(); writeHash(); return; }
+    else if (act === 'move') {
+      state.move = state.move === v ? null : v;
+      [].forEach.call(root.querySelectorAll('[data-act=move]'), function (b) {
+        var on = b.getAttribute('data-value') === state.move;
+        b.classList.toggle('is-active', on);
+        b.setAttribute('aria-pressed', on);
+      });
+      updateGo();
+      return;
     }
-    else if (act === 'move') { state.move = state.move === v ? null : v; }
-    else if (act === 'sort') { state.sort = v; }
-    else if (act === 'more') { state.shown += PAGE; }
     else if (act === 'step') { state.step = +v; state.shown = PAGE; }
-    else if (act === 'restart') { state = { step: 1, goal: null, sub: null, needs: [], move: null, budget: null, sort: 'match', shown: PAGE }; history.replaceState(null, '', location.pathname + location.search); }
-    else if (act === 'open') { openType(lastRanked[+v]); return; }
-    else if (act === 'close') { closeDrawer(); return; }
+    else if (act === 'restart') {
+      state = freshState();
+      try { history.replaceState(null, '', location.pathname + location.search); } catch (e2) { /* ignore */ }
+    }
     else return;
     render();
-    if (act === 'goal' || act === 'sub' || (act === 'step' && +v === 4)) {
-      var top = root.getBoundingClientRect().top + window.scrollY - 90;
-      if (window.scrollY > top) window.scrollTo({ top: top, behavior: ctx.reducedMotion ? 'auto' : 'smooth' });
-    }
+    scrollToTop(root);
   }
   root.addEventListener('click', onClick);
   portal.addEventListener('click', onClick);
 
   root.addEventListener('input', function (e) {
-    if (e.target.getAttribute('data-act') !== 'budget') return;
-    var r = e.target;
-    syncRange(r);
-    state.budget = +r.value >= +r.max ? null : +r.value;
-    root.querySelector('[data-el=budgetLabel]').textContent = state.budget ? mln(state.budget) : 'любой';
+    var act = e.target.getAttribute('data-act');
+    if (act !== 'from' && act !== 'to') return;
+    var f = root.querySelector('[data-act=from]'), t = root.querySelector('[data-act=to]');
+    if (+f.value > +t.value) { if (act === 'from') f.value = t.value; else t.value = f.value; }
+    state.budgetFrom = +f.value <= priceMin ? null : +f.value;
+    state.budgetTo = +t.value >= priceMax ? null : +t.value;
+    syncRange();
     updateGo();
   });
 
@@ -1087,7 +1223,7 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
     clearTimeout(goTimer);
     goTimer = setTimeout(function () {
       var go = root.querySelector('[data-el=go]');
-      if (go) go.textContent = goLabel(M.rank(types, query()));
+      if (go) go.textContent = goLabel(ranked());
     }, 80);
   }
 
@@ -1097,4 +1233,4 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
 });
 
 } catch (e) { console.error('[lite-mods] ошибка в патче lm-podbor', e); }
-window.LiteMods && LiteMods.loaded({"version": "20261015154547"});
+window.LiteMods && LiteMods.loaded({"version": "20261015181648"});
