@@ -897,6 +897,10 @@ html.lmp-lock {
   .lm-podbor .lmp__cards--4,
   .lm-podbor .lmp__cards--3 { grid-template-columns: 1fr; }
   .lm-podbor .lmp__card { min-height: 0; padding: 20px; }
+  /* Заголовки карточек мельче заголовка блока (ui-unit×5) */
+  .lm-podbor .lmp__card-title,
+  .lm-podbor .lmp__type-title { font-size: calc(var(--u) * 4.5); }
+  .lm-podbor .lmp__panel-head h3 { font-size: calc(var(--u) * 5); }
   .lm-podbor .lmp__type-plan { height: 180px; }
   .lm-podbor .lmp__results { grid-template-columns: 1fr; gap: 20px; }
   .lm-podbor .lmp__summary { position: static; padding: 16px; }
