@@ -116,18 +116,18 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
   }
 
   // ---------- каркас ----------
+  // Разметка повторяет штатные блоки: обёртка с отступами блока → контейнер сетки сайта → шапка «заголовок | текст»
   root.innerHTML =
-    '<div class="lmp">' +
+    '<div class="lmp"><div class="lmp__container">' +
       '<header class="lmp__head">' +
-        '<p class="lmp__eyebrow">Подбор квартиры</p>' +
         '<h2 class="lmp__title">Квартира под вашу жизнь</h2>' +
         '<p class="lmp__lead">Расскажите, для кого покупаете — покажем подходящие планировки и объясним, чем отличаются квартиры одного типа.</p>' +
-        '<ol class="lmp__steps" data-el="steps"><li>Цель</li><li>Кто будет жить</li><li>Что важно</li><li>Квартиры</li></ol>' +
       '</header>' +
+      '<ol class="lmp__steps" data-el="steps"><li>Цель</li><li>Кто будет жить</li><li>Что важно</li><li>Квартиры</li></ol>' +
       '<div class="lmp__view" data-el="view"><div class="lmp__loading">Загружаем квартиры…</div></div>' +
-      '<div class="lmp__drawer" data-el="drawer" hidden><div class="lmp__drawer-backdrop" data-act="close"></div>' +
-        '<aside class="lmp__drawer-panel" role="dialog" aria-modal="true" data-el="panel"></aside></div>' +
-    '</div>';
+    '</div></div>' +
+    '<div class="lmp__drawer" data-el="drawer" hidden><div class="lmp__drawer-backdrop" data-act="close"></div>' +
+      '<aside class="lmp__drawer-panel" role="dialog" aria-modal="true" data-el="panel"></aside></div>';
 
   var view = root.querySelector('[data-el=view]');
   var stepsEl = root.querySelector('[data-el=steps]');

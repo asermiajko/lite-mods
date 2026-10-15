@@ -1,6 +1,7 @@
 /*
- * lm-podbor — стили в духе сайта: токены темы --ui-*, карточки r=20 с мягкой тенью,
- * кнопки 48px r=8, «пилюли» r=500, шрифт заголовков — --ui-title-font-family.
+ * lm-podbor — в дизайн-системе сайта: сетка и отступы как у штатных блоков (--ui-col, --ui-unit,
+ * брейкпоинт 812px), типографика блока (заголовок ui-unit×8 / текст ×4), токены цвета --ui-*,
+ * карточки r=20 с мягкой тенью, кнопки 48px r=8, «пилюли» r=500.
  */
 
 .lm-podbor {
@@ -35,39 +36,53 @@
   cursor: pointer;
 }
 
+/* ---------- Сетка и отступы — как у штатных блоков сайта ---------- */
+/* wrapper: padding-block ui-unit×12 (моб. ×6), фон base-white; container: ui-col×32 по центру (моб. 100% − ui-unit×8) */
+
 .lm-podbor .lmp {
-  padding: 40px 0 80px;
+  --u: var(--ui-unit, 4px);
+  --col: var(--ui-col, 40px);
+  padding-block: var(--ui-padding-top, calc(var(--u) * 12)) var(--ui-padding-bottom, calc(var(--u) * 12));
+  background-color: var(--lmp-white);
 }
 
-/* ---------- Шапка ---------- */
+.lm-podbor .lmp__container {
+  width: calc(var(--col) * 32);
+  margin: 0 auto;
+}
 
-.lm-podbor .lmp__eyebrow {
-  margin: 0 0 8px;
-  font-size: 14px;
-  color: var(--lmp-main);
+/* ---------- Шапка: «заголовок | текст», как у штатных блоков ---------- */
+
+.lm-podbor .lmp__head {
+  display: flex;
+  align-items: flex-start;
+  column-gap: calc(var(--col) * 2);
 }
 
 .lm-podbor .lmp__title {
+  flex: none;
+  width: calc(var(--col) * 10);
   margin: 0;
   font-family: var(--lmp-title);
-  font-size: 48px;
+  font-size: calc(var(--u) * 8);
   font-weight: 400;
-  line-height: 1.1;
-  letter-spacing: -.01em;
+  line-height: 120%;
+  word-break: break-word;
+  color: var(--ui-base-black-color, var(--lmp-ink));
 }
 
 .lm-podbor .lmp__lead {
-  max-width: 640px;
-  margin: 16px 0 0;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--lmp-ink-48);
+  max-width: calc(var(--col) * 13);
+  margin: 0 0 0 auto;
+  font-size: calc(var(--u) * 4);
+  line-height: 150%;
+  color: var(--ui-base-black-color-48, var(--lmp-ink-48));
 }
 
 .lm-podbor .lmp__steps {
   display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
+  gap: calc(var(--u) * 2);
+  margin: calc(var(--u) * 10) 0 0;
   padding: 0;
   list-style: none;
   counter-reset: lmp-step;
@@ -129,7 +144,7 @@
 /* ---------- Шаги ---------- */
 
 .lm-podbor .lmp__view {
-  margin-top: 40px;
+  margin-top: calc(var(--u) * 10);
   animation: lmp-in .5s var(--lmp-ease);
 }
 
@@ -143,22 +158,24 @@
 }
 
 .lm-podbor .lmp__q {
-  margin: 0 0 24px;
+  margin: 0 0 calc(var(--u) * 6);
   font-family: var(--lmp-title);
-  font-size: 32px;
+  font-size: calc(var(--u) * 6);
   font-weight: 400;
-  line-height: 1.2;
+  line-height: 120%;
 }
 
 .lm-podbor .lmp__sub {
-  margin: 32px 0 12px;
-  font-size: 16px;
-  font-weight: 500;
+  margin: calc(var(--u) * 8) 0 calc(var(--u) * 3);
+  font-family: var(--lmp-title);
+  font-size: calc(var(--u) * 4);
+  font-weight: 400;
 }
 
 .lm-podbor .lmp__hint {
-  margin: -12px 0 20px;
-  font-size: 14px;
+  margin: calc(var(--u) * -3) 0 calc(var(--u) * 5);
+  font-size: calc(var(--u) * 3.5);
+  line-height: 150%;
   color: var(--lmp-ink-48);
 }
 
@@ -861,14 +878,26 @@ html.lmp-lock {
   overflow: hidden;
 }
 
-/* ---------- Мобилка ---------- */
+/* ---------- Адаптив: брейкпоинт сайта 812px и мобильные токены штатных блоков ---------- */
 
 @media (max-width: 1100px) {
   .lm-podbor .lmp__cards--4 { grid-template-columns: repeat(2, 1fr); }
   .lm-podbor .lmp__grid { grid-template-columns: 1fr; }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 812px) {
+  .lm-podbor .lmp { padding-block: var(--ui-padding-top, calc(var(--u) * 6)) var(--ui-padding-bottom, calc(var(--u) * 6)); }
+  .lm-podbor .lmp__container { width: calc(100% - var(--u) * 8); }
+  .lm-podbor .lmp__head { flex-direction: column; align-items: stretch; row-gap: calc(var(--u) * 4); }
+  .lm-podbor .lmp__title { width: 100%; font-size: calc(var(--u) * 5); }
+  .lm-podbor .lmp__lead { max-width: none; margin: 0; font-size: calc(var(--u) * 3.5); line-height: 160%; }
+  .lm-podbor .lmp__steps { margin-top: calc(var(--u) * 6); }
+  .lm-podbor .lmp__view { margin-top: calc(var(--u) * 6); }
+  .lm-podbor .lmp__q { font-size: calc(var(--u) * 5); margin-bottom: calc(var(--u) * 4); }
+  .lm-podbor .lmp__cards--4,
+  .lm-podbor .lmp__cards--3 { grid-template-columns: 1fr; }
+  .lm-podbor .lmp__card { min-height: 0; padding: 20px; }
+  .lm-podbor .lmp__type-plan { height: 180px; }
   .lm-podbor .lmp__results { grid-template-columns: 1fr; gap: 20px; }
   .lm-podbor .lmp__summary { position: static; padding: 16px; }
   .lm-podbor .lmp__summary-goal { margin-bottom: 10px; }
@@ -879,16 +908,6 @@ html.lmp-lock {
   .lm-podbor .lmp__summary .lmp__link { display: inline-block; margin-right: 16px; }
   .lm-podbor .lmp__flat { grid-template-columns: 1fr; }
   .lm-podbor .lmp__flat-price { align-items: flex-start; text-align: left; }
-}
-
-@media (max-width: 600px) {
-  .lm-podbor .lmp { padding: 24px 0 48px; }
-  .lm-podbor .lmp__title { font-size: 32px; }
-  .lm-podbor .lmp__q { font-size: 24px; }
-  .lm-podbor .lmp__cards--4,
-  .lm-podbor .lmp__cards--3 { grid-template-columns: 1fr; }
-  .lm-podbor .lmp__card { min-height: 0; padding: 20px; }
-  .lm-podbor .lmp__type-plan { height: 180px; }
   .lm-podbor .lmp__drawer-panel { padding: 20px 16px; }
   .lm-podbor .lmp__panel-head img { width: 88px; height: 88px; }
 }
