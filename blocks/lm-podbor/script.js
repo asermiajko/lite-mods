@@ -6,6 +6,7 @@
  * Данные — открытые API каталога сайта; модель (пресеты, факторы, агрегация) — model.js.
  */
 window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
+  if (root.classList.contains('lmp-portal')) return; // это наша же обёртка панели в <body>
   var M = window.LMPodborModel;
   var nuxt = window.$nuxt;
   if (!M || !nuxt) return ctx.log('нет модели или Nuxt');
@@ -132,6 +133,18 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
   var stepsEl = root.querySelector('[data-el=steps]');
   var drawer = root.querySelector('[data-el=drawer]');
   var panel = root.querySelector('[data-el=panel]');
+
+  // Панель выносим в <body>: внутри блока она оказывается под липкой шапкой сайта.
+  // Обёртка с классом lm-podbor сохраняет стили, переменные темы копируем с блока.
+  var portal = document.createElement('div');
+  portal.className = 'lm-podbor lmp-portal';
+  var cs = getComputedStyle(root);
+  ['--ui-main-color', '--ui-main-color-64', '--ui-main-color-12', '--ui-main-color-8', '--ui-font-black-color',
+    '--ui-font-black-color-64', '--ui-font-black-color-48', '--ui-font-black-color-12', '--ui-font-black-color-8',
+    '--ui-font-black-color-4', '--ui-base-white-color', '--ui-title-font-family', '--ui-main-font-family'
+  ].forEach(function (v) { var val = cs.getPropertyValue(v); if (val) portal.style.setProperty(v, val.trim()); });
+  portal.appendChild(drawer);
+  document.body.appendChild(portal);
 
   loadFlats().then(function (raw) {
     var cx = raw.map(function (f) { return f.complex_id; }).filter(function (v, i, a) { return v && a.indexOf(v) === i; });
@@ -363,9 +376,9 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
   }
 
   // ---------- события ----------
-  root.addEventListener('click', function (e) {
+  function onClick(e) {
     var el = e.target.closest('[data-act]');
-    if (!el || !root.contains(el)) return;
+    if (!el || !(root.contains(el) || portal.contains(el))) return;
     var act = el.getAttribute('data-act'), v = el.getAttribute('data-value');
     if (act === 'goal') { state.goal = v; state.sub = null; state.step = 2; }
     else if (act === 'sub') {
@@ -391,7 +404,9 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
       var top = root.getBoundingClientRect().top + window.scrollY - 90;
       if (window.scrollY > top) window.scrollTo({ top: top, behavior: ctx.reducedMotion ? 'auto' : 'smooth' });
     }
-  });
+  }
+  root.addEventListener('click', onClick);
+  portal.addEventListener('click', onClick);
 
   root.addEventListener('input', function (e) {
     if (e.target.getAttribute('data-act') !== 'budget') return;

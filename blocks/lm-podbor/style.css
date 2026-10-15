@@ -632,10 +632,16 @@
 
 /* ---------- Панель типа ---------- */
 
+/* Панель живёт в <body> (обёртка .lm-podbor.lmp-portal), поверх липкой шапки сайта */
+.lm-podbor.lmp-portal {
+  position: relative;
+  z-index: 2147483000;
+}
+
 .lm-podbor .lmp__drawer {
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  z-index: 2147483000;
 }
 
 .lm-podbor .lmp__drawer[hidden] {
