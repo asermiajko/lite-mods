@@ -1078,3 +1078,16 @@ html.lmp-lock {
     transition: none !important;
   }
 }
+
+/* Почему эта квартира «Лучшая» */
+.lm-podbor .lmp__why {
+  margin-top: calc(var(--u) * 2);
+  font-size: calc(var(--u) * 3.25);
+  line-height: 140%;
+  color: var(--black-48);
+}
+
+.lm-podbor .lmp__flat .lmp__why {
+  margin: 0 0 calc(var(--u) * 2);
+  color: var(--main);
+}

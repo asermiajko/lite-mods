@@ -180,38 +180,38 @@
   var GOALS = [
     { id: 'single', title: 'Буду жить один', text: 'Своё пространство под ваш ритм',
       subs: [
-        { id: 'first', title: 'Первая своя квартира', text: 'Важен бюджет и быстрый переезд',
+        { id: 'first', profile: 'budget', title: 'Первая своя квартира', text: 'Важен бюджет и быстрый переезд',
           rooms: [0, 1], needs: ['budget_low', 'no_repair', 'move_year', 'liquid', 'cheap_ppm'] },
-        { id: 'remote', title: 'Работаю из дома', text: 'Тишина и отдельное место для работы',
+        { id: 'remote', profile: 'remote', title: 'Работаю из дома', text: 'Тишина и отдельное место для работы',
           rooms: [1, 2], needs: ['remote', 'quiet', 'kitchen_living', 'high_view', 'sunny_living'] },
-        { id: 'space', title: 'Простор и вид', text: 'Высокий этаж, свет, хранение',
+        { id: 'space', profile: 'view', title: 'Простор и вид', text: 'Высокий этаж, свет, хранение',
           rooms: [1, 2], areaMin: 40, needs: ['high_view', 'space', 'sunny_living', 'balcony', 'storage'] }
       ] },
     { id: 'family', title: 'Для семьи', text: 'Место для всех и спокойный быт',
       subs: [
-        { id: 'f20', title: 'Без детей', text: 'Двое взрослых (2+0)',
+        { id: 'f20', profile: 'family', title: 'Без детей', text: 'Двое взрослых (2+0)',
           rooms: [1, 2], needs: ['kitchen_living', 'no_repair', 'quiet', 'balcony', 'budget_first'] },
-        { id: 'f21', title: 'С ребёнком', text: 'Двое взрослых и ребёнок (2+1)',
+        { id: 'f21', profile: 'family', title: 'С ребёнком', text: 'Двое взрослых и ребёнок (2+1)',
           rooms: [2, 3], areaMin: 50, needs: ['kids_room', 'quiet', 'space', 'two_wc', 'no_repair', 'kitchen_living', 'sunny_living', 'shade_bedrooms'] },
-        { id: 'f3', title: 'С детьми', text: 'Трое и больше (3+)',
+        { id: 'f3', profile: 'family', title: 'С детьми', text: 'Трое и больше (3+)',
           rooms: [3, 4, 5], areaMin: 70, needs: ['two_wc', 'kids_room', 'space', 'quiet', 'kitchen_living', 'storage'] }
       ] },
     { id: 'relatives', title: 'Для родственников', text: 'Рядом, удобно и без забот',
       subs: [
-        { id: 'kids', title: 'Для детей', text: 'Первая квартира для взрослого ребёнка',
+        { id: 'kids', profile: 'budget', title: 'Для детей', text: 'Первая квартира для взрослого ребёнка',
           rooms: [0, 1], needs: ['budget_low', 'liquid', 'no_repair', 'move_year'] },
-        { id: 'parents', title: 'Для родителей', text: 'Невысоко, тихо, готово к жизни',
+        { id: 'parents', profile: 'parents', title: 'Для родителей', text: 'Невысоко, тихо, готово к жизни',
           rooms: [1, 2], needs: ['easy_floor', 'no_repair', 'quiet', 'move_year', 'sunny_living', 'not_first'] }
       ] },
     { id: 'invest', title: 'Для инвестиций', text: 'Доходность, ликвидность, сохранность',
       subs: [
-        { id: 'rent', title: 'Быстро купить и сдать', text: 'Горизонт 1–6 месяцев',
+        { id: 'rent', profile: 'invest', title: 'Быстро купить и сдать', text: 'Горизонт 1–6 месяцев',
           rooms: [0, 1], needs: ['rent_ready', 'liquid', 'no_repair', 'cheap_ppm'], invest: true },
-        { id: 'yield', title: 'Максимальная доходность', text: 'Горизонт 3–7 лет',
+        { id: 'yield', profile: 'invest', title: 'Максимальная доходность', text: 'Горизонт 3–7 лет',
           rooms: [0, 1], needs: ['cheap_ppm', 'liquid', 'budget_low', 'growth'], invest: true },
-        { id: 'flip', title: 'Ремонт и перепродажа', text: 'Горизонт до 3 лет',
+        { id: 'flip', profile: 'invest', title: 'Ремонт и перепродажа', text: 'Горизонт до 3 лет',
           rooms: [1, 2, 3], needs: ['flip', 'cheap_ppm', 'growth', 'mid_floor'], invest: true },
-        { id: 'capital', title: 'Сохранить капитал', text: 'Надёжность и ликвидность, 7+ лет',
+        { id: 'capital', profile: 'invest', title: 'Сохранить капитал', text: 'Надёжность и ликвидность, 7+ лет',
           rooms: [1, 2], needs: ['liquid', 'mid_floor', 'move_year', 'not_first', 'no_repair'], invest: true }
       ] }
   ];
@@ -373,42 +373,136 @@
     return best;
   }
 
-  // ---------- Совпадение с запросом ----------
+  // ---------- Совпадение с запросом (процент на карточке типа) ----------
+  // Каждая потребность: да = 1, нет = 0, нет данных = 0,5 (нейтрально, полнота данных не даёт бонуса).
   // needs: [{ id, weight }]
+  var UNKNOWN = 0.5;
+
   function score(f, needs) {
-    var sum = 0, total = 0, known = 0, all = 0, hits = [], misses = [], unknown = [];
+    var sum = 0, total = 0, hits = [], misses = [], unknown = [];
     needs.forEach(function (n) {
       var def = NEEDS[n.id];
       if (!def || def.unavailable) return;
-      all += n.weight;
       var v = def.test(f);
-      if (v == null) { unknown.push(n.id); return; }
-      known += n.weight;
       total += n.weight;
-      if (v) { sum += n.weight; hits.push(n.id); } else misses.push(n.id);
+      if (v == null) { sum += n.weight * UNKNOWN; unknown.push(n.id); }
+      else if (v) { sum += n.weight; hits.push(n.id); }
+      else misses.push(n.id);
     });
-    var base = total ? sum / total : 0.5;
-    var coverage = all ? known / all : 1;
-    return { value: base * (0.85 + 0.15 * coverage), hits: hits, misses: misses, unknown: unknown };
+    return { value: total ? sum / total : UNKNOWN, hits: hits, misses: misses, unknown: unknown };
   }
 
+  // ---------- Выбор лучшей квартиры внутри типа ----------
+  // Планировка у квартир одного типа одна, поэтому сравниваем то, чем они реально отличаются:
+  // этаж, тишину, пыль, свет и цену относительно типа. Веса — под цель покупки.
+  var PROFILES = {
+    family:  { floor: 'mid',  w: { noise: .3,  floor: .15, light: .15, dust: .1,  price: .3 } },
+    parents: { floor: 'low',  w: { noise: .25, floor: .3,  light: .15, dust: .05, price: .25 } },
+    remote:  { floor: 'high', w: { noise: .35, floor: .15, light: .15, dust: .05, price: .3 } },
+    view:    { floor: 'high', w: { noise: .1,  floor: .35, light: .2,  dust: .05, price: .3 } },
+    budget:  { floor: 'any',  w: { noise: .15, floor: .1,  light: .1,  dust: .05, price: .6 } },
+    invest:  { floor: 'mid',  w: { noise: .1,  floor: .25, light: .1,  dust: .05, price: .5 } }
+  };
+
+  // Насколько этаж подходит цели: 1 — в оптимальном диапазоне, дальше — плавно хуже
+  function floorFit(f, target) {
+    if (target === 'any') return f.floor === 1 ? 0.4 : 1;
+    if (target === 'low') {
+      if (f.floor === 1) return 0.5;
+      return f.floor <= 6 ? 1 : clamp(1 - (f.floor - 6) * 0.1, 0, 1);
+    }
+    var pos = f.floors > 1 ? (f.floor - 1) / (f.floors - 1) : 0.5;
+    var lo = target === 'high' ? 0.65 : 0.25, hi = target === 'high' ? 1 : 0.7;
+    var d = pos < lo ? lo - pos : pos > hi ? pos - hi : 0;
+    var fit = clamp(1 - d * 2.5, 0, 1);
+    return f.floor === 1 ? Math.min(fit, 0.3) : fit;
+  }
+
+  // Цена относительно медианы типа: на 10% дешевле → 1, на 10% дороже → 0
+  function priceFit(f) {
+    return f.ppmVsType == null ? UNKNOWN : clamp(0.5 - (f.ppmVsType - 1) * 5, 0, 1);
+  }
+
+  function factors(f, profile) {
+    return {
+      noise: f.noise.score,
+      dust: f.dust.score,
+      light: f.light ? f.light.score : UNKNOWN,
+      floor: floorFit(f, profile.floor),
+      price: priceFit(f)
+    };
+  }
+
+  function fitScore(fx, profile) {
+    var s = 0;
+    Object.keys(profile.w).forEach(function (k) { s += profile.w[k] * fx[k]; });
+    return s;
+  }
+
+  var FACTOR_TEXT = {
+    noise: 'тише других',
+    dust: 'меньше пыли',
+    light: 'светлее',
+    price: 'выгоднее по цене за м²',
+    floor: { mid: 'удобный средний этаж', high: 'высокий этаж', low: 'невысоко, но не на первом', any: 'не первый этаж' }
+  };
+
+  // Почему лучшая: самые весомые преимущества перед средним по типу
+  function explainBest(flats, profile) {
+    if (flats.length < 2) return '';
+    var best = flats[0];
+    var spread = best.fit - Math.min.apply(null, flats.map(function (f) { return f.fit; }));
+    if (spread < 0.03) return 'Квартиры почти одинаковы, выбрали самую выгодную по цене';
+    var cheaper = flats.filter(function (f) { return f.price < best.price; }).length;
+    var avg = {};
+    Object.keys(profile.w).forEach(function (k) {
+      avg[k] = flats.reduce(function (s, f) { return s + f.fx[k]; }, 0) / flats.length;
+    });
+    var gains = Object.keys(profile.w)
+      .map(function (k) { return { k: k, g: (best.fx[k] - avg[k]) * profile.w[k] }; })
+      .filter(function (x) { return x.g > 0.01 && (x.k !== 'price' || best.price <= median(flats.map(function (f) { return f.price; }))); })
+      .sort(function (a, b) { return b.g - a.g; })
+      .slice(0, 2)
+      .map(function (x) { return x.k === 'floor' ? FACTOR_TEXT.floor[profile.floor] : FACTOR_TEXT[x.k]; });
+    var text = gains.length ? 'Лучшее сочетание под вашу цель: ' + gains.join(' и ') : 'Лучшее сочетание этажа, тишины и цены';
+    if (!cheaper) return text;
+    var m10 = cheaper % 10, m100 = cheaper % 100;
+    var word = m10 === 1 && m100 !== 11 ? 'квартира' : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? 'квартиры' : 'квартир';
+    return text + '. ' + (cheaper === 1
+      ? 'Есть одна квартира дешевле, но она уступает по этим параметрам'
+      : 'Есть ' + cheaper + ' ' + word + ' дешевле, но они уступают по этим параметрам');
+  }
+
+  /*
+   * query: { rooms, areaMin, budget, needs: [id…] в порядке важности, extraNeed: id срока переезда, profile }
+   * Вес: первые три потребности ×2, остальные ×1; срок переезда — отдельно ×2 и никого не сдвигает.
+   */
   function rank(types, query) {
     var needs = query.needs.map(function (id, i) { return { id: id, weight: i < 3 ? 2 : 1 }; });
+    if (query.extraNeed && query.needs.indexOf(query.extraNeed) < 0) needs.push({ id: query.extraNeed, weight: 2 });
+    var profile = PROFILES[query.profile] || PROFILES.family;
     var out = [];
     types.forEach(function (t) {
       var fl = t.flats.filter(function (f) {
         if (query.rooms && query.rooms.indexOf(Math.min(f.rooms, 5)) < 0) return false;
         if (query.areaMin && f.area < query.areaMin) return false;
         if (query.budget && f.price > query.budget) return false;
+        if (query.budgetFrom && f.price < query.budgetFrom) return false;
         return true;
       });
       if (!fl.length) return;
-      fl.forEach(function (f) { f.match = score(f, needs); });
-      fl.sort(function (a, b) { return b.match.value - a.match.value || a.price - b.price; });
-      var best = fl[0];
-      out.push({ type: t, flats: fl, best: best, value: best.match.value });
+      fl.forEach(function (f) {
+        f.match = score(f, needs);
+        f.fx = factors(f, profile);
+        f.fit = fitScore(f.fx, profile);
+        // Внутри типа: совпадение с запросом (шаг 5%), затем факторы квартиры (шаг 0,02 —
+        // меньшая разница незаметна для человека), при равенстве решает цена
+        f.rankKey = Math.round(f.match.value * 20) * 100 + Math.round(f.fit * 50);
+      });
+      fl.sort(function (a, b) { return b.rankKey - a.rankKey || a.price - b.price; });
+      out.push({ type: t, flats: fl, best: fl[0], value: fl[0].match.value, why: explainBest(fl, profile) });
     });
-    // При близком совпадении (шаг 5%) выше тип с бо́льшим выбором квартир, затем дешевле
+    // Типы: совпадение (шаг 5%), затем больше выбора, затем дешевле
     function bucket(v) { return Math.round(v * 20); }
     return out.sort(function (a, b) {
       return bucket(b.value) - bucket(a.value) || b.flats.length - a.flats.length || a.best.price - b.best.price;
@@ -417,6 +511,6 @@
 
   window.LMPodborModel = {
     DEFAULTS: DEFAULTS, NEEDS: NEEDS, GOALS: GOALS, MOVE: MOVE, FINISHING: FINISHING, DIRS: DIRS,
-    noise: noise, dust: dust, light: light, prepare: prepare, aggregate: aggregate, rank: rank, median: median
+    noise: noise, dust: dust, light: light, prepare: prepare, aggregate: aggregate, rank: rank, median: median, PROFILES: PROFILES
   };
 })();

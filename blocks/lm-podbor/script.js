@@ -106,21 +106,15 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
 
   function query() {
     var s = sub() || {};
-    var needs = state.needs.slice();
     var mv = M.MOVE.filter(function (m) { return m.id === state.move; })[0];
-    if (mv && mv.need && needs.indexOf(mv.need) < 0) needs.unshift(mv.need);
-    return { rooms: s.rooms, areaMin: s.areaMin, budget: state.budgetTo, budgetFrom: state.budgetFrom, needs: needs };
+    return {
+      rooms: s.rooms, areaMin: s.areaMin, budget: state.budgetTo, budgetFrom: state.budgetFrom,
+      needs: state.needs.slice(), extraNeed: mv && mv.need, profile: s.profile
+    };
   }
 
   function ranked() {
-    var q = query();
-    var list = M.rank(types, q);
-    if (q.budgetFrom) {
-      list = list.map(function (r) {
-        var fl = r.flats.filter(function (f) { return f.price >= q.budgetFrom; });
-        return fl.length ? { type: r.type, flats: fl, best: fl[0], value: fl[0].match.value } : null;
-      }).filter(Boolean);
-    }
+    var list = M.rank(types, query());
     if (state.sort === 'price') list.sort(function (a, b) { return a.best.price - b.best.price; });
     return list;
   }
@@ -381,6 +375,7 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
       '<div class="lmp__type-side">' +
         '<p class="lmp__side-title">' + plural(r.flats.length, 'квартира', 'квартиры', 'квартир') + ' этого типа</p>' +
         '<ol class="lmp__rows">' + r.flats.slice(0, ROWS).map(function (f, k) { return flatLine(f, k === 0); }).join('') + '</ol>' +
+        (r.why ? '<p class="lmp__why">' + esc(r.why) + '</p>' : '') +
         '<button type="button" class="lmp__btn lmp__side-btn" data-act="open" data-value="' + i + '">' +
           (rest > 0 ? 'Сравнить все ' + r.flats.length : 'Сравнить квартиры') + '</button>' +
       '</div>' +
@@ -425,7 +420,7 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
         '<p class="lmp__type-meta"><span>' + esc(t.complex) + '</span></p></div>' +
       '</div>' +
       '<p class="lmp__panel-lead">Планировка та же, а квартиры разные. Сравнили этаж, тишину, пыль' + (anyLight ? ', свет' : '') + ' и цену под ваш запрос.</p>' +
-      '<ol class="lmp__flats">' + r.flats.map(function (f, i) { return flatRow(f, i === 0, r.best, med, anyLight); }).join('') + '</ol>';
+      '<ol class="lmp__flats">' + r.flats.map(function (f, i) { return flatRow(f, i === 0, r.best, med, anyLight, i === 0 ? r.why : ''); }).join('') + '</ol>';
     drawer.hidden = false;
     document.documentElement.classList.add('lmp-lock');
     panel.scrollTop = 0;
@@ -436,14 +431,14 @@ window.LiteMods && LiteMods.register('lm-podbor', function (root, ctx) {
     return '<span class="lmp__bar"><i style="width:' + Math.round(score * 100) + '%"></i></span>';
   }
 
-  function flatRow(f, isBest, best, med, anyLight) {
+  function flatRow(f, isBest, best, med, anyLight, why) {
     var url = flatUrl(f);
     var diff = isBest ? '' : diffText(f, best);
     var dp = med ? Math.round((f.price / med - 1) * 100) : 0;
     var pos = { low: 'нижняя часть дома', mid: 'середина дома', high: 'верхняя часть дома' }[f.floorPos];
     return '<li class="lmp__flat' + (isBest ? ' is-best' : '') + '">' +
       '<div class="lmp__flat-main">' +
-        (isBest ? '<span class="lmp__badge">Лучшая для вас</span>' : '') +
+        (isBest ? '<span class="lmp__badge">Лучшая для вас</span>' + (why ? '<p class="lmp__why">' + esc(why) + '</p>' : '') : '') +
         '<p class="lmp__flat-floor">' + f.floor + ' этаж из ' + f.floors + '</p>' +
         '<p class="lmp__flat-meta">' + pos + '</p>' +
         '<p class="lmp__flat-meta">Кв. ' + esc(f.number) + ', ' + esc(buildingLabel(f.building)) + ', ' + area(f.area) + '</p>' +
